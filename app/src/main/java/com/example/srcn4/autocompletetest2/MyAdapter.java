@@ -56,9 +56,10 @@ public class MyAdapter extends BaseAdapter implements Filterable {
             convertView = myInflater.inflate(R.layout.list_item, parent, false);
         }
         // 1行に表示するビューを設定
-        TextView listViewRow = (TextView) convertView.findViewById(R.id.list_item_row);
-        listViewRow.setText(resultVOList.get(position).getKana() + "\n"
-                + resultVOList.get(position).getName());
+        TextView listViewKana = (TextView) convertView.findViewById(R.id.list_item_kana);
+        TextView listViewName = (TextView) convertView.findViewById(R.id.list_item_name);
+        listViewKana.setText(resultVOList.get(position).getKana());
+        listViewName.setText(resultVOList.get(position).getName());
 
         return convertView;
     }
@@ -80,31 +81,34 @@ public class MyAdapter extends BaseAdapter implements Filterable {
             // ここで独自のフィルタリングルールを実装
             @Override
             protected FilterResults performFiltering(CharSequence str) {
+                // 新しい値を格納するリスト
+                ArrayList<StationVO> newValues = new ArrayList<>();
 
                 if (str == null) {
                     // 文字列がnullの時は何もせず終了
                     return new FilterResults();
                 }
-                // 候補表示用リストを初期化
-                resultVOList.clear();
-                // DBから駅情報を取得
+                // DBから全駅情報を取得
                 Cursor cursor = db.rawQuery("select * from station", null);
                 // 取得した数だけ繰り返す
                 while (cursor.moveToNext()) {
-                    // カーソルから駅名とカナを取得
+                    // カーソルから各情報を取得
                     String name = cursor.getString(cursor.getColumnIndex("name"));
                     String kana = cursor.getString(cursor.getColumnIndex("kana"));
+                    String prefCd = cursor.getString(cursor.getColumnIndex("pref_cd"));
+                    String gnaviId = cursor.getString(cursor.getColumnIndex("gnavi_id"));
+
                     // 前方一致で駅名かカナに当てはまれば候補リストに入れる
                     if (name.startsWith(str.toString())
                             || kana.startsWith(str.toString())) {
-                        resultVOList.add(new StationVO(name, kana));
+                        newValues.add(new StationVO(name, kana, prefCd, gnaviId));
                     }
                 }
                 cursor.close();
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = resultVOList;            // フィルタリング結果オブジェクト
-                filterResults.count = resultVOList.size();      // フィルタリング結果件数
+                filterResults.values = newValues;            // フィルタリング結果オブジェクト
+                filterResults.count = newValues.size();      // フィルタリング結果件数
                 return filterResults;
             }
 
@@ -112,8 +116,11 @@ public class MyAdapter extends BaseAdapter implements Filterable {
             protected void publishResults(CharSequence constraint,
                                           FilterResults results) {
                 if (results != null && results.count > 0) {
+                    // performFilteringから受け取ったnewValuesをVOリストに入れる
+                    resultVOList = (ArrayList<StationVO>) results.values;
                     // 再描画させる
                     notifyDataSetChanged();
+
                 } else {
                     notifyDataSetInvalidated();
                 }

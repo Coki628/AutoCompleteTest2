@@ -3,11 +3,19 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/list_item_kana"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_item_row"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textColor="#111"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/list_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_item_kana"
         android:textColor="#111" />
 
 </RelativeLayout>
