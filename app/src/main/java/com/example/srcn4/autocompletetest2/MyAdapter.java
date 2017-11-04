@@ -92,7 +92,7 @@ public class MyAdapter extends BaseAdapter implements Filterable {
                 Cursor cursor = db.rawQuery("select name, kana from station", null);
                 // 取得した数だけ繰り返す
                 while (cursor.moveToNext()) {
-                    // カーソルから各情報を取得
+                    // カーソルから駅名と仮名を取得
                     String name = cursor.getString(cursor.getColumnIndex("name"));
                     String kana = cursor.getString(cursor.getColumnIndex("kana"));
 

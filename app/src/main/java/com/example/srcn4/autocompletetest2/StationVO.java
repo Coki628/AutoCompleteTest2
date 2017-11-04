@@ -11,6 +11,7 @@ public class StationVO implements Serializable {
     private String lat;
     private String lng;
 
+    // 全項目設定のコンストラクタ
     public StationVO (String name, String kana, String prefCd, String gnaviId, String lat, String lng) {
 
         this.name = name;
@@ -21,6 +22,7 @@ public class StationVO implements Serializable {
         this.lng = lng;
     }
 
+    // 駅名と仮名だけ使う時のコンストラクタ
     public StationVO (String name, String kana) {
 
         this.name = name;
