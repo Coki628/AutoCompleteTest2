@@ -89,19 +89,17 @@ public class MyAdapter extends BaseAdapter implements Filterable {
                     return new FilterResults();
                 }
                 // DBから全駅情報を取得
-                Cursor cursor = db.rawQuery("select * from station", null);
+                Cursor cursor = db.rawQuery("select name, kana from station", null);
                 // 取得した数だけ繰り返す
                 while (cursor.moveToNext()) {
                     // カーソルから各情報を取得
                     String name = cursor.getString(cursor.getColumnIndex("name"));
                     String kana = cursor.getString(cursor.getColumnIndex("kana"));
-                    String prefCd = cursor.getString(cursor.getColumnIndex("pref_cd"));
-                    String gnaviId = cursor.getString(cursor.getColumnIndex("gnavi_id"));
 
                     // 前方一致で駅名かカナに当てはまれば候補リストに入れる
                     if (name.startsWith(str.toString())
                             || kana.startsWith(str.toString())) {
-                        newValues.add(new StationVO(name, kana, prefCd, gnaviId));
+                        newValues.add(new StationVO(name, kana));
                     }
                 }
                 cursor.close();

@@ -8,13 +8,27 @@ public class StationVO implements Serializable {
     private String kana;
     private String prefCd;
     private String gnaviId;
+    private String lat;
+    private String lng;
 
-    public StationVO (String name, String kana, String prefCd, String gnaviId) {
+    public StationVO (String name, String kana, String prefCd, String gnaviId, String lat, String lng) {
 
         this.name = name;
         this.kana = kana;
         this.prefCd = prefCd;
         this.gnaviId = gnaviId;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public StationVO (String name, String kana) {
+
+        this.name = name;
+        this.kana = kana;
+        this.prefCd = null;
+        this.gnaviId = null;
+        this.lat = null;
+        this.lng = null;
     }
 
     public String getName() {
@@ -31,5 +45,13 @@ public class StationVO implements Serializable {
 
     public String getGnaviId() {
         return gnaviId;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public String getLng() {
+        return lng;
     }
 }
