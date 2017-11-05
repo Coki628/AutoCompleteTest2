@@ -287,8 +287,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         stationVOList.add(new StationVO("児玉","こだま","11","1892","36.192624","139.13582"));
         stationVOList.add(new StationVO("入曽","いりそ","11","1991","35.832481","139.427304"));
         stationVOList.add(new StationVO("入生田","いりうだ","14","3305","35.240894","139.121244"));
-        stationVOList.add(new StationVO("入谷","いりや","13","2894","35.719862","139.783924"));
-        stationVOList.add(new StationVO("入谷","いりや","14","3306","35.478478","139.391913"));
+        stationVOList.add(new StationVO("入谷(東京都)","いりや","13","2894","35.719862","139.783924"));
+        stationVOList.add(new StationVO("入谷(神奈川県)","いりや","14","3306","35.478478","139.391913"));
         stationVOList.add(new StationVO("入間市","いるまし","11","1990","35.842904","139.390294"));
         stationVOList.add(new StationVO("八丁堀","はっちょうぼり","13","2915","35.674617","139.777705"));
         stationVOList.add(new StationVO("八丁畷","はっちょうなわて","14","3314","35.523071","139.691446"));
@@ -585,8 +585,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         stationVOList.add(new StationVO("小岩","こいわ","13","2599","35.733207","139.881755"));
         stationVOList.add(new StationVO("小島新田","こじましんでん","14","3174","35.534798","139.747575"));
         stationVOList.add(new StationVO("小川","おがわ","13","2603","35.737573","139.463493"));
-        stationVOList.add(new StationVO("小川町","おがわまち","11","1899","36.05903","139.260412"));
-        stationVOList.add(new StationVO("小川町","おがわまち","13","2604","35.695487","139.767551"));
+        stationVOList.add(new StationVO("小川町(埼玉県)","おがわまち","11","1899","36.05903","139.260412"));
+        stationVOList.add(new StationVO("小川町(東京都)","おがわまち","13","2604","35.695487","139.767551"));
         stationVOList.add(new StationVO("小平","こだいら","13","2611","35.736963","139.488491"));
         stationVOList.add(new StationVO("小手指","こてさし","11","1898","35.800535","139.438016"));
         stationVOList.add(new StationVO("小机","こづくえ","14","3171","35.508533","139.599787"));
@@ -651,8 +651,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         stationVOList.add(new StationVO("幡ヶ谷","はたがや","13","2910","35.677061","139.676183"));
         stationVOList.add(new StationVO("干潟","ひがた","12","2093","35.718308","140.603304"));
         stationVOList.add(new StationVO("平井","ひらい","13","2956","35.70643","139.842181"));
-        stationVOList.add(new StationVO("平和台","へいわだい","12","2342","35.851230","139.901108"));
-        stationVOList.add(new StationVO("平和台","へいわだい","13","2958","35.757863","139.653762"));
+        stationVOList.add(new StationVO("平和台(千葉県)","へいわだい","12","2342","35.851230","139.901108"));
+        stationVOList.add(new StationVO("平和台(東京都)","へいわだい","13","2958","35.757863","139.653762"));
         stationVOList.add(new StationVO("平和島","へいわじま","13","2959","35.57868","139.73491"));
         stationVOList.add(new StationVO("平塚","ひらつか","14","3335","35.327647","139.349063"));
         stationVOList.add(new StationVO("平山","ひらやま","12","2341","35.274312","140.064682"));
@@ -936,8 +936,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         stationVOList.add(new StationVO("柴崎","しばさき","13","2580","35.653997","139.56658"));
         stationVOList.add(new StationVO("柴崎体育館","しばさきたいいくかん","13","2581","35.689475","139.409191"));
         stationVOList.add(new StationVO("柿生","かきお","14","3071","35.589597","139.497614"));
-        stationVOList.add(new StationVO("栄町","さかえちょう","12","2069","35.612822","140.118592"));
-        stationVOList.add(new StationVO("栄町","さかえちょう","13","2404","35.750909","139.742124"));
+        stationVOList.add(new StationVO("栄町(千葉県)","さかえちょう","12","2069","35.612822","140.118592"));
+        stationVOList.add(new StationVO("栄町(東京都)","さかえちょう","13","2404","35.750909","139.742124"));
         stationVOList.add(new StationVO("栗平","くりひら","14","3106","35.605731","139.481298"));
         stationVOList.add(new StationVO("栗橋","くりはし","11","1866","36.136852","139.694177"));
         stationVOList.add(new StationVO("栢山","かやま","14","3077","35.310679","139.14258"));
@@ -1010,8 +1010,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         stationVOList.add(new StationVO("水道橋","すいどうばし","13","2670","35.702039","139.754312"));
         stationVOList.add(new StationVO("水郷","すいごう","12","2223","35.885508","140.570181"));
         stationVOList.add(new StationVO("氷川台","ひかわだい","13","2928","35.74955","139.665567"));
-        stationVOList.add(new StationVO("永田","ながた","11","1839","36.135314","139.259516"));
-        stationVOList.add(new StationVO("永田","ながた","12","2070","35.503129","140.311162"));
+        stationVOList.add(new StationVO("永田(千葉県)","ながた","12","2070","35.503129","140.311162"));
+        stationVOList.add(new StationVO("永田(埼玉県)","ながた","11","1839","36.135314","139.259516"));
         stationVOList.add(new StationVO("永田町","ながたちょう","13","2405","35.678757","139.740258"));
         stationVOList.add(new StationVO("永福町","えいふくちょう","13","2406","35.67629","139.642733"));
         stationVOList.add(new StationVO("求名","ぐみょう","12","2104","35.579947","140.39626"));
@@ -1478,8 +1478,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         stationVOList.add(new StationVO("雑司が谷","ぞうしがや","13","2553","35.720233","139.714795"));
         stationVOList.add(new StationVO("雑色","ぞうしき","13","2555","35.549725","139.715005"));
         stationVOList.add(new StationVO("雪が谷大塚","ゆきがやおおつか","13","2729","35.592038","139.681083"));
-        stationVOList.add(new StationVO("霞ケ関","かすみがせき","13","2426","35.673838","139.750899"));
-        stationVOList.add(new StationVO("霞ヶ関","かすみがせき","11","1850","35.925635","139.442897"));
+        stationVOList.add(new StationVO("霞ケ関(東京都)","かすみがせき","13","2426","35.673838","139.750899"));
+        stationVOList.add(new StationVO("霞ヶ関(埼玉県)","かすみがせき","11","1850","35.925635","139.442897"));
         stationVOList.add(new StationVO("青井","あおい","13","2713","35.771782","139.82038"));
         stationVOList.add(new StationVO("青堀","あおほり","12","2237","35.330304","139.858189"));
         stationVOList.add(new StationVO("青山一丁目","あおやまいっちょうめ","13","2715","35.672765","139.724159"));

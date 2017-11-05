@@ -56,4 +56,16 @@ public class StationVO implements Serializable {
     public String getLng() {
         return lng;
     }
+
+    @Override
+    public String toString() {
+        return "StationVO{" +
+                "name='" + name + '\'' +
+                ", kana='" + kana + '\'' +
+                ", prefCd='" + prefCd + '\'' +
+                ", gnaviId='" + gnaviId + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
+                '}';
+    }
 }
