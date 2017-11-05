@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = (AutoCompleteTextView) findViewById(R.id.autocomplete_station);
+        textView = findViewById(R.id.autocomplete_station);
         // 自分で定義したアダプターをビューに設定する
         MyAdapter myadapter = new MyAdapter(getApplicationContext());
         textView.setAdapter(myadapter);
@@ -68,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
             // 駅情報を格納したVOをリストに格納
             stationList.add(vo);
         }
-        // 使用したカーソルはクローズすること
+        // 使用したカーソルとDBはクローズする
         cursor.close();
+        db.close();
         // 画面遷移処理で、駅情報のリストを次の画面に送る
         Intent intent = new Intent(MainActivity.this, MapsActivity.class)
                 .putExtra("result", stationList);
