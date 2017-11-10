@@ -46,11 +46,8 @@ public class MainActivity extends AppCompatActivity {
         // DBから駅情報を取得
         Cursor cursor = db.rawQuery("SELECT kana, pref_cd, gnavi_id, lat, lng FROM station WHERE name = ?",
                 new String[]{station1});
-        // 取得レコードが一意でなかった時は処理中断
-        if (cursor.getCount() > 1) {
-            Toast.makeText(getApplicationContext(), station1 + "：駅情報に重複があります", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (cursor.getCount() == 0) {
+        // レコードが取得できなかった時は処理中断
+        if (cursor.getCount() == 0) {
             Toast.makeText(getApplicationContext(), station1 + "：駅情報が取得できません", Toast.LENGTH_SHORT).show();
             return;
         }
