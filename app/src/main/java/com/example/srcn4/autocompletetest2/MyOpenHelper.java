@@ -17,8 +17,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
         // 駅名テーブルの作成
         db.execSQL(
-                "create table station ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "name TEXT, kana TEXT, pref_cd TEXT, gnavi_id TEXT, lat TEXT, lng TEXT);"
+                "CREATE TABLE station ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "name TEXT UNIQUE, kana TEXT, pref_cd TEXT, gnavi_id TEXT, lat TEXT, lng TEXT);"
         );
         // DB作成時に駅データをまとめて取り込む(とりあえず1都3県やってみる)
         ArrayList<StationVO> stationVOList = new ArrayList<>();
@@ -1578,8 +1578,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
         // VOに取り込んだ駅データをテーブルに全て挿入
         for (StationVO vo : stationVOList) {
-            db.execSQL("insert into station(name, kana, pref_cd, gnavi_id, lat, lng) " +
-                    "values('" + vo.getName() + "', '" + vo.getKana()
+            db.execSQL("INSERT INTO station(name, kana, pref_cd, gnavi_id, lat, lng) " +
+                    "VALUES('" + vo.getName() + "', '" + vo.getKana()
                     + "', '" + vo.getPrefCd() + "', '" + vo.getGnaviId()
                     + "', '" + vo.getLat() + "', '" + vo.getLng() + "');"
             );
@@ -1590,7 +1590,7 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
     // バージョン情報(SQLiteOpenHelperの第4引数)が異なると呼ばれる
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table station;");
+        db.execSQL("DROP TABLE station;");
         onCreate(db);
     }
 }

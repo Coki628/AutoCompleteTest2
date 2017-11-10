@@ -89,7 +89,7 @@ public class MyAdapter extends BaseAdapter implements Filterable {
                     return new FilterResults();
                 }
                 // DBから全駅情報を取得
-                Cursor cursor = db.rawQuery("select name, kana from station", null);
+                Cursor cursor = db.rawQuery("SELECT name, kana FROM station", null);
                 // 取得した数だけ繰り返す
                 while (cursor.moveToNext()) {
                     // カーソルから駅名と仮名を取得

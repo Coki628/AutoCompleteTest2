@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         MyOpenHelper helper = new MyOpenHelper(getApplicationContext());
         SQLiteDatabase db = helper.getWritableDatabase();
         // DBから駅情報を取得
-        Cursor cursor = db.rawQuery("select kana, pref_cd, gnavi_id, lat, lng from station where name = ?",
+        Cursor cursor = db.rawQuery("SELECT kana, pref_cd, gnavi_id, lat, lng FROM station WHERE name = ?",
                 new String[]{station1});
         // 取得レコードが一意でなかった時は処理中断
         if (cursor.getCount() > 1) {
