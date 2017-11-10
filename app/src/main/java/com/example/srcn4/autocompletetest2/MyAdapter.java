@@ -56,8 +56,8 @@ public class MyAdapter extends BaseAdapter implements Filterable {
             convertView = myInflater.inflate(R.layout.list_item, parent, false);
         }
         // 1行に表示するビューを設定
-        TextView listViewKana = (TextView) convertView.findViewById(R.id.list_item_kana);
-        TextView listViewName = (TextView) convertView.findViewById(R.id.list_item_name);
+        TextView listViewKana = convertView.findViewById(R.id.list_item_kana);
+        TextView listViewName = convertView.findViewById(R.id.list_item_name);
         listViewKana.setText(resultVOList.get(position).getKana());
         listViewName.setText(resultVOList.get(position).getName());
 
