@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             String lng = cursor.getString(cursor.getColumnIndex("lng"));
             // DBから取得した値を格納したVOを生成
             StationVO vo = new StationVO(station1, kana, prefCd, gnaviId, lat, lng);
-            Log.d("test", vo.toString());
+            Log.d("main", vo.toString());
             // 駅情報を格納したVOをリストに格納
             stationList.add(vo);
         }
