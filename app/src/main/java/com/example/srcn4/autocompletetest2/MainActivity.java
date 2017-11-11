@@ -45,39 +45,22 @@ public class MainActivity extends AppCompatActivity {
 
             // テキストが空だったら何もしない
             if (textView.getText().toString().isEmpty()) {
-
+                // continueは今の処理は終了するけどfor文自体は継続
                 continue;
             }
             // 入力された駅名を取得
             String station = textView.getText().toString();
-            // DBの準備
-            MyOpenHelper helper = new MyOpenHelper(getApplicationContext());
-            SQLiteDatabase db = helper.getWritableDatabase();
-            // DBから駅情報を取得
-            Cursor cursor = db.rawQuery("SELECT kana, pref_cd, gnavi_id, lat, lng FROM station WHERE name = ?",
-                    new String[]{station});
+            // DB接続のためDAOを生成
+            StationDAO dao = new StationDAO(getApplicationContext());
+            // 駅情報を取得する
+            StationVO vo = dao.selectStationByName(station);
             // レコードが取得できなかった時は処理中断
-            if (cursor.getCount() == 0) {
+            if (vo == null) {
                 Toast.makeText(getApplicationContext(), station + "：駅情報が取得できません", Toast.LENGTH_SHORT).show();
                 return;
             }
-            // カーソル位置を動かす
-            while (cursor.moveToNext()) {
-                // カーソルから各項目を取得
-                String kana = cursor.getString(cursor.getColumnIndex("kana"));
-                String prefCd = cursor.getString(cursor.getColumnIndex("pref_cd"));
-                String gnaviId = cursor.getString(cursor.getColumnIndex("gnavi_id"));
-                String lat = cursor.getString(cursor.getColumnIndex("lat"));
-                String lng = cursor.getString(cursor.getColumnIndex("lng"));
-                // DBから取得した値を格納したVOを生成
-                StationVO vo = new StationVO(station, kana, prefCd, gnaviId, lat, lng);
-                Log.d("main", vo.toString());
-                // 駅情報を格納したVOをリストに格納
-                stationList.add(vo);
-            }
-            // 使用したカーソルとDBはクローズする
-            cursor.close();
-            db.close();
+            // 駅情報を格納したVOをリストに格納
+            stationList.add(vo);
         }
         // 駅が入力されていなければ遷移せずに処理終了
         if (stationList.isEmpty()) {
@@ -85,19 +68,9 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "駅名を入力して下さい", Toast.LENGTH_SHORT).show();
         } else {
             // 画面遷移処理で、駅情報のリストを次の画面に送る
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class)
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class)
                     .putExtra("result", stationList);
             startActivity(intent);
         }
-    }
-
-    // ぐるナビボタンが押された時
-    public void callGnavi(View v) {
-
-    }
-
-    // LINEボタンが押された時
-    public void callLINE(View v) {
-
     }
 }

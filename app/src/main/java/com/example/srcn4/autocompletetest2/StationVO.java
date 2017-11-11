@@ -2,6 +2,11 @@ package com.example.srcn4.autocompletetest2;
 
 import java.io.Serializable;
 
+/**
+ * 駅情報VO
+ *
+ * 駅情報を格納するのに用いる。
+ */
 public class StationVO implements Serializable {
 
     private String name;
@@ -22,15 +27,17 @@ public class StationVO implements Serializable {
         this.lng = lng;
     }
 
+    // 駅名だけ使う時のコンストラクタ
+    public StationVO (String name) {
+
+        this.name = name;
+    }
+
     // 駅名と仮名だけ使う時のコンストラクタ
     public StationVO (String name, String kana) {
 
         this.name = name;
         this.kana = kana;
-        this.prefCd = null;
-        this.gnaviId = null;
-        this.lat = null;
-        this.lng = null;
     }
 
     public String getName() {

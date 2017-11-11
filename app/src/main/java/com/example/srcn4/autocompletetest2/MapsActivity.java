@@ -23,7 +23,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private ArrayList<StationVO> stationList;
     private LatLng centerLatLng;
-    private double[] maxDistance;
     private ArrayList<Double> latList = new ArrayList<>();
     private ArrayList<Double> lngList = new ArrayList<>();
     private ArrayList<LatLng> latLngList = new ArrayList<>();
@@ -63,9 +62,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.addMarker(new MarkerOptions().position(latLngList.get(i)));
         }
         // 中間地点座標の取得
-        centerLatLng = getCenterLatLng(latList, lngList);
+        centerLatLng = LatLngCalculator.calcCenterLatLng(latList, lngList);
         // 最大距離の取得
-        maxDistance = getMaxDistance(latList, lngList);
+        double[] maxDistance = LatLngCalculator.calcMaxDistance(latList, lngList);
         double maxDistanceLat = maxDistance[0];
         double maxDistanceLng = maxDistance[1];
         // 最大距離に応じてズーム具合を調整する
@@ -132,77 +131,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 })
                 .show();
-    }
-
-    // 中間地点を計算するメソッド
-    private LatLng getCenterLatLng(ArrayList<Double> latList, ArrayList<Double> lngList) {
-
-        // 計算に必要な値を定義
-        double sumLat = 0;
-        double sumLng = 0;
-
-        // 緯度の合計を出す
-        for (double lat : latList) {
-            sumLat += lat;
-        }
-        // 経度の合計を出す
-        for (double lng : lngList) {
-            sumLng += lng;
-        }
-        // 合計から平均を出す
-        double aveLat = sumLat / latList.size();
-        double aveLng = sumLng / lngList.size();
-        // 平均の座標を返却
-        return new LatLng(aveLat, aveLng);
-    }
-
-    // 最大距離を計算するメソッド
-    private double[] getMaxDistance(ArrayList<Double> latList, ArrayList<Double> lngList) {
-
-        // 計算に必要な値を定義
-        Double maxLat = null;
-        Double minLat = null;
-        Double maxLng = null;
-        Double minLng = null;
-
-        // 緯度の最大・最小を出す
-        for (double lat : latList) {
-            // 最初の1回
-            if (maxLat == null) {
-                maxLat = lat;
-            // 2回目以降は比較して大きい方を格納
-            } else {
-                maxLat = Math.max(maxLat, lat);
-            }
-            // 最初の1回
-            if (minLat == null) {
-                minLat = lat;
-            // 2回目以降は比較して小さい方を格納
-            } else {
-                minLat = Math.min(minLat, lat);
-            }
-        }
-        // 経度の最大・最小を出す
-        for (double lng : lngList) {
-            // 最初の1回
-            if (maxLng == null) {
-                maxLng = lng;
-            // 2回目以降は比較して大きい方を格納
-            } else {
-                maxLng = Math.max(maxLng, lng);
-            }
-            // 最初の1回
-            if (minLng == null) {
-                minLng = lng;
-            // 2回目以降は比較して小さい方を格納
-            } else {
-                minLng = Math.min(minLng, lng);
-            }
-        }
-        // 最大 - 最小で最大距離を出す
-        double maxDistanceLat = maxLat - minLat;
-        double maxDistanceLng = maxLng - minLng;
-        // 最大距離を返却
-        return new double[] {maxDistanceLat, maxDistanceLng};
     }
 }

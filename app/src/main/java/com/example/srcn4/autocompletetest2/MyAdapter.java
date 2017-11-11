@@ -1,8 +1,6 @@
 package com.example.srcn4.autocompletetest2;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +20,13 @@ public class MyAdapter extends BaseAdapter implements Filterable {
 
     private LayoutInflater myInflater;
     private ArrayList<StationVO> resultVOList = new ArrayList<>();
-    private SQLiteDatabase db;
+    private Context context;
 
     // コンストラクタ
     MyAdapter(Context context) {
-        this.myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        //DBの準備
-        MyOpenHelper helper = new MyOpenHelper(context);
-        db = helper.getWritableDatabase();
+        this.myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     @Override
@@ -81,28 +77,15 @@ public class MyAdapter extends BaseAdapter implements Filterable {
             // ここで独自のフィルタリングルールを実装
             @Override
             protected FilterResults performFiltering(CharSequence str) {
-                // 新しい値を格納するリスト
-                ArrayList<StationVO> newValues = new ArrayList<>();
 
                 if (str == null) {
                     // 文字列がnullの時は何もせず終了
                     return new FilterResults();
                 }
-                // DBから全駅情報を取得
-                Cursor cursor = db.rawQuery("SELECT name, kana FROM station", null);
-                // 取得した数だけ繰り返す
-                while (cursor.moveToNext()) {
-                    // カーソルから駅名と仮名を取得
-                    String name = cursor.getString(cursor.getColumnIndex("name"));
-                    String kana = cursor.getString(cursor.getColumnIndex("kana"));
-
-                    // 前方一致で駅名かカナに当てはまれば候補リストに入れる
-                    if (name.startsWith(str.toString())
-                            || kana.startsWith(str.toString())) {
-                        newValues.add(new StationVO(name, kana));
-                    }
-                }
-                cursor.close();
+                // DB接続のためDAOを生成
+                StationDAO dao = new StationDAO(context);
+                // 入力文字列と前方一致する駅名と仮名を取得する
+                ArrayList<StationVO> newValues = dao.selectNamesByStr(str.toString());
 
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = newValues;            // フィルタリング結果オブジェクト
