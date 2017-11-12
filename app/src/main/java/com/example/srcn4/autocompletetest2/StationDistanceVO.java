@@ -1,5 +1,10 @@
 package com.example.srcn4.autocompletetest2;
 
+/**
+ * 駅間距離情報VO
+ *
+ * 2駅間の距離を保持する。
+ */
 public class StationDistanceVO extends StationVO {
 
     private double distance;

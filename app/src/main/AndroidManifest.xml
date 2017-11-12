@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.srcn4.autocompletetest2">
 
+    <!-- GoogleMap機能を使うために必要なパーミッションを書いておく -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -30,6 +31,7 @@
         <activity android:name=".StationListActivity">
         </activity>
 
+        <!-- GoogleMap機能を使うために必要なAPIキー -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAYszxdlHW65YAntTOJ8-MB6Pue0gP0Z2U" />

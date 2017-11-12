@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * リストビュー管理用アダプター
+ *
+ * リストビューの1行の内容を定義する。
+ */
 public class MyAdapterForListView extends BaseAdapter {
 
     private Context context;

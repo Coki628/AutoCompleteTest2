@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+/**
+ * DB管理用クラス
+ */
 public class MyOpenHelper extends SQLiteOpenHelper {
 
     MyOpenHelper(Context c){

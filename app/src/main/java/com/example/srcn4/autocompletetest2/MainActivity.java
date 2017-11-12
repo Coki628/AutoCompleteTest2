@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * 入力画面クラス
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<AutoCompleteTextView> textViewList = new ArrayList<>();

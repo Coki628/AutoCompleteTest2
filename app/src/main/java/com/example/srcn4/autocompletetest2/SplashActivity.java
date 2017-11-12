@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+/**
+ * 起動画面クラス
+ */
 public class SplashActivity extends AppCompatActivity {
 
     @Override

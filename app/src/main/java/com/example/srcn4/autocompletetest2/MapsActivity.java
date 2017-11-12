@@ -21,8 +21,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Map;
 
+/**
+ * 周辺情報画面クラス
+ */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerDragListener {
 

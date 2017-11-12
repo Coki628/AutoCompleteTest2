@@ -14,6 +14,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+/**
+ * 候補駅画面クラス
+ */
 public class StationListActivity extends AppCompatActivity {
 
     private ArrayList<StationVO> stationList = new ArrayList<>();

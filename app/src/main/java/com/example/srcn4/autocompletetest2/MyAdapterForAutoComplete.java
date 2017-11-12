@@ -12,9 +12,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * 自作アダプター
+ * 予測変換機能管理アダプター
  *
- * カスタムしたアダプターで予測変換の1行の内容を定義する。
+ * 予測変換の1行の内容を定義する。
  */
 public class MyAdapterForAutoComplete extends BaseAdapter implements Filterable {
 

@@ -15,6 +15,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+/**
+ * 検索結果画面クラス
+ */
 public class ResultActivity extends AppCompatActivity {
 
     private ArrayList<StationVO> stationList;
