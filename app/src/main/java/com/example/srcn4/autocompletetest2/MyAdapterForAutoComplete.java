@@ -16,14 +16,14 @@ import java.util.ArrayList;
  *
  * カスタムしたアダプターで予測変換の1行の内容を定義する。
  */
-public class MyAdapter extends BaseAdapter implements Filterable {
+public class MyAdapterForAutoComplete extends BaseAdapter implements Filterable {
 
     private LayoutInflater myInflater;
     private ArrayList<StationVO> resultVOList = new ArrayList<>();
     private Context context;
 
     // コンストラクタ
-    MyAdapter(Context context) {
+    MyAdapterForAutoComplete(Context context) {
 
         this.myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;

@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerDragListener {
@@ -28,7 +29,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<StationVO> stationList;
     private StationVO resultStation;
     private LatLng centerLatLng;
-    private LatLng resultStationLatLng;
     private ArrayList<Double> latList = new ArrayList<>();
     private ArrayList<Double> lngList = new ArrayList<>();
     private ArrayList<LatLng> latLngList = new ArrayList<>();
@@ -69,7 +69,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // 中間地点座標の取得
         centerLatLng = LatLngCalculator.calcCenterLatLng(latList, lngList);
         // 候補駅の座標を取得
-        resultStationLatLng = new LatLng(Double.parseDouble(resultStation.getLat()),
+        LatLng resultStationLatLng = new LatLng(Double.parseDouble(resultStation.getLat()),
                 Double.parseDouble(resultStation.getLng()));
         // 最大距離の取得
         double[] maxDistance = LatLngCalculator.calcMaxDistance(latList, lngList);
@@ -247,6 +247,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
         }
         // 上記URLでブラウザを起動する
+        startActivity(intent);
+    }
+
+    // 候補駅ボタンが押された時
+    public void callSuggestedStations(View v) {
+        // ここではソートされた駅情報をリストごと取得
+        ArrayList<StationDistanceVO> stationDistanceList
+                = LatLngCalculator.calcNearStationsList(centerLatLng, getApplicationContext());
+
+        // 画面遷移処理で、入力されていた駅情報のリストと近い順にソートされた駅情報リストを次の画面に送る
+        Intent intent = new Intent(MapsActivity.this, StationListActivity.class)
+                .putExtra("stationList", stationList)
+                .putExtra("stationDistanceList", stationDistanceList);
         startActivity(intent);
     }
 }

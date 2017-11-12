@@ -1,11 +1,8 @@
 package com.example.srcn4.autocompletetest2;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -29,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (AutoCompleteTextView textView : textViewList) {
             // 自分で定義したアダプターをビューに設定する
-            MyAdapter myadapter = new MyAdapter(getApplicationContext());
+            MyAdapterForAutoComplete myadapter = new MyAdapterForAutoComplete(getApplicationContext());
             textView.setAdapter(myadapter);
             // 何文字目から予測変換を出すかを設定
             textView.setThreshold(1);
@@ -72,5 +69,19 @@ public class MainActivity extends AppCompatActivity {
                     .putExtra("result", stationList);
             startActivity(intent);
         }
+    }
+
+    // クリアボタンが押された時呼ばれる
+    public void clearAll(View v) {
+        // 入力されたテキストを全て削除
+        for (AutoCompleteTextView textView : textViewList) {
+
+            textView.setText("");
+        }
+    }
+
+    // 設定ボタンが押された時呼ばれる
+    public void callSettings(View v) {
+
     }
 }

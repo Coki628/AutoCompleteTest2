@@ -19,6 +19,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private ArrayList<StationVO> stationList;
     private StationVO resultVO;
+    private LatLng centerLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,14 @@ public class ResultActivity extends AppCompatActivity {
             lngList.add(Double.parseDouble(vo.getLng()));
         }
         // 中間地点座標の取得
-        LatLng centerLatLng = LatLngCalculator.calcCenterLatLng(latList, lngList);
+        centerLatLng = LatLngCalculator.calcCenterLatLng(latList, lngList);
         // 中間地点から一番近い座標にある駅を調べる
         resultVO = LatLngCalculator.calcNearestStation(centerLatLng, getApplicationContext());
-
+        // 駅名を表示
         TextView searchResult = findViewById(R.id.search_result);
+        TextView searchResultKana = findViewById(R.id.search_result_kana);
         searchResult.setText(resultVO.getName());
+        searchResultKana.setText(resultVO.getKana());
     }
 
     // 共有ボタンが押された時
@@ -90,10 +93,23 @@ public class ResultActivity extends AppCompatActivity {
     // 周辺情報ボタンが押された時
     public void callMapInfo(View v) {
 
-        // 画面遷移処理で、駅情報のリストと候補駅を次の画面に送る
+        // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
         Intent intent = new Intent(ResultActivity.this, MapsActivity.class)
                 .putExtra("stationList", stationList)
                 .putExtra("resultStation", resultVO);
+        startActivity(intent);
+    }
+
+    // 候補駅ボタンが押された時
+    public void callSuggestedStations(View v) {
+        // ここではソートされた駅情報をリストごと取得
+        ArrayList<StationDistanceVO> stationDistanceList
+                = LatLngCalculator.calcNearStationsList(centerLatLng, getApplicationContext());
+
+        // 画面遷移処理で、入力されていた駅情報のリストと近い順にソートされた駅情報リストを次の画面に送る
+        Intent intent = new Intent(ResultActivity.this, StationListActivity.class)
+                .putExtra("stationList", stationList)
+                .putExtra("stationDistanceList", stationDistanceList);
         startActivity(intent);
     }
 }
