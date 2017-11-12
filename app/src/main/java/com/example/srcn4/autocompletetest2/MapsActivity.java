@@ -38,7 +38,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        // MainActivityから駅情報リストを受け取る
+        // ResultActivityから駅情報リストと候補駅を受け取る
         Intent intent = getIntent();
         stationList =
                 (ArrayList<StationVO>)intent.getSerializableExtra("stationList");

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -91,7 +90,7 @@ public class ResultActivity extends AppCompatActivity {
     // 周辺情報ボタンが押された時
     public void callMapInfo(View v) {
 
-        // 画面遷移処理で、駅情報のリストを次の画面に送る
+        // 画面遷移処理で、駅情報のリストと候補駅を次の画面に送る
         Intent intent = new Intent(ResultActivity.this, MapsActivity.class)
                 .putExtra("stationList", stationList)
                 .putExtra("resultStation", resultVO);
