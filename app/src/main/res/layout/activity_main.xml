@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="search"
-        android:text="座標検索"
+        android:text="検索"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/autocomplete_station5" />

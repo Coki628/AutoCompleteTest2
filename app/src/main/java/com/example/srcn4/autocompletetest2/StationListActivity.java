@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 /**
@@ -34,8 +36,13 @@ public class StationListActivity extends AppCompatActivity {
         // 前画面から駅情報リストを受け取る
         Intent intent = getIntent();
         stationList = (ArrayList<StationVO>) intent.getSerializableExtra("stationList");
-        stationDistanceList =
-                (ArrayList<StationDistanceVO>) intent.getSerializableExtra("stationDistanceList");
+        double centerLat = intent.getDoubleExtra("centerLat", 0);
+        double centerLng = intent.getDoubleExtra("centerLng", 0);
+        LatLng centerLatLng = new LatLng(centerLat, centerLng);
+
+        // ここではソートされた駅情報をリストごと取得
+        stationDistanceList
+                = LatLngCalculator.calcNearStationsList(centerLatLng, getApplicationContext());
 
         //AdapterでListをListViewと紐付ける
         listView = findViewById(R.id.list_view);

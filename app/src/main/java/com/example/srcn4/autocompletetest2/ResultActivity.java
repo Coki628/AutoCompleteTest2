@@ -105,14 +105,12 @@ public class ResultActivity extends AppCompatActivity {
 
     // 候補駅ボタンが押された時
     public void callSuggestedStations(View v) {
-        // ここではソートされた駅情報をリストごと取得
-        ArrayList<StationDistanceVO> stationDistanceList
-                = LatLngCalculator.calcNearStationsList(centerLatLng, getApplicationContext());
 
-        // 画面遷移処理で、入力されていた駅情報のリストと近い順にソートされた駅情報リストを次の画面に送る
+        // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
         Intent intent = new Intent(ResultActivity.this, StationListActivity.class)
                 .putExtra("stationList", stationList)
-                .putExtra("stationDistanceList", stationDistanceList);
+                .putExtra("centerLat", centerLatLng.latitude)
+                .putExtra("centerLng", centerLatLng.longitude);
         startActivity(intent);
     }
 }
