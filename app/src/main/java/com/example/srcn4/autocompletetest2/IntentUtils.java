@@ -10,14 +10,28 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 
+/**
+ * 画面遷移準備共通クラス
+ */
 public class IntentUtils {
 
+    /**
+     * 入力画面への遷移準備
+     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @return Intent 画面遷移に必要な情報を保持したIntent
+     */
     public static Intent prepareForMainActivity(Context context) {
 
         // メイン画面には何も送らないのでそのまま返却
         return new Intent(context, MainActivity.class);
     }
 
+    /**
+     * 検索結果画面への遷移準備
+     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param stationList 入力されていた駅情報のリスト
+     * @return Intent 画面遷移に必要な情報を保持したIntent
+     */
     public static Intent prepareForResultActivity(Context context, ArrayList<StationVO> stationList) {
 
         // 入力されていた駅情報のリストを次の画面に送る準備
@@ -26,6 +40,13 @@ public class IntentUtils {
         return intent;
     }
 
+    /**
+     * 周辺情報画面への遷移準備
+     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param stationList 入力されていた駅情報のリスト
+     * @param resultVO 検索結果として選ばれた候補の駅
+     * @return Intent 画面遷移に必要な情報を保持したIntent
+     */
     public static Intent prepareForMapsActivity(Context context, ArrayList<StationVO> stationList, StationVO resultVO) {
 
         // 入力されていた駅情報のリストと候補駅を次の画面に送る準備
@@ -35,6 +56,14 @@ public class IntentUtils {
         return intent;
     }
 
+    /**
+     * 候補駅画面への遷移準備
+     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param stationList 入力されていた駅情報のリスト
+     * @param centerLat 計算された中間地点の緯度
+     * @param centerLng 計算された中間地点の経度
+     * @return Intent 画面遷移に必要な情報を保持したIntent
+     */
     public static Intent prepareForStationListActivity(Context context, ArrayList<StationVO> stationList,
                                                 double centerLat, double centerLng) {
 
@@ -46,30 +75,39 @@ public class IntentUtils {
         return intent;
     }
 
+    /**
+     * 外部連携(ブラウザ)への遷移準備
+     * @param resultStation 検索結果として選ばれた候補の駅
+     * @param genre 選択されたジャンル
+     * @return Intent 画面遷移(ブラウザ起動)に必要な情報を保持したIntent
+     */
     public static Intent prepareForExternalInfo(StationVO resultStation, int genre) {
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         // ジャンル別で接続先を分ける
         switch (genre){
-            // レストラン系はぐるナビ
+            // レストラン→ぐるナビ
             case 0:
                 intent.setData(Uri.parse("https://r.gnavi.co.jp/eki/"
                         + resultStation.getGnaviId() + "/rs/"));
                 break;
+            // 居酒屋→ぐるナビ
             case 1:
                 intent.setData(Uri.parse("https://r.gnavi.co.jp/eki/"
                         + resultStation.getGnaviId() + "/izakaya/rs/"));
                 break;
+            // カフェ→ぐるナビ
             case 2:
                 intent.setData(Uri.parse("https://r.gnavi.co.jp/eki/"
                         + resultStation.getGnaviId() + "/cafe/rs/"));
                 break;
-            // コンビニとカラオケはグーグルマップ
+            // コンビニ→グーグルマップ
             case 3:
                 intent.setData(Uri.parse("https://www.google.co.jp/maps/search/コンビニ/@"
                         + resultStation.getLat() + "," + resultStation.getLng() + "," + "15z")); // 15zはズーム具合
                 break;
+            // カラオケ→グーグルマップ
             case 4:
                 intent.setData(Uri.parse("https://www.google.co.jp/maps/search/カラオケ/@"
                         + resultStation.getLat() + "," + resultStation.getLng() + "," + "15z"));
@@ -78,6 +116,12 @@ public class IntentUtils {
         return intent;
     }
 
+    /**
+     * 共有(LINE)への遷移準備
+     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param stationName 検索結果として選ばれた候補駅の駅名
+     * @return Intent 画面遷移(LINE起動)に必要な情報を保持したIntent
+     */
     public static Object prepareForLINE(Context context, String stationName) {
 
         // LINEのアプリID

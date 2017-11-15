@@ -102,7 +102,7 @@ public class LatLngCalculator {
      *
      * @param latLng 基準となる座標
      * @param context DB接続に使うコンテキスト
-     * @return ArrayList<StationDistanceVO> 駅間距離情報VOを基準座標から近い順になら並べたリスト
+     * @return ArrayList<StationDistanceVO> 駅間距離情報VOを基準座標から近い順に並べたリスト
      */
     public static ArrayList<StationDistanceVO> calcNearStationsList(LatLng latLng, Context context) {
 

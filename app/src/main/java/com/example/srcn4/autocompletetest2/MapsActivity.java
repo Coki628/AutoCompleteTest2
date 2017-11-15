@@ -166,25 +166,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // ジャンルボタンが押された時
     public void callGenre(View v) {
-
+        // 各ジャンルを配列に格納
         final String[] items = {"レストラン", "居酒屋", "カフェ", "コンビニ", "カラオケ"};
-        int defaultItem = 0; // デフォルトでチェックされているアイテム
+        // デフォルトでチェックされているアイテム
+        int defaultItem = 0;
         final ArrayList<Integer> checkedItems = new ArrayList<>();
+        // 最初にデフォルトをリストに追加しておく
         checkedItems.add(defaultItem);
         new AlertDialog.Builder(this)
                 .setTitle("ジャンル選択")
+                //ラジオボタンの設定
                 .setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // クリックされたら、今ある番号をクリアして新しい番号を格納
                         checkedItems.clear();
                         checkedItems.add(which);
                     }
                 })
+                // OKボタンの設定
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (!checkedItems.isEmpty()) {
-                            Log.d("checkedItem:", "" + checkedItems.get(0));
                             // ジャンルが決定されたら、外部連携のURL情報を取得
                             Intent intent = IntentUtils.prepareForExternalInfo(
                                     resultStation, checkedItems.get(0));
@@ -193,6 +197,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 })
+                // キャンセルボタンの設定
                 .setNegativeButton("Cancel", null)
                 .show();
     }
