@@ -43,6 +43,8 @@ public class StationListActivity extends AppCompatActivity {
         // ここではソートされた駅情報をリストごと取得
         stationDistanceList
                 = LatLngCalculator.calcNearStationsList(centerLatLng, getApplicationContext());
+        // 1000件以上もいらないので上位10件以外削除
+        stationDistanceList.subList(10, stationDistanceList.size()).clear();
 
         //AdapterでListをListViewと紐付ける
         listView = findViewById(R.id.list_view);

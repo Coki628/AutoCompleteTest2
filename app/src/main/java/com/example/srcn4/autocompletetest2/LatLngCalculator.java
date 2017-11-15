@@ -13,7 +13,13 @@ import java.util.Comparator;
  */
 public class LatLngCalculator {
 
-    // 中間地点を計算するメソッド
+    /**
+     * 中間地点を計算するメソッド
+     *
+     * @param latList 計算に使う全駅の緯度リスト
+     * @param lngList 計算に使う全駅の経度リスト
+     * @return LatLng 中間地点の座標オブジェクト
+     */
     public static LatLng calcCenterLatLng(ArrayList<Double> latList, ArrayList<Double> lngList) {
 
         // 計算に必要な値を定義
@@ -35,7 +41,13 @@ public class LatLngCalculator {
         return new LatLng(aveLat, aveLng);
     }
 
-    // 最大距離を計算するメソッド
+    /**
+     * 最大距離を計算するメソッド
+     *
+     * @param latList 計算に使う全駅の緯度リスト
+     * @param lngList 計算に使う全駅の経度リスト
+     * @return double[] 最大距離を格納した配列 [0]緯度,[1]経度
+     */
     public static double[] calcMaxDistance(ArrayList<Double> latList, ArrayList<Double> lngList) {
 
         // 昇順ソート
@@ -49,7 +61,13 @@ public class LatLngCalculator {
         return new double[] {maxDistanceLat, maxDistanceLng};
     }
 
-    // 座標から一番近くにある駅を取得
+    /**
+     * 座標から一番近くにある駅を取得
+     *
+     * @param latLng 基準となる座標
+     * @param context DB接続に使うコンテキスト
+     * @return StationVO 基準座標から一番近い駅の駅情報VO
+     */
     public static StationVO calcNearestStation(LatLng latLng, Context context) {
 
         // DB接続のためDAOを生成
@@ -79,7 +97,13 @@ public class LatLngCalculator {
         return dao.selectStationByName(stationDistanceList.get(0).getName());
     }
 
-    // 座標から近くにある駅のリストを取得
+    /**
+     * 座標から近くにある駅のリストを取得
+     *
+     * @param latLng 基準となる座標
+     * @param context DB接続に使うコンテキスト
+     * @return ArrayList<StationDistanceVO> 駅間距離情報VOを基準座標から近い順になら並べたリスト
+     */
     public static ArrayList<StationDistanceVO> calcNearStationsList(LatLng latLng, Context context) {
 
         // DB接続のためDAOを生成
@@ -105,8 +129,6 @@ public class LatLngCalculator {
                 return Double.compare(a.getDistance(), b.getDistance());
             }
         });
-        // 1000件以上もいらないので上位10件以外削除(多すぎると画面遷移でうまく運べないかも)
-        stationDistanceList.subList(10, stationDistanceList.size()).clear();
         // ソート済の駅情報リストを返却
         return stationDistanceList;
     }
