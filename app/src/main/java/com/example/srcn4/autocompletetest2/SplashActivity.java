@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     class splashHandler implements Runnable {
         public void run() {
             // スプラッシュ完了後に実行するActivityを指定します。
-            Intent intent = new Intent(getApplication(), MainActivity.class);
+            Intent intent = IntentUtils.prepareForMainActivity(SplashActivity.this);
             startActivity(intent);
             // SplashActivityを終了させます。
             SplashActivity.this.finish();

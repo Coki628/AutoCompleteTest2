@@ -56,40 +56,16 @@ public class ResultActivity extends AppCompatActivity {
 
     // 共有ボタンが押された時
     public void callLINE(View v) {
-
-        // LINEのアプリID
-        final String LINE_APP_ID = "jp.naver.line.android";
-        // LINEで送る用の改行コード
-        final String LINE_SEPARATOR = "%0D%0A";
-
-        try {
-            // パッケージ情報の取得
-            PackageManager pm = getPackageManager();
-            // LINEがインストールされているかの確認
-            ApplicationInfo appInfo = pm.getApplicationInfo(LINE_APP_ID, PackageManager.GET_META_DATA);
-            // インストールされてたら、LINEへ
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("line://msg/text/" + "中間地点は…" + LINE_SEPARATOR
-                    + resultVO.getName() + "駅" + LINE_SEPARATOR
-                    + "だよ！" + LINE_SEPARATOR
-                    + "from 中間地点アプリ"
-            ));
+        // LINE共有機能を呼び出す
+        Object obj = IntentUtils.prepareForLINE(this, resultVO.getName());
+        // Intentが返却されていたら、LINE連携へ遷移する
+        if (obj instanceof Intent) {
+            Intent intent = (Intent)obj;
             startActivity(intent);
-
-        } catch(PackageManager.NameNotFoundException e) {
-            //インストールされてなかったら、インストールを要求する
-            new AlertDialog.Builder(this)
-                    .setTitle("LINEが見つかりません。")
-                    .setMessage("LINEをインストールしてやり直して下さい。")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 特に何もしない
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
+        // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
+        } else if (obj instanceof AlertDialog.Builder) {
+            AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
+            dialog.show();
         }
     }
 
@@ -97,9 +73,7 @@ public class ResultActivity extends AppCompatActivity {
     public void callMapInfo(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
-        Intent intent = new Intent(ResultActivity.this, MapsActivity.class)
-                .putExtra("stationList", stationList)
-                .putExtra("resultStation", resultVO);
+        Intent intent = IntentUtils.prepareForMapsActivity(ResultActivity.this, stationList, resultVO);
         startActivity(intent);
     }
 
@@ -107,10 +81,8 @@ public class ResultActivity extends AppCompatActivity {
     public void callSuggestedStations(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
-        Intent intent = new Intent(ResultActivity.this, StationListActivity.class)
-                .putExtra("stationList", stationList)
-                .putExtra("centerLat", centerLatLng.latitude)
-                .putExtra("centerLng", centerLatLng.longitude);
+        Intent intent = IntentUtils.prepareForStationListActivity(ResultActivity.this, stationList,
+                centerLatLng.latitude, centerLatLng.longitude);
         startActivity(intent);
     }
 }

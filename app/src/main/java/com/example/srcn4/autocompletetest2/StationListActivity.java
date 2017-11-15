@@ -71,55 +71,30 @@ public class StationListActivity extends AppCompatActivity {
     }
 
     // 共有ボタンが押された時
-    public void callLINE(String station) {
-
-        // LINEのアプリID
-        final String LINE_APP_ID = "jp.naver.line.android";
-        // LINEで送る用の改行コード
-        final String LINE_SEPARATOR = "%0D%0A";
-
-        try {
-            // パッケージ情報の取得
-            PackageManager pm = getPackageManager();
-            // LINEがインストールされているかの確認
-            ApplicationInfo appInfo = pm.getApplicationInfo(LINE_APP_ID, PackageManager.GET_META_DATA);
-            // インストールされてたら、LINEへ
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("line://msg/text/" + "中間地点は…" + LINE_SEPARATOR
-                    + station + "駅" + LINE_SEPARATOR
-                    + "だよ！" + LINE_SEPARATOR
-                    + "from 中間地点アプリ"
-            ));
+    public void callLINE(String stationName) {
+        // LINE共有機能を呼び出す
+        Object obj = IntentUtils.prepareForLINE(this, stationName);
+        // Intentが返却されていたら、LINE連携へ遷移する
+        if (obj instanceof Intent) {
+            Intent intent = (Intent)obj;
             startActivity(intent);
-
-        } catch(PackageManager.NameNotFoundException e) {
-            //インストールされてなかったら、インストールを要求する
-            new AlertDialog.Builder(this)
-                    .setTitle("LINEが見つかりません。")
-                    .setMessage("LINEをインストールしてやり直して下さい。")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 特に何もしない
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
+            // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
+        } else if (obj instanceof AlertDialog.Builder) {
+            AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
+            dialog.show();
         }
     }
 
     // 周辺情報ボタンが押された時
-    public void callMapInfo(String station) {
+    public void callMapInfo(String stationName) {
 
         // DB接続のためDAOを生成
         StationDAO dao = new StationDAO(getApplicationContext());
         // 駅情報を取得する
-        StationVO vo = dao.selectStationByName(station);
+        StationVO vo = dao.selectStationByName(stationName);
         // 周辺情報(MAP)の画面に遷移
-        Intent intent = new Intent(StationListActivity.this, MapsActivity.class)
-                .putExtra("stationList", stationList)
-                .putExtra("resultStation", vo);
+        Intent intent = IntentUtils.prepareForMapsActivity(
+                StationListActivity.this, stationList, vo);
         startActivity(intent);
     }
 }

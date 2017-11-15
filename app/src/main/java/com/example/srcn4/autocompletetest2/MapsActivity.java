@@ -151,40 +151,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // 共有ボタンが押された時
     public void callLINE(View v) {
-
-        // LINEのアプリID
-        final String LINE_APP_ID = "jp.naver.line.android";
-        // LINEで送る用の改行コード
-        final String LINE_SEPARATOR = "%0D%0A";
-
-        try {
-            // パッケージ情報の取得
-            PackageManager pm = getPackageManager();
-            // LINEがインストールされているかの確認
-            ApplicationInfo appInfo = pm.getApplicationInfo(LINE_APP_ID, PackageManager.GET_META_DATA);
-            // インストールされてたら、LINEへ
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("line://msg/text/" + "中間地点は…" + LINE_SEPARATOR
-                    + resultStation.getName() + "駅" + LINE_SEPARATOR
-                    + "だよ！" + LINE_SEPARATOR
-                    + "from 中間地点アプリ"
-            ));
+        // LINE共有機能を呼び出す
+        Object obj = IntentUtils.prepareForLINE(this, resultStation.getName());
+        // Intentが返却されていたら、LINE連携へ遷移する
+        if (obj instanceof Intent) {
+            Intent intent = (Intent)obj;
             startActivity(intent);
-
-        } catch(PackageManager.NameNotFoundException e) {
-            //インストールされてなかったら、インストールを要求する
-            new AlertDialog.Builder(this)
-                    .setTitle("LINEが見つかりません。")
-                    .setMessage("LINEをインストールしてやり直して下さい。")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 特に何もしない
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
+        // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
+        } else if (obj instanceof AlertDialog.Builder) {
+            AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
+            dialog.show();
         }
     }
 
@@ -209,8 +185,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onClick(DialogInterface dialog, int which) {
                         if (!checkedItems.isEmpty()) {
                             Log.d("checkedItem:", "" + checkedItems.get(0));
-                            // ジャンルが決定されたら次の画面へ遷移
-                            callBrowser(checkedItems.get(0));
+                            // ジャンルが決定されたら、外部連携のURL情報を取得
+                            Intent intent = IntentUtils.prepareForExternalInfo(
+                                    resultStation, checkedItems.get(0));
+                            // ブラウザを起動する
+                            startActivity(intent);
                         }
                     }
                 })
@@ -218,48 +197,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .show();
     }
 
-    // ブラウザ呼び出し用メソッド
-    private void callBrowser(int genre) {
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        // ジャンル別で接続先を分ける
-        switch (genre){
-            // レストラン系はぐるナビ
-            case 0:
-                intent.setData(Uri.parse("https://r.gnavi.co.jp/eki/"
-                        + resultStation.getGnaviId() + "/rs/"));
-                break;
-            case 1:
-                intent.setData(Uri.parse("https://r.gnavi.co.jp/eki/"
-                        + resultStation.getGnaviId() + "/izakaya/rs/"));
-                break;
-            case 2:
-                intent.setData(Uri.parse("https://r.gnavi.co.jp/eki/"
-                        + resultStation.getGnaviId() + "/cafe/rs/"));
-                break;
-            // コンビニとカラオケはグーグルマップ
-            case 3:
-                intent.setData(Uri.parse("https://www.google.co.jp/maps/search/コンビニ/@"
-                        + resultStation.getLat() + "," + resultStation.getLng() + "," + "15z")); // 15zはズーム具合
-                break;
-            case 4:
-                intent.setData(Uri.parse("https://www.google.co.jp/maps/search/カラオケ/@"
-                        + resultStation.getLat() + "," + resultStation.getLng() + "," + "15z"));
-                break;
-        }
-        // 上記URLでブラウザを起動する
-        startActivity(intent);
-    }
-
     // 候補駅ボタンが押された時
     public void callSuggestedStations(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
-        Intent intent = new Intent(MapsActivity.this, StationListActivity.class)
-                .putExtra("stationList", stationList)
-                .putExtra("centerLat", centerLatLng.latitude)
-                .putExtra("centerLng", centerLatLng.longitude);
+        Intent intent = IntentUtils.prepareForStationListActivity(MapsActivity.this, stationList,
+                centerLatLng.latitude, centerLatLng.longitude);
         startActivity(intent);
     }
 }
