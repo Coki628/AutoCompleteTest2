@@ -3,8 +3,10 @@ package com.example.srcn4.autocompletetest2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,10 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
         for (AutoCompleteTextView textView : textViewList) {
             // 自分で定義したアダプターをビューに設定する
-            MyAdapterForAutoComplete myadapter = new MyAdapterForAutoComplete(getApplicationContext());
-            textView.setAdapter(myadapter);
+            MyAdapterForAutoComplete myAdapter = new MyAdapterForAutoComplete(getApplicationContext());
+            textView.setAdapter(myAdapter);
             // 何文字目から予測変換を出すかを設定
             textView.setThreshold(1);
+            // 改行ボタンでキーボードを閉じる設定(これやらないとキーボードから次のテキストに進めない)
+            textView.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
+                    return false;
+                }
+            });
         }
     }
     // 検索ボタンが押された時
