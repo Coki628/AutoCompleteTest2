@@ -100,4 +100,34 @@ public class CalculateUtil {
         // ソート済の駅情報リストを返却
         return stationDistanceList;
     }
+
+    /**
+     * ○時間○○分を分のみの数値にするメソッド
+     *
+     * @param _timeStr ○時間○○分の書式の時間文字列
+     * @return int 分に合算した数値
+     */
+    public static int convertTimeToMinutes(String _timeStr) {
+        // 返却用
+        int minutes = 0;
+        // 引数の受け取り
+        String timeStr = _timeStr;
+        // "時間"がない場合
+        if (!timeStr.contains("時間")) {
+            // "分"より手前を切り出す
+            timeStr = timeStr.substring(0, timeStr.indexOf("分"));
+            // 数値にして格納
+            minutes = Integer.parseInt(timeStr);
+        // "時間"がある場合
+        } else {
+            // "時間"より手前を切り出す
+            String hours = timeStr.substring(0, timeStr.indexOf("時間"));
+            // "時間"のあと"分"より手前を切り出す
+            timeStr = timeStr.substring(timeStr.indexOf("時間") + 2, timeStr.indexOf("分"));
+            // 時間と分を足し合わせる
+            minutes = Integer.parseInt(hours) * 60 + Integer.parseInt(timeStr);
+        }
+        // 結果値を返却
+        return minutes;
+    }
 }

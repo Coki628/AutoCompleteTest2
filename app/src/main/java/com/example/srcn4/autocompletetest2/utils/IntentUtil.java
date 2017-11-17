@@ -23,6 +23,7 @@ public class IntentUtil {
 
     /**
      * 入力画面への遷移準備
+     *
      * @param context コンテキスト(実行中ActivityのthisでOK)
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
@@ -34,6 +35,7 @@ public class IntentUtil {
 
     /**
      * 検索結果画面への遷移準備
+     *
      * @param context コンテキスト(実行中ActivityのthisでOK)
      * @param stationList 入力されていた駅情報のリスト
      * @return Intent 画面遷移に必要な情報を保持したIntent
@@ -48,6 +50,7 @@ public class IntentUtil {
 
     /**
      * 周辺情報画面への遷移準備
+     *
      * @param context コンテキスト(実行中ActivityのthisでOK)
      * @param stationList 入力されていた駅情報のリスト
      * @param resultVO 検索結果として選ばれた候補の駅
@@ -64,6 +67,7 @@ public class IntentUtil {
 
     /**
      * 候補駅画面への遷移準備
+     *
      * @param context コンテキスト(実行中ActivityのthisでOK)
      * @param stationList 入力されていた駅情報のリスト
      * @param centerLat 計算された中間地点の緯度
@@ -83,6 +87,7 @@ public class IntentUtil {
 
     /**
      * 外部連携(ブラウザ)への遷移準備
+     *
      * @param resultStation 検索結果として選ばれた候補の駅
      * @param genre 選択されたジャンル
      * @return Intent 画面遷移(ブラウザ起動)に必要な情報を保持したIntent
@@ -124,6 +129,7 @@ public class IntentUtil {
 
     /**
      * 共有(LINE)への遷移準備
+     *
      * @param context コンテキスト(実行中ActivityのthisでOK)
      * @param stationName 検索結果として選ばれた候補駅の駅名
      * @return Intent 画面遷移(LINE起動)に必要な情報を保持したIntent
