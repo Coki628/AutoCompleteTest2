@@ -1,7 +1,10 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.utils;
 
 import android.content.Context;
 
+import com.example.srcn4.autocompletetest2.storage.StationDAO;
+import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
+import com.example.srcn4.autocompletetest2.models.StationVO;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 

@@ -1,8 +1,10 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.storage;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.srcn4.autocompletetest2.models.StationVO;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
+import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.storage.StationDAO;
+import com.example.srcn4.autocompletetest2.models.StationVO;
 
 import java.util.ArrayList;
 
@@ -23,7 +27,7 @@ public class MyAdapterForAutoComplete extends BaseAdapter implements Filterable 
     private Context context;
 
     // コンストラクタ
-    MyAdapterForAutoComplete(Context context) {
+    public MyAdapterForAutoComplete(Context context) {
 
         this.myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
@@ -49,7 +53,7 @@ public class MyAdapterForAutoComplete extends BaseAdapter implements Filterable 
     public View getView(int position, View convertView, ViewGroup parent) {
         // ビューがあれば再利用する処理
         if (convertView == null) {
-            convertView = myInflater.inflate(R.layout.list_item, parent, false);
+            convertView = myInflater.inflate(R.layout.adapter_auto_complete, parent, false);
         }
         // 1行に表示するビューを設定
         TextView listViewKana = convertView.findViewById(R.id.list_item_kana);

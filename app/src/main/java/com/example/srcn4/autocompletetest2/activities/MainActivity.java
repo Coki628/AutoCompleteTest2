@@ -1,4 +1,4 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.srcn4.autocompletetest2.utils.IntentUtil;
+import com.example.srcn4.autocompletetest2.adapters.MyAdapterForAutoComplete;
+import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.storage.StationDAO;
+import com.example.srcn4.autocompletetest2.models.StationVO;
 
 import java.util.ArrayList;
 

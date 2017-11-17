@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.srcn4.autocompletetest2.ResultActivity">
+    tools:context="com.example.srcn4.autocompletetest2.activities.ResultActivity">
 
     <TextView
         android:id="@+id/search_result"

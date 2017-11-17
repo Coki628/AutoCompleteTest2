@@ -1,4 +1,4 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.models;
 
 import java.io.Serializable;
 

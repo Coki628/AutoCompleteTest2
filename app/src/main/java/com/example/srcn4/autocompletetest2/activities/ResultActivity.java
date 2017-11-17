@@ -1,4 +1,4 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -7,6 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
+import com.example.srcn4.autocompletetest2.utils.IntentUtil;
+import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.storage.StationDAO;
+import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
+import com.example.srcn4.autocompletetest2.models.StationVO;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

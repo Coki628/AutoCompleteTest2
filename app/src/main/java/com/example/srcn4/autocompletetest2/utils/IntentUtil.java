@@ -1,4 +1,4 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,6 +7,12 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+
+import com.example.srcn4.autocompletetest2.models.StationVO;
+import com.example.srcn4.autocompletetest2.activities.MainActivity;
+import com.example.srcn4.autocompletetest2.activities.MapsActivity;
+import com.example.srcn4.autocompletetest2.activities.ResultActivity;
+import com.example.srcn4.autocompletetest2.activities.StationListActivity;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.srcn4.autocompletetest2;
+package com.example.srcn4.autocompletetest2.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
 
 import java.util.ArrayList;
 
@@ -49,7 +52,7 @@ public class MyAdapterForListView extends BaseAdapter {
     public View getView(final int position, View convertView, final ViewGroup parent) {
         // ビューがあれば再利用する処理
         if (convertView == null) {
-            convertView = myInflater.inflate(R.layout.listview_row, parent, false);
+            convertView = myInflater.inflate(R.layout.adapter_list_view, parent, false);
         }
         // 画面の各要素を取得
         TextView listViewName = convertView.findViewById(R.id.list_view_station);
