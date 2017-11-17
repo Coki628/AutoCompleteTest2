@@ -3,9 +3,6 @@ package com.example.srcn4.autocompletetest2;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -69,12 +66,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.addMarker(new MarkerOptions().position(latLngList.get(i)));
         }
         // 中間地点座標の取得
-        centerLatLng = LatLngCalculator.calcCenterLatLng(latList, lngList);
+        centerLatLng = CalculateUtil.calcCenterLatLng(latList, lngList);
         // 候補駅の座標を取得
         LatLng resultStationLatLng = new LatLng(Double.parseDouble(resultStation.getLat()),
                 Double.parseDouble(resultStation.getLng()));
         // 最大距離の取得
-        double[] maxDistance = LatLngCalculator.calcMaxDistance(latList, lngList);
+        double[] maxDistance = CalculateUtil.calcMaxDistance(latList, lngList);
         double maxDistanceLat = maxDistance[0];
         double maxDistanceLng = maxDistance[1];
         // 最大距離に応じてズーム具合を調整する
@@ -152,7 +149,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     // 共有ボタンが押された時
     public void callLINE(View v) {
         // LINE共有機能を呼び出す
-        Object obj = IntentUtils.prepareForLINE(this, resultStation.getName());
+        Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
             Intent intent = (Intent)obj;
@@ -190,7 +187,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onClick(DialogInterface dialog, int which) {
                         if (!checkedItems.isEmpty()) {
                             // ジャンルが決定されたら、外部連携のURL情報を取得
-                            Intent intent = IntentUtils.prepareForExternalInfo(
+                            Intent intent = IntentUtil.prepareForExternalInfo(
                                     resultStation, checkedItems.get(0));
                             // ブラウザを起動する
                             startActivity(intent);
@@ -206,7 +203,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void callSuggestedStations(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
-        Intent intent = IntentUtils.prepareForStationListActivity(MapsActivity.this, stationList,
+        Intent intent = IntentUtil.prepareForStationListActivity(MapsActivity.this, stationList,
                 centerLatLng.latitude, centerLatLng.longitude);
         startActivity(intent);
     }

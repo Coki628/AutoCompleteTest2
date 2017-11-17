@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * 画面遷移準備共通クラス
  */
-public class IntentUtils {
+public class IntentUtil {
 
     /**
      * 入力画面への遷移準備

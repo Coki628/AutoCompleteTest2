@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "駅名を入力して下さい", Toast.LENGTH_SHORT).show();
         } else {
             // 画面遷移処理で、駅情報のリストを次の画面に送る
-            Intent intent = IntentUtils.prepareForResultActivity(MainActivity.this, stationList);
+            Intent intent = IntentUtil.prepareForResultActivity(MainActivity.this, stationList);
             startActivity(intent);
         }
     }

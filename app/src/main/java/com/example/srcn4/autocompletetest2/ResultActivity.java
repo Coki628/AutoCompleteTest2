@@ -1,11 +1,7 @@
 package com.example.srcn4.autocompletetest2;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -44,9 +40,14 @@ public class ResultActivity extends AppCompatActivity {
             lngList.add(Double.parseDouble(vo.getLng()));
         }
         // 中間地点座標の取得
-        centerLatLng = LatLngCalculator.calcCenterLatLng(latList, lngList);
-        // 中間地点から一番近い座標にある駅を調べる
-        resultVO = LatLngCalculator.calcNearestStation(centerLatLng, getApplicationContext());
+        centerLatLng = CalculateUtil.calcCenterLatLng(latList, lngList);
+        // 中間地点から近い座標にある駅を調べる
+        ArrayList<StationDistanceVO> stationDistanceList
+                = CalculateUtil.calcNearStationsList(centerLatLng, getApplicationContext());
+        // DB接続のためDAOを生成
+        StationDAO dao = new StationDAO(getApplicationContext());
+        // 一番先頭にあるVOの駅情報を取得して返却
+        resultVO = dao.selectStationByName(stationDistanceList.get(0).getName());
         // 駅名を表示
         TextView searchResult = findViewById(R.id.search_result);
         TextView searchResultKana = findViewById(R.id.search_result_kana);
@@ -57,7 +58,7 @@ public class ResultActivity extends AppCompatActivity {
     // 共有ボタンが押された時
     public void callLINE(View v) {
         // LINE共有機能を呼び出す
-        Object obj = IntentUtils.prepareForLINE(this, resultVO.getName());
+        Object obj = IntentUtil.prepareForLINE(this, resultVO.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
             Intent intent = (Intent)obj;
@@ -73,7 +74,7 @@ public class ResultActivity extends AppCompatActivity {
     public void callMapInfo(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
-        Intent intent = IntentUtils.prepareForMapsActivity(ResultActivity.this, stationList, resultVO);
+        Intent intent = IntentUtil.prepareForMapsActivity(ResultActivity.this, stationList, resultVO);
         startActivity(intent);
     }
 
@@ -81,7 +82,7 @@ public class ResultActivity extends AppCompatActivity {
     public void callSuggestedStations(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
-        Intent intent = IntentUtils.prepareForStationListActivity(ResultActivity.this, stationList,
+        Intent intent = IntentUtil.prepareForStationListActivity(ResultActivity.this, stationList,
                 centerLatLng.latitude, centerLatLng.longitude);
         startActivity(intent);
     }
