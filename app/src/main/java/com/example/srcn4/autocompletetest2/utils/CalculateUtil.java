@@ -2,6 +2,7 @@ package com.example.srcn4.autocompletetest2.utils;
 
 import android.content.Context;
 
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
 import com.example.srcn4.autocompletetest2.models.StationVO;
@@ -77,18 +78,18 @@ public class CalculateUtil {
         // DB接続のためDAOを生成
         StationDAO dao = new StationDAO(context);
         // 全ての駅情報を取得する
-        ArrayList<StationVO> allStationList = dao.selectAllStations();
+        ArrayList<StationDetailVO> allStationList = dao.selectAllStations();
         // 距離情報格納用リスト
         ArrayList<StationDistanceVO> stationDistanceList = new ArrayList<>();
         // 引数で受け取った座標と各駅の座標の間の距離を順番に割り出していく
-        for (StationVO stationVO : allStationList) {
+        for (StationDetailVO vo : allStationList) {
             // 距離計算用のLatLngオブジェクトを生成
-            LatLng latLngTo = new LatLng(Double.parseDouble(stationVO.getLat()),
-                    Double.parseDouble(stationVO.getLng()));
+            LatLng latLngTo = new LatLng(Double.parseDouble(vo.getLat()),
+                    Double.parseDouble(vo.getLng()));
             // GoogleのUtilクラスを使って座標間の距離を計算
             double distance = SphericalUtil.computeDistanceBetween(latLngFrom, latLngTo);
             // 駅名と距離の情報を持ったVOを生成してリストに詰める
-            stationDistanceList.add(new StationDistanceVO(stationVO.getName(), stationVO.getKana(), distance));
+            stationDistanceList.add(new StationDistanceVO(vo.getName(), vo.getKana(), distance));
         }
         // 距離の昇順でリスト内のVOをソートする
         Collections.sort(stationDistanceList, new Comparator<StationDistanceVO>(){

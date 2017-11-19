@@ -8,6 +8,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import com.example.srcn4.autocompletetest2.activities.RouteActivity;
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
+import com.example.srcn4.autocompletetest2.models.StationTransferVO;
 import com.example.srcn4.autocompletetest2.models.StationVO;
 import com.example.srcn4.autocompletetest2.activities.MainActivity;
 import com.example.srcn4.autocompletetest2.activities.MapsActivity;
@@ -40,7 +43,7 @@ public class IntentUtil {
      * @param stationList 入力されていた駅情報のリスト
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForResultActivity(Context context, ArrayList<StationVO> stationList) {
+    public static Intent prepareForResultActivity(Context context, ArrayList<StationDetailVO> stationList) {
 
         // 入力されていた駅情報のリストを次の画面に送る準備
         Intent intent = new Intent(context, ResultActivity.class)
@@ -56,7 +59,7 @@ public class IntentUtil {
      * @param resultVO 検索結果として選ばれた候補の駅
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForMapsActivity(Context context, ArrayList<StationVO> stationList, StationVO resultVO) {
+    public static Intent prepareForMapsActivity(Context context, ArrayList<StationDetailVO> stationList, StationDetailVO resultVO) {
 
         // 入力されていた駅情報のリストと候補駅を次の画面に送る準備
         Intent intent = new Intent(context, MapsActivity.class)
@@ -74,7 +77,7 @@ public class IntentUtil {
      * @param centerLng 計算された中間地点の経度
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForStationListActivity(Context context, ArrayList<StationVO> stationList,
+    public static Intent prepareForStationListActivity(Context context, ArrayList<StationDetailVO> stationList,
                                                 double centerLat, double centerLng) {
 
         // 入力されていた駅情報のリストと中間地点座標を次の画面に送る準備
@@ -86,13 +89,33 @@ public class IntentUtil {
     }
 
     /**
+     * ルート画面への遷移準備
+     *
+     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param stationList 入力されていた駅情報のリスト
+     * @param resultStation 検索結果として選ばれた候補の駅
+     * @param resultInfoLists Jorudan検索結果の経路を格納したVOのリストの配列
+     * @return Intent 画面遷移に必要な情報を保持したIntent
+     */
+    public static Intent prepareForRouteActivity(Context context, ArrayList<StationDetailVO> stationList,
+                StationDetailVO resultStation, ArrayList<StationTransferVO>[] resultInfoLists) {
+
+        // 入力されていた駅情報のリストと候補駅とJorudan情報を次の画面に送る準備
+        Intent intent = new Intent(context, RouteActivity.class)
+                .putExtra("stationList", stationList)
+                .putExtra("resultStation", resultStation)
+                .putExtra("resultInfoLists", resultInfoLists);
+        return intent;
+    }
+
+    /**
      * 外部連携(ブラウザ)への遷移準備
      *
      * @param resultStation 検索結果として選ばれた候補の駅
      * @param genre 選択されたジャンル
      * @return Intent 画面遷移(ブラウザ起動)に必要な情報を保持したIntent
      */
-    public static Intent prepareForExternalInfo(StationVO resultStation, int genre) {
+    public static Intent prepareForExternalInfo(StationDetailVO resultStation, int genre) {
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);

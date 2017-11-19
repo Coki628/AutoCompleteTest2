@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.example.srcn4.autocompletetest2.adapters.MyAdapterForListView;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  */
 public class StationListActivity extends AppCompatActivity {
 
-    private ArrayList<StationVO> stationList = new ArrayList<>();
+    private ArrayList<StationDetailVO> stationList = new ArrayList<>();
     private ArrayList<StationDistanceVO> stationDistanceList = new ArrayList<>();
     public static int FVP = 0;
     public static int y = 0;
@@ -36,7 +37,7 @@ public class StationListActivity extends AppCompatActivity {
 
         // 前画面から駅情報リストを受け取る
         Intent intent = getIntent();
-        stationList = (ArrayList<StationVO>) intent.getSerializableExtra("stationList");
+        stationList = (ArrayList<StationDetailVO>) intent.getSerializableExtra("stationList");
         double centerLat = intent.getDoubleExtra("centerLat", 0);
         double centerLng = intent.getDoubleExtra("centerLng", 0);
         LatLng centerLatLng = new LatLng(centerLat, centerLng);
@@ -92,7 +93,7 @@ public class StationListActivity extends AppCompatActivity {
         // DB接続のためDAOを生成
         StationDAO dao = new StationDAO(getApplicationContext());
         // 駅情報を取得する
-        StationVO vo = dao.selectStationByName(stationName);
+        StationDetailVO vo = dao.selectStationByName(stationName);
         // 周辺情報(MAP)の画面に遷移
         Intent intent = IntentUtil.prepareForMapsActivity(
                 StationListActivity.this, stationList, vo);

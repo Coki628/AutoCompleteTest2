@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.example.srcn4.autocompletetest2.adapters.MyAdapterForAutoComplete;
 import com.example.srcn4.autocompletetest2.R;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public void search(View v) {
 
         // 駅情報格納用VOのリスト
-        ArrayList<StationVO> stationList = new ArrayList<>();
+        ArrayList<StationDetailVO> stationList = new ArrayList<>();
 
         for (AutoCompleteTextView textView : textViewList) {
 
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             // DB接続のためDAOを生成
             StationDAO dao = new StationDAO(getApplicationContext());
             // 駅情報を取得する
-            StationVO vo = dao.selectStationByName(station);
+            StationDetailVO vo = dao.selectStationByName(station);
             // レコードが取得できなかった時は処理中断
             if (vo == null) {
                 Toast.makeText(getApplicationContext(), station + "：駅情報が取得できません", Toast.LENGTH_SHORT).show();

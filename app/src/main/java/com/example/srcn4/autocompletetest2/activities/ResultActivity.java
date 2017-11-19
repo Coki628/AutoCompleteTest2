@@ -7,12 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
+import com.example.srcn4.autocompletetest2.models.StationTransferVO;
+import com.example.srcn4.autocompletetest2.network.JorudanInfoTask;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.example.srcn4.autocompletetest2.R;
 import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
-import com.example.srcn4.autocompletetest2.models.StationVO;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ import java.util.ArrayList;
  */
 public class ResultActivity extends AppCompatActivity {
 
-    private ArrayList<StationVO> stationList;
-    private StationVO resultVO;
+    private ArrayList<StationDetailVO> stationList;
+    private StationDetailVO resultVO;
     private LatLng centerLatLng;
 
     @Override
@@ -34,13 +36,13 @@ public class ResultActivity extends AppCompatActivity {
         // MainActivityから駅情報リストを受け取る
         Intent intent = getIntent();
         stationList =
-                (ArrayList<StationVO>) intent.getSerializableExtra("result");
+                (ArrayList<StationDetailVO>) intent.getSerializableExtra("result");
 
         // 計算用の緯度と経度のリスト
         ArrayList<Double> latList = new ArrayList<>();
         ArrayList<Double> lngList = new ArrayList<>();
         // 緯度経度を駅情報リストから計算用のリストに格納
-        for (StationVO vo : stationList) {
+        for (StationDetailVO vo : stationList) {
 
             latList.add(Double.parseDouble(vo.getLat()));
             lngList.add(Double.parseDouble(vo.getLng()));
@@ -91,5 +93,27 @@ public class ResultActivity extends AppCompatActivity {
         Intent intent = IntentUtil.prepareForStationListActivity(ResultActivity.this, stationList,
                 centerLatLng.latitude, centerLatLng.longitude);
         startActivity(intent);
+    }
+
+    // ルートボタンが押された時
+    public void callRoute(View v) {
+
+        // ジョルダンに経路検索のリクエストを送る
+        final JorudanInfoTask jit = new JorudanInfoTask(this, stationList, resultVO.getJorudanName());
+        // ここから非同期処理終了後の処理を記述する
+        jit.setOnCallBack(new JorudanInfoTask.CallBackTask(){
+            @Override
+            public void CallBack() {
+                super.CallBack();
+                // 結果の取得
+                ArrayList<StationTransferVO>[] resultInfoLists = jit.getResultInfoLists();
+                // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
+                Intent intent = IntentUtil.prepareForRouteActivity(ResultActivity.this,
+                        stationList, resultVO, resultInfoLists);
+                startActivity(intent);
+            }
+        });
+        // 非同期処理の実行
+        jit.execute();
     }
 }

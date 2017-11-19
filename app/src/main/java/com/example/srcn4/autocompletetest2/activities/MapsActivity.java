@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.example.srcn4.autocompletetest2.R;
@@ -29,8 +30,8 @@ import java.util.ArrayList;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerDragListener {
 
-    private ArrayList<StationVO> stationList;
-    private StationVO resultStation;
+    private ArrayList<StationDetailVO> stationList;
+    private StationDetailVO resultStation;
     private LatLng centerLatLng;
     private ArrayList<Double> latList = new ArrayList<>();
     private ArrayList<Double> lngList = new ArrayList<>();
@@ -41,14 +42,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        // ResultActivityから駅情報リストと候補駅を受け取る
+        // 遷移前画面から駅情報リストと候補駅を受け取る
         Intent intent = getIntent();
         stationList =
-                (ArrayList<StationVO>)intent.getSerializableExtra("stationList");
-        resultStation = (StationVO)intent.getSerializableExtra("resultStation");
+                (ArrayList<StationDetailVO>)intent.getSerializableExtra("stationList");
+        resultStation = (StationDetailVO)intent.getSerializableExtra("resultStation");
 
         // 緯度経度を計算用のリストに格納
-        for (StationVO vo : stationList) {
+        for (StationDetailVO vo : stationList) {
             latList.add(Double.parseDouble(vo.getLat()));
             lngList.add(Double.parseDouble(vo.getLng()));
         }
@@ -82,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int zoomLevel = 0;
         Log.d("debug", String.valueOf(maxDistanceLat));
         Log.d("debug", String.valueOf(maxDistanceLng));
-        // 2～21で大きいほどズーム
+        // 2～21で大きいほどズーム(北関東を考慮するともっと広い範囲もやらなきゃ)
         if (maxDistanceLat <= 0.03 && maxDistanceLng <= 0.03) {
             zoomLevel = 14;
         } else if (maxDistanceLat <= 0.06 && maxDistanceLng <= 0.06) {

@@ -30,7 +30,8 @@
         </activity>
         <activity android:name=".activities.StationListActivity">
         </activity>
-
+        <activity android:name=".activities.RouteActivity">
+        </activity>
         <!-- GoogleMap機能を使うために必要なAPIキー -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
