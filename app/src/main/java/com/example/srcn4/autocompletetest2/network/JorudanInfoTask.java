@@ -131,10 +131,10 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
                     // 結果格納用VO
                     StationTransferVO vo =
                             new StationTransferVO(inputStationArray[i].getJorudanName(), destStation);
-                    // 通常であれば必要なタグから情報を受け取る
-                    String timeStr = doc.getElementById("Bk_list_tbody").child(j).child(2).text();
-                    String costStr = doc.getElementById("Bk_list_tbody").child(j).child(4).text();
-                    String transferStr = doc.getElementById("Bk_list_tbody").child(j).child(3).text();
+                    // 必要なタグから情報を受け取る
+                    String timeStr = tBody.child(j).child(2).text();
+                    String costStr = tBody.child(j).child(4).text();
+                    String transferStr = tBody.child(j).child(3).text();
                     // 整形処理("○分","○円","乗換 ○回"を数値部分のみにする)
                     costStr = costStr.substring(0, costStr.indexOf("円"))
                             .replaceAll(",", "");
