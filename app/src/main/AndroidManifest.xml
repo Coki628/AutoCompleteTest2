@@ -22,15 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.MainActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.ResultActivity">
+        <activity android:name=".activities.ResultActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.MapsActivity">
+        <activity android:name=".activities.MapsActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.StationListActivity">
+        <activity android:name=".activities.StationListActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.RouteActivity">
+        <activity android:name=".activities.RouteActivity" android:screenOrientation="portrait">
         </activity>
         <!-- GoogleMap機能を使うために必要なAPIキー -->
         <meta-data

@@ -18,4 +18,40 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <!-- 同じレイアウトを5回インクルードして縦に並べる -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/route_info1"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info2"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info3"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info4"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info5"
+                layout="@layout/route_info" />
+            <!-- 画面下部のボタンで見えなくなるので、余白を作って多めにスクロールさせる -->
+            <include
+                android:id="@+id/route_info6"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info7"
+                layout="@layout/route_info" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>
