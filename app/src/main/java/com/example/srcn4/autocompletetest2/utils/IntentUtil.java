@@ -94,16 +94,21 @@ public class IntentUtil {
      * @param context コンテキスト(実行中ActivityのthisでOK)
      * @param stationList 入力されていた駅情報のリスト
      * @param resultStation 検索結果として選ばれた候補の駅
+     * @param centerLat 計算された中間地点の緯度
+     * @param centerLng 計算された中間地点の経度
      * @param resultInfoLists Jorudan検索結果の経路を格納したVOのリストの配列
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
     public static Intent prepareForRouteActivity(Context context, ArrayList<StationDetailVO> stationList,
-                StationDetailVO resultStation, ArrayList<StationTransferVO>[] resultInfoLists) {
+                StationDetailVO resultStation, double centerLat, double centerLng,
+                ArrayList<StationTransferVO>[] resultInfoLists) {
 
         // 入力されていた駅情報のリストと候補駅とJorudan情報を次の画面に送る準備
         Intent intent = new Intent(context, RouteActivity.class)
                 .putExtra("stationList", stationList)
                 .putExtra("resultStation", resultStation)
+                .putExtra("centerLat", centerLat)
+                .putExtra("centerLng", centerLng)
                 .putExtra("resultInfoLists", resultInfoLists);
         return intent;
     }

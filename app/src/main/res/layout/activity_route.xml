@@ -17,6 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <include layout="@layout/footer" />
+    <include layout="@layout/footer_activity_route"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ResultActivity extends AppCompatActivity {
 
     private ArrayList<StationDetailVO> stationList;
-    private StationDetailVO resultVO;
+    private StationDetailVO resultStation;
     private LatLng centerLatLng;
 
     @Override
@@ -55,18 +55,18 @@ public class ResultActivity extends AppCompatActivity {
         // DB接続のためDAOを生成
         StationDAO dao = new StationDAO(getApplicationContext());
         // 一番先頭にあるVOの駅情報を取得して返却
-        resultVO = dao.selectStationByName(stationDistanceList.get(0).getName());
+        resultStation = dao.selectStationByName(stationDistanceList.get(0).getName());
         // 駅名を表示
         TextView searchResult = findViewById(R.id.search_result);
         TextView searchResultKana = findViewById(R.id.search_result_kana);
-        searchResult.setText(resultVO.getName());
-        searchResultKana.setText(resultVO.getKana());
+        searchResult.setText(resultStation.getName());
+        searchResultKana.setText(resultStation.getKana());
     }
 
     // 共有ボタンが押された時
     public void callLINE(View v) {
         // LINE共有機能を呼び出す
-        Object obj = IntentUtil.prepareForLINE(this, resultVO.getName());
+        Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
             Intent intent = (Intent)obj;
@@ -82,7 +82,8 @@ public class ResultActivity extends AppCompatActivity {
     public void callMapInfo(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
-        Intent intent = IntentUtil.prepareForMapsActivity(ResultActivity.this, stationList, resultVO);
+        Intent intent = IntentUtil.prepareForMapsActivity(ResultActivity.this,
+                stationList, resultStation);
         startActivity(intent);
     }
 
@@ -90,8 +91,8 @@ public class ResultActivity extends AppCompatActivity {
     public void callSuggestedStations(View v) {
 
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
-        Intent intent = IntentUtil.prepareForStationListActivity(ResultActivity.this, stationList,
-                centerLatLng.latitude, centerLatLng.longitude);
+        Intent intent = IntentUtil.prepareForStationListActivity(ResultActivity.this,
+                stationList, centerLatLng.latitude, centerLatLng.longitude);
         startActivity(intent);
     }
 
@@ -99,7 +100,7 @@ public class ResultActivity extends AppCompatActivity {
     public void callRoute(View v) {
 
         // ジョルダンに経路検索のリクエストを送る
-        final JorudanInfoTask jit = new JorudanInfoTask(this, stationList, resultVO.getJorudanName());
+        final JorudanInfoTask jit = new JorudanInfoTask(this, stationList, resultStation.getJorudanName());
         // ここから非同期処理終了後の処理を記述する
         jit.setOnCallBack(new JorudanInfoTask.CallBackTask(){
             @Override
@@ -109,7 +110,8 @@ public class ResultActivity extends AppCompatActivity {
                 ArrayList<StationTransferVO>[] resultInfoLists = jit.getResultInfoLists();
                 // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
                 Intent intent = IntentUtil.prepareForRouteActivity(ResultActivity.this,
-                        stationList, resultVO, resultInfoLists);
+                        stationList, resultStation, centerLatLng.latitude, centerLatLng.longitude,
+                        resultInfoLists);
                 startActivity(intent);
             }
         });

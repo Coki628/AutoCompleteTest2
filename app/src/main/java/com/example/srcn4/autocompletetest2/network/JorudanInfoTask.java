@@ -3,7 +3,6 @@ package com.example.srcn4.autocompletetest2.network;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
@@ -37,7 +36,13 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
     // コールバック用
     private CallBackTask callbacktask;
 
-    // コンストラクタ(onPostExecuteで更新したいViewなどを渡す)
+    /**
+     * コンストラクタ(onPostExecuteで更新したいViewなどを渡す)
+     *
+     * @param activity プログレスバーに渡すアクティビティ
+     * @param inputStationList 入力された駅名のリスト
+     * @param destStationName 到着候補の駅名(ジョルダンでの駅名)
+     */
     public JorudanInfoTask(Activity activity, ArrayList<StationDetailVO> inputStationList,
                            String destStationName) {
         super();

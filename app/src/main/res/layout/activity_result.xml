@@ -31,6 +31,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <include layout="@layout/footer" />
+    <include layout="@layout/footer_activity_result" />
 
 </android.support.constraint.ConstraintLayout>

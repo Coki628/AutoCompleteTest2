@@ -9,10 +9,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
+import com.example.srcn4.autocompletetest2.models.StationTransferVO;
+import com.example.srcn4.autocompletetest2.network.JorudanInfoTask;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.example.srcn4.autocompletetest2.R;
-import com.example.srcn4.autocompletetest2.models.StationVO;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -65,10 +66,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // マップオブジェクトを受け取る
         GoogleMap map = googleMap;
 
-        for (int i = 0; i < latList.size(); i++) {
+        for (int i = 0; i < stationList.size(); i++) {
             // 取得した座標の数だけピンをセットする
             latLngList.add(new LatLng(latList.get(i), lngList.get(i)));
-            map.addMarker(new MarkerOptions().position(latLngList.get(i)));
+            map.addMarker(new MarkerOptions().position(latLngList.get(i))
+                    .title(stationList.get(i).getName() + "駅"));
         }
         // 中間地点座標の取得
         centerLatLng = CalculateUtil.calcCenterLatLng(latList, lngList);
@@ -81,9 +83,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double maxDistanceLng = maxDistance[1];
         // 最大距離に応じてズーム具合を調整する
         int zoomLevel = 0;
-        Log.d("debug", String.valueOf(maxDistanceLat));
-        Log.d("debug", String.valueOf(maxDistanceLng));
-        // 2～21で大きいほどズーム(北関東を考慮するともっと広い範囲もやらなきゃ)
+        Log.d("lat", String.valueOf(maxDistanceLat));
+        Log.d("lng", String.valueOf(maxDistanceLng));
+        // 2～21で大きいほどズーム
         if (maxDistanceLat <= 0.03 && maxDistanceLng <= 0.03) {
             zoomLevel = 14;
         } else if (maxDistanceLat <= 0.06 && maxDistanceLng <= 0.06) {
@@ -94,8 +96,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             zoomLevel = 11;
         } else if (maxDistanceLat <= 0.4 && maxDistanceLng <= 0.4) {
             zoomLevel = 10;
-        } else {
+        } else if (maxDistanceLat <= 0.8 && maxDistanceLng <= 0.8) {
             zoomLevel = 9;
+        } else {
+            zoomLevel = 8;
         }
         // 候補駅に色違いのピンをセットして情報ウインドウも設定する
         Marker stationMarker = map.addMarker(new MarkerOptions().position(resultStationLatLng)
@@ -104,7 +108,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // 情報ウインドウを表示
         stationMarker.showInfoWindow();
         // 中間地点に色違いのピンをセットして情報ウインドウも設定する
-        Marker centerMarker = map.addMarker(new MarkerOptions().position(centerLatLng)
+        map.addMarker(new MarkerOptions().position(centerLatLng)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
                 .draggable(true)
                 .title("中間地点！"));
@@ -211,5 +215,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = IntentUtil.prepareForStationListActivity(MapsActivity.this, stationList,
                 centerLatLng.latitude, centerLatLng.longitude);
         startActivity(intent);
+    }
+
+    // ルートボタンが押された時
+    public void callRoute(View v) {
+
+        // ジョルダンに経路検索のリクエストを送る
+        final JorudanInfoTask jit = new JorudanInfoTask(this, stationList,
+                resultStation.getJorudanName());
+        // ここから非同期処理終了後の処理を記述する
+        jit.setOnCallBack(new JorudanInfoTask.CallBackTask(){
+            @Override
+            public void CallBack() {
+                super.CallBack();
+                // 結果の取得
+                ArrayList<StationTransferVO>[] resultInfoLists = jit.getResultInfoLists();
+                // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
+                Intent intent = IntentUtil.prepareForRouteActivity(MapsActivity.this,
+                        stationList, resultStation,
+                        centerLatLng.latitude, centerLatLng.longitude, resultInfoLists);
+                startActivity(intent);
+            }
+        });
+        // 非同期処理の実行
+        jit.execute();
     }
 }
