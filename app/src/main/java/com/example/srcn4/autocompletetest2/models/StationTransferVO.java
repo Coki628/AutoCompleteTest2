@@ -1,5 +1,7 @@
 package com.example.srcn4.autocompletetest2.models;
 
+import java.util.ArrayList;
+
 /**
  * 駅乗り換え情報VO
  *
@@ -17,6 +19,8 @@ public class StationTransferVO extends StationVO {
     private int cost;
     // 乗り換え回数
     private int transfer;
+    // 乗り換え途中駅リスト
+    private ArrayList<String> transferList;
 
     // コンストラクタ
     public StationTransferVO(String name, String destName) {
@@ -26,6 +30,7 @@ public class StationTransferVO extends StationVO {
         this.time = 0;
         this.cost = 0;
         this.transfer = 0;
+        this.transferList = new ArrayList<>();
     }
 
     public StationTransferVO(String name, String kana, String destName, String destKana,
@@ -37,6 +42,7 @@ public class StationTransferVO extends StationVO {
         this.time = time;
         this.cost = cost;
         this.transfer = transfer;
+        this.transferList = new ArrayList<>();
     }
 
     public String getDestName() {
@@ -79,6 +85,14 @@ public class StationTransferVO extends StationVO {
         this.transfer = transfer;
     }
 
+    public ArrayList<String> getTransferList() {
+        return transferList;
+    }
+
+    public void setTransferList(ArrayList<String> transferList) {
+        this.transferList = transferList;
+    }
+
     @Override
     public String toString() {
         return "StationTransferVO{" +
@@ -89,6 +103,7 @@ public class StationTransferVO extends StationVO {
                 ", time=" + time +
                 ", cost=" + cost +
                 ", transfer=" + transfer +
+                ", transferList=" + transferList +
                 '}';
     }
 }

@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
-import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 
 import java.util.ArrayList;
 

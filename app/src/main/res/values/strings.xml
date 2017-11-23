@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">AutoCompleteTest2</string>
+    <!-- 固定値の文字列はここに書く。多言語対応の際はこれの英語版を作る。 -->
+    <string name="app_name">中間地点アプリ</string>
+    <string name="kensaku">検索</string>
+    <string name="clear">クリア</string>
+    <string name="settei">設定</string>
+    <string name="koho_eki">候補駅</string>
+    <string name="kyoyu">共有</string>
+    <string name="route">ルート</string>
+    <string name="shuhen_joho">周辺情報</string>
+    <string name="genre">ジャンル</string>
+
 </resources>

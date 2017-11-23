@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
-import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
+import com.example.srcn4.autocompletetest2.utils.ConvertUtil;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -14,6 +14,7 @@ import com.squareup.okhttp.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
                 resultInfoLists[i].add(vo);
             // 通常の検索結果が得られた場合
             } else {
-                // 下記のtbodyタグ配下のtrタグは経路候補の数だけあるので、これで判断する
+                // 下記のtbodyタグ配下のtrタグは候補経路の数だけあるので、これで判断する
                 Element tBody = doc.getElementById("Bk_list_tbody");
                 for (int j = 0; j < tBody.getElementsByTag("tr").size(); j++) {
                     // 結果格納用VO
@@ -140,15 +141,26 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
                     String timeStr = tBody.child(j).child(2).text();
                     String costStr = tBody.child(j).child(4).text();
                     String transferStr = tBody.child(j).child(3).text();
-                    // 整形処理("○分","○円","乗換 ○回"を数値部分のみにする)
-                    costStr = costStr.substring(0, costStr.indexOf("円"))
-                            .replaceAll(",", "");
-                    transferStr = transferStr.substring(3, transferStr.indexOf("回"));
-                    // VOにセット
-                    vo.setTime(CalculateUtil.convertTimeToMinutes(timeStr));
-                    vo.setCost(Integer.parseInt(costStr));
-                    vo.setTransfer(Integer.parseInt(transferStr));
+                    // 整形処理("○分","○円","乗換 ○回"を数値部分のみにする)をしてVOにセット
+                    vo.setTime(ConvertUtil.timeToMinutes(timeStr));
+                    vo.setCost(ConvertUtil.removeYenAndComma(costStr));
+                    vo.setTransfer(ConvertUtil.removeNorikaeAndKai(transferStr));
                     resultInfoLists[i].add(vo);
+                }
+                // 経路の途中駅を格納する
+                Elements routes = doc.getElementsByClass("route");
+                // このループは候補経路の数だけ回る
+                for (int j = 0; j < routes.size(); j++) {
+                    // 一つの候補経路に含まれる駅名
+                    Elements stations = routes.get(j).getElementsByClass("nm");
+                    // 候補経路に含まれる駅名を格納するリスト
+                    ArrayList<String> transferList = new ArrayList<>();
+                    // このループは候補経路に含まれる駅名の数だけ回る
+                    for (Element station : stations) {
+                        transferList.add(station.text());
+                    }
+                    // i番目の出発駅のj番目の候補経路に含まれる駅名リストの格納
+                    resultInfoLists[i].get(j).setTransferList(transferList);
                 }
             }
         }
