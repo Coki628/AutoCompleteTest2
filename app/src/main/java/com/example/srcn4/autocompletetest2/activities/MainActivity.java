@@ -3,7 +3,6 @@ package com.example.srcn4.autocompletetest2.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "駅名を入力して下さい", Toast.LENGTH_SHORT).show();
         } else {
             // 画面遷移処理で、駅情報のリストを次の画面に送る
-            Intent intent = IntentUtil.prepareForResultActivity(MainActivity.this, stationList);
+            Intent intent = IntentUtil.prepareForSearchingActivity(MainActivity.this, stationList);
             startActivity(intent);
         }
     }

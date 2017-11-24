@@ -7,14 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.srcn4.autocompletetest2.R;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
+import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
 import com.example.srcn4.autocompletetest2.network.JorudanInfoTask;
+import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
-import com.example.srcn4.autocompletetest2.R;
-import com.example.srcn4.autocompletetest2.storage.StationDAO;
-import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        // MainActivityから駅情報リストを受け取る
+        // 遷移前画面から入力駅情報リストを受け取る
         Intent intent = getIntent();
         stationList =
                 (ArrayList<StationDetailVO>) intent.getSerializableExtra("result");

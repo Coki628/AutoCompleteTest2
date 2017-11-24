@@ -8,14 +8,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import com.example.srcn4.autocompletetest2.activities.RouteActivity;
-import com.example.srcn4.autocompletetest2.models.StationDetailVO;
-import com.example.srcn4.autocompletetest2.models.StationTransferVO;
-import com.example.srcn4.autocompletetest2.models.StationVO;
 import com.example.srcn4.autocompletetest2.activities.MainActivity;
 import com.example.srcn4.autocompletetest2.activities.MapsActivity;
 import com.example.srcn4.autocompletetest2.activities.ResultActivity;
+import com.example.srcn4.autocompletetest2.activities.RouteActivity;
+import com.example.srcn4.autocompletetest2.activities.SearchingActivity;
 import com.example.srcn4.autocompletetest2.activities.StationListActivity;
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
+import com.example.srcn4.autocompletetest2.models.StationTransferVO;
 
 import java.util.ArrayList;
 
@@ -34,6 +34,21 @@ public class IntentUtil {
 
         // メイン画面には何も送らないのでそのまま返却
         return new Intent(context, MainActivity.class);
+    }
+
+    /**
+     * 検索中画面への遷移準備
+     *
+     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param stationList 入力されていた駅情報のリスト
+     * @return Intent 画面遷移に必要な情報を保持したIntent
+     */
+    public static Intent prepareForSearchingActivity(Context context, ArrayList<StationDetailVO> stationList) {
+
+        // 入力されていた駅情報のリストを次の画面に送る準備
+        Intent intent = new Intent(context, SearchingActivity.class)
+                .putExtra("result", stationList);
+        return intent;
     }
 
     /**

@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
 /**
  * 起動画面クラス
@@ -25,10 +25,10 @@ public class SplashActivity extends AppCompatActivity {
         // activity_splash.xmlをViewに指定します。
         setContentView(R.layout.activity_splash);
         // ロゴを貼ってあるビューを取得
-        ImageView logo = findViewById(R.id.logo_view);
+        LinearLayout titleLogo = findViewById(R.id.title_logo);
         // アニメーションの設定(画面左から移動してくる)
         TranslateAnimation ta = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, -1.5f,
+                Animation.RELATIVE_TO_SELF, -2.5f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f);
@@ -39,8 +39,8 @@ public class SplashActivity extends AppCompatActivity {
         // animationが終わったそのまま表示にする
         ta.setFillAfter(true);
         //アニメーションの開始
-        logo.startAnimation(ta);
-        // 500ms遅延させてsplashHandlerを実行します。
+        titleLogo.startAnimation(ta);
+        // 1.5秒遅延させてHandlerを実行します。
         Handler hdl = new Handler();
         hdl.postDelayed(new Runnable(){
             public void run() {

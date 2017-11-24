@@ -8,28 +8,60 @@
     android:layout_height="match_parent"
     tools:context="com.example.srcn4.autocompletetest2.activities.ResultActivity">
 
-    <TextView
-        android:id="@+id/search_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@android:color/black"
-        android:textSize="26sp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/result_train"
+        android:layout_width="500dp"
+        android:layout_height="550dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/search_result_kana"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="12sp"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/search_result"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <ImageView
+            android:layout_width="500dp"
+            android:layout_height="550dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/train2_result"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/search_result"
+            android:layout_width="146dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="すげえ名前の長い駅が来た時にどう対応するか"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:gravity="center_horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.61"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.18" />
+
+        <TextView
+            android:id="@+id/search_result_kana"
+            android:layout_width="146dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="すげえなまえのながいえきがきたときにどうたいおうするか"
+            android:textColor="@android:color/white"
+            android:textSize="6sp"
+            android:gravity="center_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/search_result"
+            app:layout_constraintHorizontal_bias="0.61"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
 
     <include layout="@layout/footer_activity_result" />
 
