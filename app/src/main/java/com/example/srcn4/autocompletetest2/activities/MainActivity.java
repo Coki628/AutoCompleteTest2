@@ -135,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
             sound.setEnabled(true);
             anime.setEnabled(true);
             lang.setEnabled(true);
+            sound.setVisibility(View.VISIBLE);
+            anime.setVisibility(View.VISIBLE);
+            lang.setVisibility(View.VISIBLE);
             // フラグを設定中にセット
             isSettings = true;
         } else {
@@ -156,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
             sound.setEnabled(false);
             anime.setEnabled(false);
             lang.setEnabled(false);
+            sound.setVisibility(View.INVISIBLE);
+            anime.setVisibility(View.INVISIBLE);
+            lang.setVisibility(View.INVISIBLE);
             // フラグを設定中ではないにセット
             isSettings = false;
         }

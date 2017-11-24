@@ -2,7 +2,9 @@ package com.example.srcn4.autocompletetest2.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -18,6 +20,8 @@ import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 検索結果画面クラス
@@ -27,6 +31,13 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayList<StationDetailVO> stationList;
     private StationDetailVO resultStation;
     private LatLng centerLatLng;
+    private TextView searchResult;
+    private TextView searchResultKana;
+    // タスクを実行するタイマー
+    private Timer timer;
+    Handler handler;
+    // 点滅状態を保持する
+    private boolean isBlink = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +68,43 @@ public class ResultActivity extends AppCompatActivity {
         // 一番先頭にあるVOの駅情報を取得して返却
         resultStation = dao.selectStationByName(stationDistanceList.get(0).getName());
         // 駅名を表示
-        TextView searchResult = findViewById(R.id.search_result);
-        TextView searchResultKana = findViewById(R.id.search_result_kana);
+        searchResult = findViewById(R.id.search_result);
+        searchResultKana = findViewById(R.id.search_result_kana);
         searchResult.setText(resultStation.getName());
         searchResultKana.setText(resultStation.getKana());
+        // 駅名を点滅させるタイマーを設定する
+        timer = new Timer();
+        handler = new Handler();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                // 処理をUIスレッドに送る
+                handler.post(new Runnable() {
+                    public void run() {
+                        // 点滅フラグがfalseなら青く点灯させる
+                        if (!isBlink) {
+                            searchResult.setTextColor(Color.CYAN);
+                            searchResultKana.setTextColor(Color.CYAN);
+                            isBlink = true;
+                        } else {
+                            searchResult.setTextColor(Color.WHITE);
+                            searchResultKana.setTextColor(Color.WHITE);
+                            isBlink = false;
+                        }
+                    }
+                });
+            }
+        // 1000ミリ秒後に1000ミリ秒間隔でタスク実行
+        }, 1000, 1000);
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        // アクティビティが落ちる時にタイマーも終了させる
+        timer.cancel();
+    }
+
 
     // 共有ボタンが押された時
     public void callLINE(View v) {

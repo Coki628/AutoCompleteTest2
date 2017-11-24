@@ -33,10 +33,10 @@ public class SearchingActivity extends AppCompatActivity {
                 (ArrayList<StationDetailVO>) intent.getSerializableExtra("result");
         // 電車を貼ってあるビューを取得
         ImageView searchingTrain = findViewById(R.id.searching_train);
-        // アニメーションの設定(電車を0倍から5倍まで拡大させていく)
+        // 拡大アニメーションの設定(電車を0倍から5倍まで拡大させていく)
         ScaleAnimation scale = new ScaleAnimation(
                 0.0f,5.0f, 0.0f, 5.0f);
-        // 移動アニメーションの設定
+        // 移動アニメーションの設定(左から右へ移動)
         TranslateAnimation ta = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, -0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
