@@ -36,11 +36,13 @@
         <Button
             android:id="@+id/button12"
             android:text="@string/kyoyu"
+            android:drawableLeft="@drawable/kyoyu"
             style="@style/verticalBarButton" />
 
         <Button
             android:id="@+id/button13"
             android:text="@string/shuhen"
+            android:drawableLeft="@drawable/shuhen_joho"
             style="@style/verticalBarButton" />
 
     </LinearLayout>
