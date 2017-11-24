@@ -45,8 +45,13 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
         resultStation = (StationDetailVO)intent.getSerializableExtra("resultStation");
         centerLat = intent.getDoubleExtra("centerLat", 0);
         centerLng = intent.getDoubleExtra("centerLng", 0);
-        resultInfoLists = (ArrayList<StationTransferVO>[])intent.getSerializableExtra("resultInfoLists");
-
+//        resultInfoLists = (ArrayList<StationTransferVO>[])intent.getSerializableExtra("resultInfoLists");
+        // 端末によってリストの配列がintentで正しく送れなかったので、要素を1個ずつ送る仕様に変更
+        int count = intent.getIntExtra("count", 0);
+        resultInfoLists = new ArrayList[count];
+        for (int i = 0; i < count; i++) {
+            resultInfoLists[i] = (ArrayList<StationTransferVO>)intent.getSerializableExtra("resultInfoList" + i);
+        }
         // xmlからTabLayoutの取得
         tabLayout = findViewById(R.id.tabs);
         // xmlからViewPagerを取得

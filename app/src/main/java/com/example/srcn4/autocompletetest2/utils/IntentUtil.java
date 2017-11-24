@@ -108,8 +108,14 @@ public class IntentUtil {
                 .putExtra("stationList", stationList)
                 .putExtra("resultStation", resultStation)
                 .putExtra("centerLat", centerLat)
-                .putExtra("centerLng", centerLng)
-                .putExtra("resultInfoLists", resultInfoLists);
+                .putExtra("centerLng", centerLng);
+//               .putExtra("resultInfoLists", resultInfoLists);
+        // 端末によってリストの配列がintentで正しく送れなかったので、要素を1個ずつ送る仕様に変更
+        for (int i = 0; i < resultInfoLists.length; i++) {
+            intent.putExtra("resultInfoList" + i, resultInfoLists[i]);
+        }
+        intent.putExtra("count", resultInfoLists.length);
+
         return intent;
     }
 
