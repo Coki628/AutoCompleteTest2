@@ -3,6 +3,7 @@ package com.example.srcn4.autocompletetest2.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,7 +112,6 @@ public class PageFragment extends Fragment {
                 Log.d("sorted " + String.valueOf(i), vo.toString());
             }
         }
-
         // ソート結果に応じて、各出発駅から1位のものだけ表示する(.get(0)がリストの先頭)
         for (int i = 0; i < resultInfoLists.length; i++) {
             // 各数値を表示用の形式に戻す
@@ -121,11 +121,11 @@ public class PageFragment extends Fragment {
             // 乗り換え駅リストを表示用に整形
             String stations = ConvertUtil.concatTranStations(resultInfoLists[i].get(0).getTransferList());
             // route_info1～5に表示用の経路情報を格納していく
-            TextView route_title =
+            TextView routeTitle =
                     view.findViewById(getResources().getIdentifier(
                     "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
                     .findViewById(R.id.route_title);
-            route_title.setText((resultInfoLists[i].get(0).getName() + "　～　" + resultInfoLists[i].get(0).getDestName()));
+            routeTitle.setText((resultInfoLists[i].get(0).getName() + "　～　" + resultInfoLists[i].get(0).getDestName()));
             TextView time = view.findViewById(getResources().getIdentifier(
                     "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
                     .findViewById(R.id.time);
@@ -142,6 +142,19 @@ public class PageFragment extends Fragment {
                     "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
                     .findViewById(R.id.transfer_stations);
             transferStations.setText(stations);
+        }
+        // 余分なレイアウトを削除する処理
+        for (int i = 0; i < 5; i++) {
+            // 1～5までの各経路情報のレイアウトを取得
+            ConstraintLayout layout = view.findViewById(getResources().getIdentifier(
+                            "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()));
+            // レイアウト内のビューを取得
+            TextView routeTitle = layout.findViewById(R.id.route_title);
+            // ビューが空だったら、該当するレイアウトは削除
+            if (routeTitle.getText().toString().isEmpty()) {
+                ViewGroup p = (ViewGroup)layout.getParent();
+                p.removeView(layout);
+            }
         }
         return view;
     }

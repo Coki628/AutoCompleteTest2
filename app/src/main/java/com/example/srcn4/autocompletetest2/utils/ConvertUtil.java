@@ -117,15 +117,20 @@ public class ConvertUtil {
      * @return String 表示用文字列
      */
     public static String concatTranStations(ArrayList<String> transferList) {
-        // 駅リストを文字列として連結させていく
-        StringBuilder stations = new StringBuilder();
-        for (String station : transferList) {
-            stations.append(station);
-            stations.append(" - ");
+        // 駅が何もない(同一駅で移動がない等)場合、"経路なし"を返却
+        if (transferList.isEmpty()) {
+            return "経路なし";
+        } else {
+            // 駅リストを文字列として連結させていく
+            StringBuilder stations = new StringBuilder();
+            for (String station : transferList) {
+                stations.append(station);
+                stations.append(" - ");
+            }
+            // 最後の余分な" - "の削除
+            stations.delete(stations.length() - 3, stations.length());
+            // 表示用文字列の返却(StringBuilderからStringに変換してる)
+            return stations.toString();
         }
-        // 最後の余分な" - "の削除
-        stations.delete(stations.length() - 3, stations.length());
-        // 表示用文字列の返却(StringBuilderからStringに変換してる)
-        return stations.toString();
     }
 }
