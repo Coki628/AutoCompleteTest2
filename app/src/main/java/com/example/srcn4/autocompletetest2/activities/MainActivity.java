@@ -28,8 +28,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<AutoCompleteTextView> textViewList = new ArrayList<>();
+    // 設定画面実行フラグ
     private boolean isSettings = false;
-    private ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         v.setClickable(false);
         // 設定中フラグによって場合分け
         if (!isSettings) {
-            // 設定中でない時の移動
+            // 設定を開く時の移動
             moveTarget(sound, 100, -200);
             moveTarget(anime, -100, -100);
             moveTarget(lang, -200, 50);
@@ -132,15 +132,20 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.autocomplete_station5).setEnabled(false);
             findViewById(R.id.search_button).setEnabled(false);
             findViewById(R.id.clear_button).setEnabled(false);
+            // 設定内ボタンの有効化
+            sound.setEnabled(true);
+            anime.setEnabled(true);
+            lang.setEnabled(true);
+            // フラグを設定中にセット
             isSettings = true;
         } else {
-            // 設定中の移動
+            // 設定を閉じる時の移動
             moveTarget(sound, -100, 200);
             moveTarget(anime, 100, 100);
             moveTarget(lang, 200, -50);
             // 暗い背景を元に戻す
             background.setAlpha(0.0f);
-            // 無効化した場所を全て元に戻す
+            // 設定ボタン以外の有効化
             findViewById(R.id.autocomplete_station).setEnabled(true);
             findViewById(R.id.autocomplete_station2).setEnabled(true);
             findViewById(R.id.autocomplete_station3).setEnabled(true);
@@ -148,6 +153,11 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.autocomplete_station5).setEnabled(true);
             findViewById(R.id.search_button).setEnabled(true);
             findViewById(R.id.clear_button).setEnabled(true);
+            // 設定内ボタンの無効化
+            sound.setEnabled(false);
+            anime.setEnabled(false);
+            lang.setEnabled(false);
+            // フラグを設定中ではないにセット
             isSettings = false;
         }
         // 移動させる描画が0.3秒で終わるので、0.4秒後に設定ボタンのクリックを再度有効化
@@ -167,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
      * 見かけ上は移動したように見えるが実際には移動していないらしい。
      * そこで、アニメーション完了時にlayout()を使って物理的にも移動させる。
      *
+     * @param v 移動させるビュー
      * @param dx X軸に対する相対移動量
      * @param dy Y軸に対する相対移動量
      */
