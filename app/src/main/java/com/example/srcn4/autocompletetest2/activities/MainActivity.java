@@ -2,19 +2,23 @@ package com.example.srcn4.autocompletetest2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.srcn4.autocompletetest2.models.StationDetailVO;
-import com.example.srcn4.autocompletetest2.utils.IntentUtil;
-import com.example.srcn4.autocompletetest2.adapters.MyAdapterForAutoComplete;
 import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.adapters.MyAdapterForAutoComplete;
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.storage.StationDAO;
-import com.example.srcn4.autocompletetest2.models.StationVO;
+import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
 import java.util.ArrayList;
 
@@ -24,6 +28,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<AutoCompleteTextView> textViewList = new ArrayList<>();
+    private boolean isSettings = false;
+    private ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        // 重ねてある設定ボタンを最前面に移動
+        findViewById(R.id.settings_button).bringToFront();
     }
     // 検索ボタンが押された時
     public void search(View v) {
@@ -99,7 +107,102 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 設定ボタンが押された時呼ばれる
-    public void callSettings(View v) {
+    public void callSettings(final View v) {
+        // 動かすボタンを取得
+        Button sound = findViewById(R.id.sound);
+        Button anime = findViewById(R.id.anime);
+        Button lang = findViewById(R.id.lang);
+        // 設定中に背景を暗くする準備
+        TextView background = findViewById(R.id.background);
+        // 設定ボタンを一時的にクリック不可にする
+        v.setClickable(false);
+        // 設定中フラグによって場合分け
+        if (!isSettings) {
+            // 設定中でない時の移動
+            moveTarget(sound, 100, -200);
+            moveTarget(anime, -100, -100);
+            moveTarget(lang, -200, 50);
+            // 背景を暗くする
+            background.setAlpha(0.4f);
+            // 設定ボタン以外を一時的に全て無効化する
+            findViewById(R.id.autocomplete_station).setEnabled(false);
+            findViewById(R.id.autocomplete_station2).setEnabled(false);
+            findViewById(R.id.autocomplete_station3).setEnabled(false);
+            findViewById(R.id.autocomplete_station4).setEnabled(false);
+            findViewById(R.id.autocomplete_station5).setEnabled(false);
+            findViewById(R.id.search_button).setEnabled(false);
+            findViewById(R.id.clear_button).setEnabled(false);
+            isSettings = true;
+        } else {
+            // 設定中の移動
+            moveTarget(sound, -100, 200);
+            moveTarget(anime, 100, 100);
+            moveTarget(lang, 200, -50);
+            // 暗い背景を元に戻す
+            background.setAlpha(0.0f);
+            // 無効化した場所を全て元に戻す
+            findViewById(R.id.autocomplete_station).setEnabled(true);
+            findViewById(R.id.autocomplete_station2).setEnabled(true);
+            findViewById(R.id.autocomplete_station3).setEnabled(true);
+            findViewById(R.id.autocomplete_station4).setEnabled(true);
+            findViewById(R.id.autocomplete_station5).setEnabled(true);
+            findViewById(R.id.search_button).setEnabled(true);
+            findViewById(R.id.clear_button).setEnabled(true);
+            isSettings = false;
+        }
+        // 移動させる描画が0.3秒で終わるので、0.4秒後に設定ボタンのクリックを再度有効化
+        Handler hdl = new Handler();
+        hdl.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                v.setClickable(true);
+            }
+        }, 400);
+    }
 
+    /**
+     * ターゲットを相対的に移動する
+     *
+     * TranslateAnimationで移動アニメーションをすると、
+     * 見かけ上は移動したように見えるが実際には移動していないらしい。
+     * そこで、アニメーション完了時にlayout()を使って物理的にも移動させる。
+     *
+     * @param dx X軸に対する相対移動量
+     * @param dy Y軸に対する相対移動量
+     */
+    protected void moveTarget(final View v, int dx, int dy) {
+        if (v.getAnimation() != null) {
+            // アニメーション中なら何もしない
+            return;
+        }
+        final int left = v.getLeft();
+        final int top = v.getTop();
+        final int toX = left + dx;
+        final int toY = top + dy;
+        TranslateAnimation ta = new TranslateAnimation(left, toX, top, toY);
+        ta.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // 物理的にも移動
+                v.layout(toX, toY, toX + v.getWidth(), toY + v.getHeight());
+                // これをしないとアニメーション完了後にチラつく
+                v.setAnimation(null);
+            }
+        });
+        // animation時間 msec
+        ta.setDuration(300);
+        // 繰り返し回数
+        ta.setRepeatCount(0);
+        // animationが終わったそのまま表示にする
+        ta.setFillAfter(true);
+        // 初期位置に戻す。これをしないと２度目以降のアニメーションがおかしくなる（チラつく）
+        v.layout(0, 0, v.getWidth(), v.getHeight());
+        v.startAnimation(ta);
     }
 }
