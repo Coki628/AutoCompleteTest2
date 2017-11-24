@@ -11,24 +11,24 @@
         android:id="@+id/button_suggested"
         android:onClick="callSuggestedStations"
         android:text="@string/koho_eki"
-        style="@style/myBarButton" />
+        style="@style/horizontalBarButton" />
 
     <Button
         android:id="@+id/button_share"
         android:onClick="callLINE"
         android:text="@string/kyoyu"
-        style="@style/myBarButton" />
+        style="@style/horizontalBarButton" />
 
     <Button
         android:id="@+id/button_genre"
         android:onClick="callGenre"
         android:text="@string/genre"
-        style="@style/myBarButton" />
+        style="@style/horizontalBarButton" />
 
     <Button
         android:id="@+id/button_map_info"
         android:onClick="callMapInfo"
         android:text="@string/shuhen_joho"
-        style="@style/myBarButton" />
+        style="@style/horizontalBarButton" />
 
 </LinearLayout>

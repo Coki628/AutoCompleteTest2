@@ -9,5 +9,6 @@
     <string name="route">ルート</string>
     <string name="shuhen_joho">周辺情報</string>
     <string name="genre">ジャンル</string>
+    <string name="shuhen">周辺</string>
 
 </resources>
