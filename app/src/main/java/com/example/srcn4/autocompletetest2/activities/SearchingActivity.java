@@ -21,7 +21,11 @@ import java.util.ArrayList;
  */
 public class SearchingActivity extends AppCompatActivity {
 
+    // 入力駅情報リスト
     private ArrayList<StationDetailVO> stationList;
+    // 遅延処理用
+    Handler handler;
+    Runnable r;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,10 @@ public class SearchingActivity extends AppCompatActivity {
         // 電車を貼ってあるビューを取得
         ImageView searchingTrain = findViewById(R.id.searching_train);
         // 拡大アニメーションの設定(電車を0倍から5倍まで拡大させていく)
+        // pivotを両方0.5fにすれば拡大の起点をViewの中心からにしてくれる
         ScaleAnimation scale = new ScaleAnimation(
-                0.0f,5.0f, 0.0f, 5.0f);
+                0.0f,5.0f, 0.0f, 5.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
         // 移動アニメーションの設定(左から右へ移動)
         TranslateAnimation ta = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, -0.5f,
@@ -52,9 +58,9 @@ public class SearchingActivity extends AppCompatActivity {
         animeSet.setFillAfter(true);
         //アニメーションの開始
         searchingTrain.startAnimation(animeSet);
-        // 3秒遅延させて(アニメ終了時に)Handlerを実行します。
-        Handler hdl = new Handler();
-        hdl.postDelayed(new Runnable(){
+        // 3秒遅延させて(アニメ終了時に)Handlerを実行
+        handler = new Handler();
+        r = new Runnable(){
             public void run() {
                 // 画面遷移処理で、駅情報のリストを次の画面に送る
                 Intent intent = IntentUtil.prepareForResultActivity(SearchingActivity.this, stationList);
@@ -62,6 +68,15 @@ public class SearchingActivity extends AppCompatActivity {
                 // SearchingActivityを終了
                 SearchingActivity.this.finish();
             }
-        }, 3000);
+        };
+        handler.postDelayed(r, 3000);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        // アクティビティが落ちる時に遅延処理も中断させる
+        // (これやんないとバックボタン押して戻っても検索結果画面に遷移しちゃう)
+        handler.removeCallbacks(r);
     }
 }
