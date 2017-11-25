@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 固定値の文字列はここに書く。多言語対応の際はこれの英語版を作る。 -->
     <string name="app_name">中間地点アプリ</string>
@@ -11,8 +12,10 @@
     <string name="shuhen_joho">周辺情報</string>
     <string name="genre">ジャンル</string>
     <string name="shuhen">周辺</string>
-    <string name="sound">音楽</string>
+    <string name="ongaku">音楽</string>
     <string name="anime">アニメ</string>
-    <string name="lang">言語</string>
+    <string name="gengo">言語</string>
+    <string name="tsuika">追加</string>
+    <string name="hint_input">駅名を入力してね</string>
 
 </resources>

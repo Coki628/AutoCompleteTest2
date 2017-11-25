@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 英語の表記をここに記述 -->
+    <string name="app_name">Meet Halfway</string>
+    <string name="app_name_short">Halfway</string>
+    <string name="kensaku">Search</string>
+    <string name="clear">Clear</string>
+    <string name="settei">Settings</string>
+    <string name="koho_eki">Candidates</string>
+    <string name="kyoyu">Share</string>
+    <string name="route">Route</string>
+    <string name="shuhen_joho">Map Info</string>
+    <string name="genre">Category</string>
+    <string name="shuhen">Map</string>
+    <string name="ongaku">Sound</string>
+    <string name="anime">Animation</string>
+    <string name="gengo">Language</string>
+    <string name="tsuika">Add</string>
+    <string name="hint_input">Input a station name!</string>
+
+</resources>

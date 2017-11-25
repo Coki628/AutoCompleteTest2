@@ -26,6 +26,7 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity {
 
+    // 入力された内容を格納するリスト
     private ArrayList<AutoCompleteTextView> textViewList = new ArrayList<>();
     // 設定画面実行フラグ
     private boolean isSettings = false;
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station3));
         textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station4));
         textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station5));
+        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station6));
+        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station7));
+        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station8));
+        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station9));
+        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station10));
 
         for (AutoCompleteTextView textView : textViewList) {
             // 自分で定義したアダプターをビューに設定する
@@ -220,5 +226,18 @@ public class MainActivity extends AppCompatActivity {
         // 初期位置に戻す。これをしないと２度目以降のアニメーションがおかしくなる（チラつく）
         v.layout(0, 0, v.getWidth(), v.getHeight());
         v.startAnimation(ta);
+    }
+
+    // ボックス追加ボタン(踏切)が押された時
+    public void addInputBox(View v) {
+
+        for (AutoCompleteTextView view : textViewList) {
+            // 1～10のテキストビューを確認して、GONEを見つけたらVISIBLEにする
+            if (view.getVisibility() == View.GONE) {
+                view.setVisibility(View.VISIBLE);
+                // ひとつVISIBLEにしたら(表示されるビューがひとつ増える)、すぐに処理終了
+                break;
+            }
+        }
     }
 }

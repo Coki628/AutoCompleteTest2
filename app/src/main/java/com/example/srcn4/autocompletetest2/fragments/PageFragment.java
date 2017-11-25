@@ -144,8 +144,8 @@ public class PageFragment extends Fragment {
             transferStations.setText(stations);
         }
         // 余分なレイアウトを削除する処理
-        for (int i = 0; i < 5; i++) {
-            // 1～5までの各経路情報のレイアウトを取得
+        for (int i = 0; i < 10; i++) {
+            // 1～10までの各経路情報のレイアウトを取得
             ConstraintLayout layout = view.findViewById(getResources().getIdentifier(
                             "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()));
             // レイアウト内のビューを取得

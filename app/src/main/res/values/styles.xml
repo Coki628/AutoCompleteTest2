@@ -8,10 +8,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- 入力テキストボックス共通スタイル -->
+    <style name="inputTextBox">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:inputType">text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/background_input_box</item>
+    </style>
+
+    <!-- 汎用ボタン共通スタイル -->
+    <style name="commonButton">
+        <item name="android:background">@drawable/background_button</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <!-- バーボタン共通スタイル -->
     <style name="barButton">
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/border</item>
+        <item name="android:background">@drawable/background_button</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 

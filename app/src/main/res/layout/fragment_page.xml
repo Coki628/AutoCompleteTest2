@@ -29,9 +29,24 @@
             <include
                 android:id="@+id/route_info5"
                 layout="@layout/route_info" />
-            <!-- 画面下部のボタンで見えなくなるので、余白を作って多めにスクロールさせる -->
             <include
                 android:id="@+id/route_info6"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info7"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info8"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info9"
+                layout="@layout/route_info" />
+            <include
+                android:id="@+id/route_info10"
+                layout="@layout/route_info" />
+            <!-- 画面下部のボタンで見えなくなるので、余白を作って多めにスクロールさせる -->
+            <include
+                android:id="@+id/route_info11"
                 layout="@layout/route_info" />
 
         </LinearLayout>
