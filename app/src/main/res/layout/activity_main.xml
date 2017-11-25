@@ -78,6 +78,31 @@
         style="@style/barButton" />
 
     <Button
+        android:id="@+id/search_button"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="search"
+        android:text="@string/kensaku"
+        android:drawableTop="@drawable/train2_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_station5"
+        style="@style/barButton" />
+
+    <!-- 設定実行中の背景用 -->
+    <TextView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        android:alpha="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/settings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,64 +118,48 @@
         style="@style/barButton" />
 
     <Button
-        android:id="@+id/search_button"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="search"
-        android:text="@string/kensaku"
-        android:drawableTop="@drawable/train2_logo"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autocomplete_station5"
-        style="@style/barButton" />
-
-    <Button
         android:id="@+id/sound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:drawableTop="@drawable/sound"
         android:enabled="false"
+        android:text="@string/sound"
         android:visibility="invisible"
-        android:text="音楽"
         app:layout_constraintBottom_toBottomOf="@+id/settings_button"
         app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <Button
-        android:id="@+id/lang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:visibility="invisible"
-        android:text="言語"
-        app:layout_constraintBottom_toBottomOf="@+id/settings_button"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        style="@style/barButton" />
 
     <Button
         android:id="@+id/anime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:drawableTop="@drawable/anime"
         android:enabled="false"
+        android:text="@string/anime"
         android:visibility="invisible"
-        android:text="アニメ"
         app:layout_constraintBottom_toBottomOf="@+id/settings_button"
         app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        style="@style/barButton" />
 
-    <!-- 設定実行中の背景用 -->
-    <TextView
-        android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
-        android:alpha="0.0"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/lang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:drawableTop="@drawable/lang"
+        android:enabled="false"
+        android:text="@string/lang"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/settings_button"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="@style/barButton" />
 
 </android.support.constraint.ConstraintLayout>

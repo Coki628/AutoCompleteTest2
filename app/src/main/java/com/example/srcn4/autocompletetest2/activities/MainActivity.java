@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        // 重ねてある設定ボタンを最前面に移動
-        findViewById(R.id.settings_button).bringToFront();
     }
     // 検索ボタンが押された時
     public void search(View v) {
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             moveTarget(anime, -100, -100);
             moveTarget(lang, -200, 50);
             // 背景を暗くする
-            background.setAlpha(0.4f);
+            background.setAlpha(0.5f);
             // 設定ボタン以外を一時的に全て無効化する
             findViewById(R.id.autocomplete_station).setEnabled(false);
             findViewById(R.id.autocomplete_station2).setEnabled(false);
@@ -165,12 +163,14 @@ public class MainActivity extends AppCompatActivity {
             // フラグを設定中ではないにセット
             isSettings = false;
         }
-        // 移動させる描画が0.3秒で終わるので、0.4秒後に設定ボタンのクリックを再度有効化
+        // 移動させる描画が0.3秒で終わるので、0.4秒後動作
         Handler hdl = new Handler();
         hdl.postDelayed(new Runnable() {
             @Override
             public void run() {
+                // 設定ボタンのクリックを再度有効化
                 v.setClickable(true);
+
             }
         }, 400);
     }

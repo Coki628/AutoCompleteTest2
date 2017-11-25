@@ -1,6 +1,7 @@
 <resources>
     <!-- 固定値の文字列はここに書く。多言語対応の際はこれの英語版を作る。 -->
     <string name="app_name">中間地点アプリ</string>
+    <string name="app_name_short">中間地点</string>
     <string name="kensaku">検索</string>
     <string name="clear">クリア</string>
     <string name="settei">設定</string>
@@ -10,5 +11,8 @@
     <string name="shuhen_joho">周辺情報</string>
     <string name="genre">ジャンル</string>
     <string name="shuhen">周辺</string>
+    <string name="sound">音楽</string>
+    <string name="anime">アニメ</string>
+    <string name="lang">言語</string>
 
 </resources>
