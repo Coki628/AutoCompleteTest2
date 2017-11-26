@@ -1,5 +1,6 @@
 package com.example.srcn4.autocompletetest2.utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import com.example.srcn4.autocompletetest2.activities.ResultActivity;
 import com.example.srcn4.autocompletetest2.activities.RouteActivity;
 import com.example.srcn4.autocompletetest2.activities.SearchingActivity;
 import com.example.srcn4.autocompletetest2.activities.StationListActivity;
+import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
 
@@ -189,6 +191,10 @@ public class IntentUtil {
         String LINE_APP_ID = "jp.naver.line.android";
         // LINEで送る用の改行コード
         String LINE_SEPARATOR = "%0D%0A";
+        // コンテキストをアクティビティにキャスト
+        Activity activity = (Activity)context;
+        // アプリケーションクラスのインスタンスを取得
+        final MyApplication ma = (MyApplication)activity.getApplication();
 
         try {
             // パッケージ情報の取得
@@ -213,7 +219,9 @@ public class IntentUtil {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // 特に何もしない
+                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                            ma.getSoundPool().play(ma.getSoundSelect(),
+                                    1.0f, 1.0f, 0, 0, 1);
                         }
                     })
                     .setCancelable(false);

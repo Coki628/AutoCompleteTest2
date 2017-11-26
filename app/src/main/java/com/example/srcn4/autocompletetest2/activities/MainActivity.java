@@ -1,6 +1,9 @@
 package com.example.srcn4.autocompletetest2.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +18,13 @@ import android.widget.Toast;
 
 import com.example.srcn4.autocompletetest2.R;
 import com.example.srcn4.autocompletetest2.adapters.MyAdapterForAutoComplete;
+import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * 入力画面クラス
@@ -30,11 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<AutoCompleteTextView> textViewList = new ArrayList<>();
     // 設定画面実行フラグ
     private boolean isSettings = false;
+    // 全アクティビティで使えるアプリケーションクラス
+    private MyApplication ma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // アプリケーションクラスのインスタンスを取得
+        ma = (MyApplication)this.getApplication();
+
         // XMLとの紐付け
         textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station));
         textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station2));
@@ -64,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
     }
     // 検索ボタンが押された時
     public void search(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundApply(),
+                1.0f, 1.0f, 0, 0, 1);
         // 駅情報格納用VOのリスト
         ArrayList<StationDetailVO> stationList = new ArrayList<>();
 
@@ -89,19 +101,32 @@ public class MainActivity extends AppCompatActivity {
             // 駅情報を格納したVOをリストに格納
             stationList.add(vo);
         }
-        // 駅が入力されていなければ遷移せずに処理終了
-        if (stationList.isEmpty()) {
-
-            Toast.makeText(getApplicationContext(), "駅名を入力して下さい", Toast.LENGTH_SHORT).show();
+        // 駅名が入力されていれば画面遷移へ
+        if (!stationList.isEmpty()) {
+            // プリファレンスからアニメの設定値を取得
+            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+            boolean animeFlag = pref.getBoolean("animeFlag", true);
+            // アニメが有効なら検索中画面、無効なら直接検索結果画面へ遷移
+            if (animeFlag) {
+                // 画面遷移処理で、駅情報のリストを次の画面に送る
+                Intent intent = IntentUtil.prepareForSearchingActivity(MainActivity.this, stationList);
+                startActivity(intent);
+            } else {
+                // 画面遷移処理で、駅情報のリストを次の画面に送る
+                Intent intent = IntentUtil.prepareForResultActivity(MainActivity.this, stationList);
+                startActivity(intent);
+            }
         } else {
-            // 画面遷移処理で、駅情報のリストを次の画面に送る
-            Intent intent = IntentUtil.prepareForSearchingActivity(MainActivity.this, stationList);
-            startActivity(intent);
+            // 駅が入力されていなければ遷移せずに処理終了
+            Toast.makeText(getApplicationContext(), "駅名を入力して下さい", Toast.LENGTH_SHORT).show();
         }
     }
 
     // クリアボタンが押された時呼ばれる
     public void clearAll(View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ, 再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 入力されたテキストを全て削除
         for (AutoCompleteTextView textView : textViewList) {
 
@@ -111,10 +136,26 @@ public class MainActivity extends AppCompatActivity {
 
     // 設定ボタンが押された時呼ばれる
     public void callSettings(final View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 動かすボタンを取得
         Button sound = findViewById(R.id.sound);
         Button anime = findViewById(R.id.anime);
         Button lang = findViewById(R.id.lang);
+
+        // プリファレンスからサウンドとアニメの設定値を取得
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        boolean soundFlag = pref.getBoolean("soundFlag", true);
+        boolean animeFlag = pref.getBoolean("animeFlag", true);
+        // サウンドが無効なら、該当のボタンを半透明
+        if (!soundFlag) {
+            sound.setAlpha(0.2f);
+        }
+        // サウンドが無効なら、該当のボタンを半透明
+        if (!animeFlag) {
+            anime.setAlpha(0.2f);
+        }
         // 設定中に背景を暗くする準備
         TextView background = findViewById(R.id.background);
         // 設定ボタンを一時的にクリック不可にする
@@ -135,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.autocomplete_station5).setEnabled(false);
             findViewById(R.id.search_button).setEnabled(false);
             findViewById(R.id.clear_button).setEnabled(false);
+            findViewById(R.id.add_button).setEnabled(false);
             // 設定内ボタンの有効化
             sound.setEnabled(true);
             anime.setEnabled(true);
@@ -159,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.autocomplete_station5).setEnabled(true);
             findViewById(R.id.search_button).setEnabled(true);
             findViewById(R.id.clear_button).setEnabled(true);
+            findViewById(R.id.add_button).setEnabled(true);
             // 設定内ボタンの無効化
             sound.setEnabled(false);
             anime.setEnabled(false);
@@ -230,6 +273,9 @@ public class MainActivity extends AppCompatActivity {
 
     // ボックス追加ボタン(踏切)が押された時
     public void addInputBox(View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
 
         for (AutoCompleteTextView view : textViewList) {
             // 1～10のテキストビューを確認して、GONEを見つけたらVISIBLEにする
@@ -238,6 +284,150 @@ public class MainActivity extends AppCompatActivity {
                 // ひとつVISIBLEにしたら(表示されるビューがひとつ増える)、すぐに処理終了
                 break;
             }
+        }
+    }
+
+    public void setSound(View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
+        // プリファレンスからサウンドの設定値を取得
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        // プリファレンス書き込み用のEditor
+        SharedPreferences.Editor editor = pref.edit();
+        boolean soundFlag = pref.getBoolean("soundFlag", true);
+        // サウンドが有効なら、無効にしてボタンも半透明
+        if (soundFlag) {
+            editor.putBoolean("soundFlag", false);
+            editor.apply();
+            v.setAlpha(0.2f);
+        // 無効なら有効にして透明度も戻す
+        } else {
+            editor.putBoolean("soundFlag", true);
+            editor.apply();
+            v.setAlpha(1.0f);
+        }
+    }
+
+    public void setAnimation(View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
+        // プリファレンスからアニメの設定値を取得
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        // プリファレンス書き込み用のEditor
+        SharedPreferences.Editor editor = pref.edit();
+        boolean animeFlag = pref.getBoolean("animeFlag", true);
+        // アニメが有効なら、無効にしてボタンも半透明
+        if (animeFlag) {
+            editor.putBoolean("animeFlag", false);
+            editor.apply();
+            v.setAlpha(0.2f);
+            // 無効なら有効にして透明度も戻す
+        } else {
+            editor.putBoolean("animeFlag", true);
+            editor.apply();
+            v.setAlpha(1.0f);
+        }
+    }
+
+    public void setLanguage(View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
+        // プリファレンスから言語の設定値を取得
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        // プリファレンス書き込み用のEditor
+        final SharedPreferences.Editor editor = pref.edit();
+        String lang = pref.getString("selectLang", "");
+        //
+        if (lang.equals("")) {
+            // 設定値がない(今回が最初)の場合は端末設定から読み取る
+            lang = Locale.getDefault().getLanguage();
+        }
+        if (lang.equals("en")) {
+            // 言語設定が英語だったら日本語に切り替え
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Language settings: English to Japanese")
+                    .setMessage("Would you like to change the language settings?")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ma.setLocale("ja");
+                            // プリファレンスに言語設定を登録
+                            editor.putString("selectLang", "ja");
+                            editor.apply();
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Language settings changed: English to Japanese")
+                                    .setMessage("Would you like to enable the change now?")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // アクティビティ再読み込み
+                                            finish();
+                                            startActivity(getIntent());
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // 何もしない
+                                        }
+                                    })
+                                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
+                                    .show();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 何もしない
+                        }
+                    })
+                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
+                    .show();
+        } else {
+            // 言語設定が日本語・その他だったら英語に切り替え
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("言語設定変更：日本語→英語")
+                    .setMessage("言語設定を変更しますか？")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            ma.setLocale("en");
+                            // プリファレンスに言語設定を登録
+                            editor.putString("selectLang", "en");
+                            editor.apply();
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("変更完了：日本語→英語")
+                                    .setMessage("変更をすぐに反映しますか？")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // アクティビティ再読み込み
+                                            finish();
+                                            startActivity(getIntent());
+                                        }
+                                    })
+                                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // 何もしない
+                                        }
+                                    })
+                                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
+                                    .show();
+                        }
+                    })
+                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 何もしない
+                        }
+                    })
+                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
+                    .show();
         }
     }
 }

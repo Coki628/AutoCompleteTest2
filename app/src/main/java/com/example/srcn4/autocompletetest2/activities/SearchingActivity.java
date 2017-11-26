@@ -11,6 +11,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
@@ -26,11 +27,20 @@ public class SearchingActivity extends AppCompatActivity {
     // 遅延処理用
     Handler handler;
     Runnable r;
+    // 全アクティビティで使えるアプリケーションクラス
+    private MyApplication ma;
+    // 停止させる時使いたいので宣言しておく
+    private int streamId1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searching);
+        // アプリケーションクラスのインスタンスを取得
+        ma = (MyApplication)this.getApplication();
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        streamId1 = ma.getSoundPool().play(ma.getSoundTrain1(),
+                1.0f, 1.0f, 0, 0, 1);
         // 遷移前画面から入力駅情報リストを受け取る
         Intent intent = getIntent();
         stationList =
@@ -62,6 +72,11 @@ public class SearchingActivity extends AppCompatActivity {
         handler = new Handler();
         r = new Runnable(){
             public void run() {
+                // ひとつめの音を停止させる
+                ma.getSoundPool().stop(streamId1);
+                // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                ma.getSoundPool().play(ma.getSoundTrain2(),
+                        1.0f, 1.0f, 0, 0, 1);
                 // 画面遷移処理で、駅情報のリストを次の画面に送る
                 Intent intent = IntentUtil.prepareForResultActivity(SearchingActivity.this, stationList);
                 startActivity(intent);

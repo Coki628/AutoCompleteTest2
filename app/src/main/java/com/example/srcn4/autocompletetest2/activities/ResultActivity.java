@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
@@ -38,17 +39,21 @@ public class ResultActivity extends AppCompatActivity {
     Handler handler;
     // 点滅状態を保持する
     private boolean isBlink = false;
+    // 全アクティビティで使えるアプリケーションクラス
+    private MyApplication ma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
+        // アプリケーションクラスのインスタンスを取得
+        ma = (MyApplication)this.getApplication();
+
         // 遷移前画面から入力駅情報リストを受け取る
         Intent intent = getIntent();
         stationList =
                 (ArrayList<StationDetailVO>) intent.getSerializableExtra("result");
-
         // 計算用の緯度と経度のリスト
         ArrayList<Double> latList = new ArrayList<>();
         ArrayList<Double> lngList = new ArrayList<>();
@@ -81,10 +86,10 @@ public class ResultActivity extends AppCompatActivity {
                 // 処理をUIスレッドに送る
                 handler.post(new Runnable() {
                     public void run() {
-                        // 点滅フラグがfalseなら青く点灯させる
+                        // 点滅フラグがfalseなら点灯させる
                         if (!isBlink) {
-                            searchResult.setTextColor(Color.CYAN);
-                            searchResultKana.setTextColor(Color.CYAN);
+                            searchResult.setTextColor(Color.MAGENTA);
+                            searchResultKana.setTextColor(Color.MAGENTA);
                             isBlink = true;
                         } else {
                             searchResult.setTextColor(Color.WHITE);
@@ -105,17 +110,23 @@ public class ResultActivity extends AppCompatActivity {
         timer.cancel();
     }
 
-
     // 共有ボタンが押された時
     public void callLINE(View v) {
+
         // LINE共有機能を呼び出す
         Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
+            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+            ma.getSoundPool().play(ma.getSoundApply(),
+                    1.0f, 1.0f, 0, 0, 1);
             Intent intent = (Intent)obj;
             startActivity(intent);
         // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
         } else if (obj instanceof AlertDialog.Builder) {
+            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+            ma.getSoundPool().play(ma.getSoundSelect(),
+                    1.0f, 1.0f, 0, 0, 1);
             AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
             dialog.show();
         }
@@ -123,7 +134,9 @@ public class ResultActivity extends AppCompatActivity {
 
     // 周辺情報ボタンが押された時
     public void callMapInfo(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
         Intent intent = IntentUtil.prepareForMapsActivity(ResultActivity.this,
                 stationList, resultStation);
@@ -132,7 +145,9 @@ public class ResultActivity extends AppCompatActivity {
 
     // 候補駅ボタンが押された時
     public void callSuggestedStations(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
         Intent intent = IntentUtil.prepareForStationListActivity(ResultActivity.this,
                 stationList, centerLatLng.latitude, centerLatLng.longitude);
@@ -141,7 +156,9 @@ public class ResultActivity extends AppCompatActivity {
 
     // ルートボタンが押された時
     public void callRoute(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // ジョルダンに経路検索のリクエストを送る
         final JorudanInfoTask jit = new JorudanInfoTask(this, stationList, resultStation.getJorudanName());
         // ここから非同期処理終了後の処理を記述する

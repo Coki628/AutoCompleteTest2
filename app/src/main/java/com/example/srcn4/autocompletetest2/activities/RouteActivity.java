@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.fragments.PageFragment;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
@@ -32,11 +33,16 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
     private double centerLng;
     private ArrayList<StationTransferVO>[] resultInfoLists;
     TabLayout tabLayout;
+    // 全アクティビティで使えるアプリケーションクラス
+    private MyApplication ma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
+
+        // アプリケーションクラスのインスタンスを取得
+        ma = (MyApplication)this.getApplication();
 
         // 遷移前画面から駅情報リストと候補駅を受け取る
         Intent intent = getIntent();
@@ -105,14 +111,21 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
 
     // 共有ボタンが押された時
     public void callLINE(View v) {
+
         // LINE共有機能を呼び出す
         Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
+            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+            ma.getSoundPool().play(ma.getSoundApply(),
+                    1.0f, 1.0f, 0, 0, 1);
             Intent intent = (Intent)obj;
             startActivity(intent);
             // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
         } else if (obj instanceof AlertDialog.Builder) {
+            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+            ma.getSoundPool().play(ma.getSoundSelect(),
+                    1.0f, 1.0f, 0, 0, 1);
             AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
             dialog.show();
         }
@@ -120,7 +133,9 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
 
     // 周辺情報ボタンが押された時
     public void callMapInfo(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
         Intent intent = IntentUtil.prepareForMapsActivity(RouteActivity.this,
                 stationList, resultStation);
@@ -129,7 +144,9 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
 
     // 候補駅ボタンが押された時
     public void callSuggestedStations(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
         Intent intent = IntentUtil.prepareForStationListActivity(RouteActivity.this,
                 stationList, centerLat, centerLng);
@@ -138,6 +155,9 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
 
     // ジャンルボタンが押された時
     public void callGenre(View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 各ジャンルを配列に格納
         final String[] items = {"レストラン", "居酒屋", "カフェ", "コンビニ", "カラオケ"};
         // デフォルトでチェックされているアイテム
@@ -151,6 +171,9 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
                 .setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                        ma.getSoundPool().play(ma.getSoundSelect(),
+                                1.0f, 1.0f, 0, 0, 1);
                         // クリックされたら、今ある番号をクリアして新しい番号を格納
                         checkedItems.clear();
                         checkedItems.add(which);
@@ -161,6 +184,9 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (!checkedItems.isEmpty()) {
+                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                            ma.getSoundPool().play(ma.getSoundApply(),
+                                    1.0f, 1.0f, 0, 0, 1);
                             // ジャンルが決定されたら、外部連携のURL情報を取得
                             Intent intent = IntentUtil.prepareForExternalInfo(
                                     resultStation, checkedItems.get(0));
@@ -170,7 +196,16 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
                     }
                 })
                 // キャンセルボタンの設定
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!checkedItems.isEmpty()) {
+                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                            ma.getSoundPool().play(ma.getSoundSelect(),
+                                    1.0f, 1.0f, 0, 0, 1);
+                        }
+                    }
+                })
                 .show();
     }
 }

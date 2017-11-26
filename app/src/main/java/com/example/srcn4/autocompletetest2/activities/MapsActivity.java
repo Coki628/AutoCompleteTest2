@@ -8,12 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
 import com.example.srcn4.autocompletetest2.network.JorudanInfoTask;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
-import com.example.srcn4.autocompletetest2.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,11 +38,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<Double> latList = new ArrayList<>();
     private ArrayList<Double> lngList = new ArrayList<>();
     private ArrayList<LatLng> latLngList = new ArrayList<>();
+    // 全アクティビティで使えるアプリケーションクラス
+    private MyApplication ma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        // アプリケーションクラスのインスタンスを取得
+        ma = (MyApplication)this.getApplication();
 
         // 遷移前画面から駅情報リストと候補駅を受け取る
         Intent intent = getIntent();
@@ -137,22 +143,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onInfoWindowClick(Marker marker) {
         // 情報ウインドウがタップされた時の処理
-        new AlertDialog.Builder(this)
-                .setTitle("周辺駅検索")
-                .setMessage("この地点の周辺駅情報を表示しますか？")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 周辺駅表示
-                    }
-                })
-                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 何もしない
-                    }
-                })
-                .show();
+//        new AlertDialog.Builder(this)
+//                .setTitle("周辺駅検索")
+//                .setMessage("この地点の周辺駅情報を表示しますか？")
+//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // 周辺駅表示
+//                    }
+//                })
+//                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // 何もしない
+//                    }
+//                })
+//                .show();
     }
 
     // 共有ボタンが押された時
@@ -161,10 +167,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
+            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+            ma.getSoundPool().play(ma.getSoundApply(),
+                    1.0f, 1.0f, 0, 0, 1);
             Intent intent = (Intent)obj;
             startActivity(intent);
         // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
         } else if (obj instanceof AlertDialog.Builder) {
+            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+            ma.getSoundPool().play(ma.getSoundSelect(),
+                    1.0f, 1.0f, 0, 0, 1);
             AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
             dialog.show();
         }
@@ -172,6 +184,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // ジャンルボタンが押された時
     public void callGenre(View v) {
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 各ジャンルを配列に格納
         final String[] items = {"レストラン", "居酒屋", "カフェ", "コンビニ", "カラオケ"};
         // デフォルトでチェックされているアイテム
@@ -185,6 +200,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                        ma.getSoundPool().play(ma.getSoundSelect(),
+                                1.0f, 1.0f, 0, 0, 1);
                         // クリックされたら、今ある番号をクリアして新しい番号を格納
                         checkedItems.clear();
                         checkedItems.add(which);
@@ -195,6 +213,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (!checkedItems.isEmpty()) {
+                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                            ma.getSoundPool().play(ma.getSoundApply(),
+                                    1.0f, 1.0f, 0, 0, 1);
                             // ジャンルが決定されたら、外部連携のURL情報を取得
                             Intent intent = IntentUtil.prepareForExternalInfo(
                                     resultStation, checkedItems.get(0));
@@ -204,13 +225,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 })
                 // キャンセルボタンの設定
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!checkedItems.isEmpty()) {
+                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+                            ma.getSoundPool().play(ma.getSoundSelect(),
+                                    1.0f, 1.0f, 0, 0, 1);
+                        }
+                    }
+                })
                 .show();
     }
 
     // 候補駅ボタンが押された時
     public void callSuggestedStations(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
         Intent intent = IntentUtil.prepareForStationListActivity(MapsActivity.this, stationList,
                 centerLatLng.latitude, centerLatLng.longitude);
@@ -219,7 +251,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // ルートボタンが押された時
     public void callRoute(View v) {
-
+        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+        ma.getSoundPool().play(ma.getSoundSelect(),
+                1.0f, 1.0f, 0, 0, 1);
         // ジョルダンに経路検索のリクエストを送る
         final JorudanInfoTask jit = new JorudanInfoTask(this, stationList,
                 resultStation.getJorudanName());
