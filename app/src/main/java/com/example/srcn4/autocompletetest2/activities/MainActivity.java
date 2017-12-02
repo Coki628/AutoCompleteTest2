@@ -1,7 +1,5 @@
 package com.example.srcn4.autocompletetest2.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.AlertDialog;
@@ -13,11 +11,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +24,6 @@ import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -146,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         final Button sound = findViewById(R.id.sound);
         final Button anime = findViewById(R.id.anime);
         final Button lang = findViewById(R.id.lang);
-
         // プリファレンスからサウンドとアニメの設定値を取得
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         boolean soundFlag = pref.getBoolean("soundFlag", true);
@@ -155,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         if (!soundFlag) {
             sound.setAlpha(0.2f);
         }
-        // サウンドが無効なら、該当のボタンを半透明
+        // アニメが無効なら、該当のボタンを半透明
         if (!animeFlag) {
             anime.setAlpha(0.2f);
         }
@@ -172,30 +165,15 @@ public class MainActivity extends AppCompatActivity {
             // 背景を暗くする
             background.setAlpha(0.5f);
             // 設定ボタン以外を一時的に全て無効化する
-            findViewById(R.id.autocomplete_station).setEnabled(false);
-            findViewById(R.id.autocomplete_station2).setEnabled(false);
-            findViewById(R.id.autocomplete_station3).setEnabled(false);
-            findViewById(R.id.autocomplete_station4).setEnabled(false);
-            findViewById(R.id.autocomplete_station5).setEnabled(false);
+            for (AutoCompleteTextView textView : textViewList) {
+                // 表示されている入力ボックスを無効化
+                if (textView.getVisibility() != View.GONE) {
+                    textView.setEnabled(false);
+                }
+            }
             findViewById(R.id.search_button).setEnabled(false);
             findViewById(R.id.clear_button).setEnabled(false);
             findViewById(R.id.add_button).setEnabled(false);
-            // 6番目以降の入力ボックスも表示されていたら無効化(あとでfor文とかでまとめたい)
-            if (findViewById(R.id.autocomplete_station6).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station6).setEnabled(false);
-            }
-            if (findViewById(R.id.autocomplete_station7).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station7).setEnabled(false);
-            }
-            if (findViewById(R.id.autocomplete_station8).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station8).setEnabled(false);
-            }
-            if (findViewById(R.id.autocomplete_station9).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station9).setEnabled(false);
-            }
-            if (findViewById(R.id.autocomplete_station10).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station10).setEnabled(false);
-            }
             // 設定内ボタンの有効化
             sound.setEnabled(true);
             anime.setEnabled(true);
@@ -212,31 +190,16 @@ public class MainActivity extends AppCompatActivity {
             moveTarget(lang, -300.0f, 0.0f, 50.0f, 0.0f);
             // 暗い背景を元に戻す
             background.setAlpha(0.0f);
-            // 設定ボタン以外の有効化
-            findViewById(R.id.autocomplete_station).setEnabled(true);
-            findViewById(R.id.autocomplete_station2).setEnabled(true);
-            findViewById(R.id.autocomplete_station3).setEnabled(true);
-            findViewById(R.id.autocomplete_station4).setEnabled(true);
-            findViewById(R.id.autocomplete_station5).setEnabled(true);
+            // 設定ボタン以外を有効に戻す
+            for (AutoCompleteTextView textView : textViewList) {
+                // 表示されている入力ボックスを有効化
+                if (textView.getVisibility() != View.GONE) {
+                    textView.setEnabled(true);
+                }
+            }
             findViewById(R.id.search_button).setEnabled(true);
             findViewById(R.id.clear_button).setEnabled(true);
             findViewById(R.id.add_button).setEnabled(true);
-            // 6番目以降の入力ボックスも表示されていたら有効化(あとでfor文とかでまとめたい)
-            if (findViewById(R.id.autocomplete_station6).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station6).setEnabled(true);
-            }
-            if (findViewById(R.id.autocomplete_station7).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station7).setEnabled(true);
-            }
-            if (findViewById(R.id.autocomplete_station8).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station8).setEnabled(true);
-            }
-            if (findViewById(R.id.autocomplete_station9).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station9).setEnabled(true);
-            }
-            if (findViewById(R.id.autocomplete_station10).getVisibility() != View.GONE) {
-                findViewById(R.id.autocomplete_station10).setEnabled(true);
-            }
             // 設定内ボタンの無効化
             sound.setEnabled(false);
             anime.setEnabled(false);
