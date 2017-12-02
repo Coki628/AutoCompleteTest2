@@ -54,8 +54,4 @@ public class MyApplication extends Application {
     public MySoundManager getMySoundManager() {
         return mySoundManager;
     }
-
-    public void setMySoundManager(MySoundManager mySoundManager) {
-        this.mySoundManager = mySoundManager;
-    }
 }

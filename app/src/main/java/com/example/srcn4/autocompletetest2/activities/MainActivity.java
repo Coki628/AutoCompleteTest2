@@ -174,6 +174,22 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.search_button).setEnabled(false);
             findViewById(R.id.clear_button).setEnabled(false);
             findViewById(R.id.add_button).setEnabled(false);
+            // 6番目以降の入力ボックスも表示されていたら無効化(あとでfor文とかでまとめたい)
+            if (findViewById(R.id.autocomplete_station6).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station6).setEnabled(false);
+            }
+            if (findViewById(R.id.autocomplete_station7).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station7).setEnabled(false);
+            }
+            if (findViewById(R.id.autocomplete_station8).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station8).setEnabled(false);
+            }
+            if (findViewById(R.id.autocomplete_station9).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station9).setEnabled(false);
+            }
+            if (findViewById(R.id.autocomplete_station10).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station10).setEnabled(false);
+            }
             // 設定内ボタンの有効化
             sound.setEnabled(true);
             anime.setEnabled(true);
@@ -199,6 +215,22 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.search_button).setEnabled(true);
             findViewById(R.id.clear_button).setEnabled(true);
             findViewById(R.id.add_button).setEnabled(true);
+            // 6番目以降の入力ボックスも表示されていたら有効化(あとでfor文とかでまとめたい)
+            if (findViewById(R.id.autocomplete_station6).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station6).setEnabled(true);
+            }
+            if (findViewById(R.id.autocomplete_station7).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station7).setEnabled(true);
+            }
+            if (findViewById(R.id.autocomplete_station8).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station8).setEnabled(true);
+            }
+            if (findViewById(R.id.autocomplete_station9).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station9).setEnabled(true);
+            }
+            if (findViewById(R.id.autocomplete_station10).getVisibility() != View.GONE) {
+                findViewById(R.id.autocomplete_station10).setEnabled(true);
+            }
             // 設定内ボタンの無効化
             sound.setEnabled(false);
             anime.setEnabled(false);
@@ -338,11 +370,11 @@ public class MainActivity extends AppCompatActivity {
         // プリファレンス書き込み用のEditor
         final SharedPreferences.Editor editor = pref.edit();
         String lang = pref.getString("selectLang", "");
-        //
         if (lang.equals("")) {
             // 設定値がない(今回が最初)の場合は端末設定から読み取る
             lang = Locale.getDefault().getLanguage();
         }
+        // 現在の言語設定によって切り替え
         if (lang.equals("en")) {
             // 言語設定が英語だったら日本語に切り替え
             new AlertDialog.Builder(MainActivity.this)
