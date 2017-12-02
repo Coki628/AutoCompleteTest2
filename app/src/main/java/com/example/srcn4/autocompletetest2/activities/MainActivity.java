@@ -1,5 +1,9 @@
 package com.example.srcn4.autocompletetest2.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,7 @@ import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -137,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // 動かすボタンを取得
-        Button sound = findViewById(R.id.sound);
-        Button anime = findViewById(R.id.anime);
-        Button lang = findViewById(R.id.lang);
+        final Button sound = findViewById(R.id.sound);
+        final Button anime = findViewById(R.id.anime);
+        final Button lang = findViewById(R.id.lang);
 
         // プリファレンスからサウンドとアニメの設定値を取得
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
@@ -160,9 +166,9 @@ public class MainActivity extends AppCompatActivity {
         // 設定中フラグによって場合分け
         if (!isSettings) {
             // 設定を開く時の移動
-            moveTarget(sound, 100, -200);
-            moveTarget(anime, -100, -100);
-            moveTarget(lang, -200, 50);
+            moveTarget(sound, 0.0f, 50.0f, 0.0f, -300.0f);
+            moveTarget(anime, 0.0f, -200.0f, 0.0f, -200.0f);
+            moveTarget(lang, 0.0f, -300.0f, 0.0f, 50.0f);
             // 背景を暗くする
             background.setAlpha(0.5f);
             // 設定ボタン以外を一時的に全て無効化する
@@ -200,10 +206,10 @@ public class MainActivity extends AppCompatActivity {
             // フラグを設定中にセット
             isSettings = true;
         } else {
-            // 設定を閉じる時の移動
-            moveTarget(sound, -100, 200);
-            moveTarget(anime, 100, 100);
-            moveTarget(lang, 200, -50);
+            // 設定を閉じる時の移動(基準の0は最初に動かす前のView位置)
+            moveTarget(sound, 50.0f, 0.0f, -300.0f, 0.0f);
+            moveTarget(anime, -200.0f, 0.0f, -200.0f, 0.0f);
+            moveTarget(lang, -300.0f, 0.0f, 50.0f, 0.0f);
             // 暗い背景を元に戻す
             background.setAlpha(0.0f);
             // 設定ボタン以外の有効化
@@ -235,69 +241,48 @@ public class MainActivity extends AppCompatActivity {
             sound.setEnabled(false);
             anime.setEnabled(false);
             lang.setEnabled(false);
-            sound.setVisibility(View.INVISIBLE);
-            anime.setVisibility(View.INVISIBLE);
-            lang.setVisibility(View.INVISIBLE);
             // フラグを設定中ではないにセット
             isSettings = false;
         }
-        // 移動させる描画が0.3秒で終わるので、0.4秒後動作
+        // 移動させる描画が0.3秒で終わるので、0.32秒後動作
         Handler hdl = new Handler();
         hdl.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // 設定ボタンのクリックを再度有効化
                 v.setClickable(true);
-
+                // 設定を閉じる時には設定内ボタンを見えなくする
+                if (!isSettings) {
+                    sound.setVisibility(View.INVISIBLE);
+                    anime.setVisibility(View.INVISIBLE);
+                    lang.setVisibility(View.INVISIBLE);
+                }
             }
-        }, 400);
+        }, 320);
     }
 
     /**
-     * ターゲットを相対的に移動する
+     * 引数に与えたXY座標の位置にターゲットを移動させる
+     * ※基準の0は最初に動かす前のView位置
      *
-     * TranslateAnimationで移動アニメーションをすると、
-     * 見かけ上は移動したように見えるが実際には移動していないらしい。
-     * そこで、アニメーション完了時にlayout()を使って物理的にも移動させる。
-     *
-     * @param v 移動させるビュー
-     * @param dx X軸に対する相対移動量
-     * @param dy Y軸に対する相対移動量
+     * @param target 移動対象のView
+     * @param fromX 移動前X座標
+     * @param toX 移動後X座標
+     * @param fromY 移動前Y座標
+     * @param toY 移動後Y座標
      */
-    protected void moveTarget(final View v, int dx, int dy) {
-        if (v.getAnimation() != null) {
-            // アニメーション中なら何もしない
-            return;
-        }
-        final int left = v.getLeft();
-        final int top = v.getTop();
-        final int toX = left + dx;
-        final int toY = top + dy;
-        TranslateAnimation ta = new TranslateAnimation(left, toX, top, toY);
-        ta.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // 物理的にも移動
-                v.layout(toX, toY, toX + v.getWidth(), toY + v.getHeight());
-                // これをしないとアニメーション完了後にチラつく
-                v.setAnimation(null);
-            }
-        });
+    private void moveTarget(View target, float fromX, float toX, float fromY, float toY) {
+
+        // translationXプロパティを0fからtoXに変化させます
+        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("translationX", fromX, toX);
+        // translationYプロパティを0fからtoYに変化させます
+        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("translationY", fromY, toY);
+        // targetに対してholderX, holderYを同時に実行させます
+        ObjectAnimator objAnimator = ObjectAnimator.ofPropertyValuesHolder(
+                target, holderX, holderY);
         // animation時間 msec
-        ta.setDuration(300);
-        // 繰り返し回数
-        ta.setRepeatCount(0);
-        // animationが終わったそのまま表示にする
-        ta.setFillAfter(true);
-        // 初期位置に戻す。これをしないと２度目以降のアニメーションがおかしくなる（チラつく）
-        v.layout(0, 0, v.getWidth(), v.getHeight());
-        v.startAnimation(ta);
+        objAnimator.setDuration(300);
+        objAnimator.start();
     }
 
     // ボックス追加ボタン(踏切)が押された時
