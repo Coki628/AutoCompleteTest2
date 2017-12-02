@@ -88,6 +88,8 @@ public class SearchingActivity extends AppCompatActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
+        // ひとつめの音を停止させる
+        ma.getMySoundManager().stop(streamId1);
         // アクティビティが落ちる時に遅延処理も中断させる
         // (これやんないとバックボタン押して戻っても検索結果画面に遷移しちゃう)
         handler.removeCallbacks(r);

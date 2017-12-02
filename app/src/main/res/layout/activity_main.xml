@@ -14,110 +14,176 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <!-- 入力ボックス1と2をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke1"
+                style="@style/stroke"
+                android:layout_marginLeft="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station2"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station1"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station1" />
+            <!-- 入力ボックス1と2をつなぐ線の左側隠し -->
+            <TextView
+                android:id="@+id/stroke1_cover"
+                style="@style/strokeCover"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station2"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station1"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station1" />
+
+            <!-- 入力ボックス2と3をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke2"
+                style="@style/stroke"
+                android:layout_marginRight="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station3"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station2"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station2" />
+            <!-- 入力ボックス2と3をつなぐ線の右側隠し -->
+            <TextView
+                android:id="@+id/stroke2_cover"
+                style="@style/strokeCover"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station3"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station2"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station2" />
+
+            <!-- 入力ボックス3と4をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke3"
+                style="@style/stroke"
+                android:layout_marginLeft="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station4"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station3"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station3" />
+            <!-- 入力ボックス3と4をつなぐ線の左側隠し -->
+            <TextView
+                android:id="@+id/stroke3_cover"
+                style="@style/strokeCover"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station4"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station3"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station3" />
+
+            <!-- 入力ボックス4と5をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke4"
+                style="@style/stroke"
+                android:layout_marginRight="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station5"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station4"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station4" />
+            <!-- 入力ボックス4と5をつなぐ線の右側隠し -->
+            <TextView
+                android:id="@+id/stroke4_cover"
+                style="@style/strokeCover"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station5"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station4"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station4" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station1"
+                style="@style/inputTextBox"
                 android:layout_marginBottom="10dp"
-                android:hint ="@string/hint_input"
+                android:hint="@string/hint_input"
                 app:layout_constraintBottom_toTopOf="@+id/autocomplete_station2"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station2"
+                style="@style/inputTextBox"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/autocomplete_station3"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station3"
+                style="@style/inputTextBox"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/autocomplete_station4"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station4"
+                style="@style/inputTextBox"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/autocomplete_station5"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <!-- この5番目のテキストボックスが今のところ中心位置 -->
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station5"
+                style="@style/inputTextBox"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- 6番目以降は普段はvisibility="gone"で存在消して、必要な時に表示 -->
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station6"
+                style="@style/inputTextBox"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station5"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station5" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station7"
+                style="@style/inputTextBox"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station6"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station6" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station8"
+                style="@style/inputTextBox"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station7"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station7" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station9"
+                style="@style/inputTextBox"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station8"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station8" />
 
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station10"
+                style="@style/inputTextBox"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station9"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                style="@style/inputTextBox" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station9" />
 
             <Button
                 android:id="@+id/add_button"
+                style="@style/commonButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/fumikiri"
                 android:onClick="addInputBox"
                 android:text="@string/tsuika"
                 app:layout_constraintBottom_toBottomOf="@id/autocomplete_station2"
-                app:layout_constraintRight_toLeftOf="@id/autocomplete_station2"
-                style="@style/commonButton" />
+                app:layout_constraintRight_toLeftOf="@id/autocomplete_station2" />
 
             <Button
                 android:id="@+id/clear_button"
+                style="@style/commonButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -127,29 +193,28 @@
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station10"
-                style="@style/commonButton" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station10" />
 
             <Button
                 android:id="@+id/search_button"
-                android:layout_marginTop="8dp"
+                style="@style/commonButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableTop="@drawable/train2_logo"
                 android:onClick="search"
                 android:text="@string/kensaku"
-                android:drawableTop="@drawable/train2_logo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station10"
-                style="@style/commonButton" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station10" />
 
             <!-- 設定実行中の背景用 -->
             <TextView
                 android:id="@+id/background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/black"
                 android:alpha="0.0"
+                android:background="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -157,6 +222,7 @@
 
             <Button
                 android:id="@+id/settings_button"
+                style="@style/commonButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -166,56 +232,55 @@
                 app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station10"
-                style="@style/commonButton" />
+                app:layout_constraintTop_toBottomOf="@+id/autocomplete_station10" />
 
             <Button
                 android:id="@+id/sound"
+                style="@style/commonButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
                 android:drawableTop="@drawable/sound"
                 android:enabled="false"
-                android:visibility="invisible"
                 android:onClick="setSound"
                 android:text="@string/ongaku"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/settings_button"
                 app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/commonButton" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <Button
                 android:id="@+id/anime"
+                style="@style/commonButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
                 android:drawableTop="@drawable/anime"
                 android:enabled="false"
-                android:visibility="invisible"
                 android:onClick="setAnimation"
                 android:text="@string/anime"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/settings_button"
                 app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/commonButton" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <Button
                 android:id="@+id/lang"
+                style="@style/commonButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
                 android:drawableTop="@drawable/lang_ja"
                 android:enabled="false"
-                android:visibility="invisible"
                 android:onClick="setLanguage"
                 android:text="@string/gengo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/settings_button"
                 app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                style="@style/commonButton" />
+                app:layout_constraintRight_toRightOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
