@@ -85,16 +85,14 @@ public class StationListActivity extends AppCompatActivity {
         Object obj = IntentUtil.prepareForLINE(this, stationName);
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
-            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-            ma.getSoundPool().play(ma.getSoundApply(),
-                    1.0f, 1.0f, 0, 0, 1);
+            // 効果音の再生
+            ma.getMySoundManager().play(ma.getMySoundManager().getSoundApply());
             Intent intent = (Intent)obj;
             startActivity(intent);
             // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
         } else if (obj instanceof AlertDialog.Builder) {
-            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-            ma.getSoundPool().play(ma.getSoundSelect(),
-                    1.0f, 1.0f, 0, 0, 1);
+            // 効果音の再生
+            ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
             AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
             dialog.show();
         }
@@ -102,9 +100,8 @@ public class StationListActivity extends AppCompatActivity {
 
     // 周辺情報ボタンが押された時
     public void callMapInfo(String stationName) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // DB接続のためDAOを生成
         StationDAO dao = new StationDAO(getApplicationContext());
         // 駅情報を取得する

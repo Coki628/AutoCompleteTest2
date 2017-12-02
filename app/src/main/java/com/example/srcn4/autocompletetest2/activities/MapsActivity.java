@@ -167,16 +167,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
-            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-            ma.getSoundPool().play(ma.getSoundApply(),
-                    1.0f, 1.0f, 0, 0, 1);
+            // 効果音の再生
+            ma.getMySoundManager().play(ma.getMySoundManager().getSoundApply());
             Intent intent = (Intent)obj;
             startActivity(intent);
         // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
         } else if (obj instanceof AlertDialog.Builder) {
-            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-            ma.getSoundPool().play(ma.getSoundSelect(),
-                    1.0f, 1.0f, 0, 0, 1);
+            // 効果音の再生
+            ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
             AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
             dialog.show();
         }
@@ -184,9 +182,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // ジャンルボタンが押された時
     public void callGenre(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // 各ジャンルを配列に格納
         final String[] items = {"レストラン", "居酒屋", "カフェ", "コンビニ", "カラオケ"};
         // デフォルトでチェックされているアイテム
@@ -200,9 +197,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setSingleChoiceItems(items, defaultItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-                        ma.getSoundPool().play(ma.getSoundSelect(),
-                                1.0f, 1.0f, 0, 0, 1);
+                        // 効果音の再生
+                        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
                         // クリックされたら、今ある番号をクリアして新しい番号を格納
                         checkedItems.clear();
                         checkedItems.add(which);
@@ -213,9 +209,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (!checkedItems.isEmpty()) {
-                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-                            ma.getSoundPool().play(ma.getSoundApply(),
-                                    1.0f, 1.0f, 0, 0, 1);
+                            // 効果音の再生
+                            ma.getMySoundManager().play(ma.getMySoundManager().getSoundApply());
                             // ジャンルが決定されたら、外部連携のURL情報を取得
                             Intent intent = IntentUtil.prepareForExternalInfo(
                                     resultStation, checkedItems.get(0));
@@ -229,9 +224,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (!checkedItems.isEmpty()) {
-                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-                            ma.getSoundPool().play(ma.getSoundSelect(),
-                                    1.0f, 1.0f, 0, 0, 1);
+                            // 効果音の再生
+                            ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
                         }
                     }
                 })
@@ -240,9 +234,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // 候補駅ボタンが押された時
     public void callSuggestedStations(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
         Intent intent = IntentUtil.prepareForStationListActivity(MapsActivity.this, stationList,
                 centerLatLng.latitude, centerLatLng.longitude);
@@ -251,9 +244,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // ルートボタンが押された時
     public void callRoute(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // ジョルダンに経路検索のリクエストを送る
         final JorudanInfoTask jit = new JorudanInfoTask(this, stationList,
                 resultStation.getJorudanName());

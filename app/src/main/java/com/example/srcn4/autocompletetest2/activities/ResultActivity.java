@@ -117,16 +117,14 @@ public class ResultActivity extends AppCompatActivity {
         Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
-            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-            ma.getSoundPool().play(ma.getSoundApply(),
-                    1.0f, 1.0f, 0, 0, 1);
+            // 効果音の再生
+            ma.getMySoundManager().play(ma.getMySoundManager().getSoundApply());
             Intent intent = (Intent)obj;
             startActivity(intent);
         // AlertDialog.Builderが返却されていたら、遷移せずダイアログを表示
         } else if (obj instanceof AlertDialog.Builder) {
-            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-            ma.getSoundPool().play(ma.getSoundSelect(),
-                    1.0f, 1.0f, 0, 0, 1);
+            // 効果音の再生
+            ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
             AlertDialog.Builder dialog = (AlertDialog.Builder)obj;
             dialog.show();
         }
@@ -134,9 +132,8 @@ public class ResultActivity extends AppCompatActivity {
 
     // 周辺情報ボタンが押された時
     public void callMapInfo(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
         Intent intent = IntentUtil.prepareForMapsActivity(ResultActivity.this,
                 stationList, resultStation);
@@ -145,9 +142,8 @@ public class ResultActivity extends AppCompatActivity {
 
     // 候補駅ボタンが押された時
     public void callSuggestedStations(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // 画面遷移処理で、入力されていた駅情報のリストと中間地点座標を次の画面に送る
         Intent intent = IntentUtil.prepareForStationListActivity(ResultActivity.this,
                 stationList, centerLatLng.latitude, centerLatLng.longitude);
@@ -156,9 +152,8 @@ public class ResultActivity extends AppCompatActivity {
 
     // ルートボタンが押された時
     public void callRoute(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // ジョルダンに経路検索のリクエストを送る
         final JorudanInfoTask jit = new JorudanInfoTask(this, stationList, resultStation.getJorudanName());
         // ここから非同期処理終了後の処理を記述する

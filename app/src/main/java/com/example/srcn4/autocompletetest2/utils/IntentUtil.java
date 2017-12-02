@@ -2,7 +2,6 @@ package com.example.srcn4.autocompletetest2.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -29,26 +28,26 @@ public class IntentUtil {
     /**
      * 入力画面への遷移準備
      *
-     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param activity 実行中Activityのthis
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForMainActivity(Context context) {
+    public static Intent prepareForMainActivity(Activity activity) {
 
         // メイン画面には何も送らないのでそのまま返却
-        return new Intent(context, MainActivity.class);
+        return new Intent(activity, MainActivity.class);
     }
 
     /**
      * 検索中画面への遷移準備
      *
-     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param activity 実行中Activityのthis
      * @param stationList 入力されていた駅情報のリスト
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForSearchingActivity(Context context, ArrayList<StationDetailVO> stationList) {
+    public static Intent prepareForSearchingActivity(Activity activity, ArrayList<StationDetailVO> stationList) {
 
         // 入力されていた駅情報のリストを次の画面に送る準備
-        Intent intent = new Intent(context, SearchingActivity.class)
+        Intent intent = new Intent(activity, SearchingActivity.class)
                 .putExtra("result", stationList);
         return intent;
     }
@@ -56,14 +55,14 @@ public class IntentUtil {
     /**
      * 検索結果画面への遷移準備
      *
-     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param activity 実行中Activityのthis
      * @param stationList 入力されていた駅情報のリスト
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForResultActivity(Context context, ArrayList<StationDetailVO> stationList) {
+    public static Intent prepareForResultActivity(Activity activity, ArrayList<StationDetailVO> stationList) {
 
         // 入力されていた駅情報のリストを次の画面に送る準備
-        Intent intent = new Intent(context, ResultActivity.class)
+        Intent intent = new Intent(activity, ResultActivity.class)
                 .putExtra("result", stationList);
         return intent;
     }
@@ -71,15 +70,15 @@ public class IntentUtil {
     /**
      * 周辺情報画面への遷移準備
      *
-     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param activity 実行中Activityのthis
      * @param stationList 入力されていた駅情報のリスト
      * @param resultVO 検索結果として選ばれた候補の駅
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForMapsActivity(Context context, ArrayList<StationDetailVO> stationList, StationDetailVO resultVO) {
+    public static Intent prepareForMapsActivity(Activity activity, ArrayList<StationDetailVO> stationList, StationDetailVO resultVO) {
 
         // 入力されていた駅情報のリストと候補駅を次の画面に送る準備
-        Intent intent = new Intent(context, MapsActivity.class)
+        Intent intent = new Intent(activity, MapsActivity.class)
                 .putExtra("stationList", stationList)
                 .putExtra("resultStation", resultVO);
         return intent;
@@ -88,17 +87,17 @@ public class IntentUtil {
     /**
      * 候補駅画面への遷移準備
      *
-     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param activity 実行中Activityのthis
      * @param stationList 入力されていた駅情報のリスト
      * @param centerLat 計算された中間地点の緯度
      * @param centerLng 計算された中間地点の経度
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForStationListActivity(Context context, ArrayList<StationDetailVO> stationList,
+    public static Intent prepareForStationListActivity(Activity activity, ArrayList<StationDetailVO> stationList,
                                                 double centerLat, double centerLng) {
 
         // 入力されていた駅情報のリストと中間地点座標を次の画面に送る準備
-        Intent intent = new Intent(context, StationListActivity.class)
+        Intent intent = new Intent(activity, StationListActivity.class)
                 .putExtra("stationList", stationList)
                 .putExtra("centerLat", centerLat)
                 .putExtra("centerLng", centerLng);
@@ -108,7 +107,7 @@ public class IntentUtil {
     /**
      * ルート画面への遷移準備
      *
-     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param activity 実行中Activityのthis
      * @param stationList 入力されていた駅情報のリスト
      * @param resultStation 検索結果として選ばれた候補の駅
      * @param centerLat 計算された中間地点の緯度
@@ -116,12 +115,12 @@ public class IntentUtil {
      * @param resultInfoLists Jorudan検索結果の経路を格納したVOのリストの配列
      * @return Intent 画面遷移に必要な情報を保持したIntent
      */
-    public static Intent prepareForRouteActivity(Context context, ArrayList<StationDetailVO> stationList,
+    public static Intent prepareForRouteActivity(Activity activity, ArrayList<StationDetailVO> stationList,
                 StationDetailVO resultStation, double centerLat, double centerLng,
                 ArrayList<StationTransferVO>[] resultInfoLists) {
 
         // 入力されていた駅情報のリストと候補駅とJorudan情報を次の画面に送る準備
-        Intent intent = new Intent(context, RouteActivity.class)
+        Intent intent = new Intent(activity, RouteActivity.class)
                 .putExtra("stationList", stationList)
                 .putExtra("resultStation", resultStation)
                 .putExtra("centerLat", centerLat)
@@ -181,24 +180,22 @@ public class IntentUtil {
     /**
      * 共有(LINE)への遷移準備
      *
-     * @param context コンテキスト(実行中ActivityのthisでOK)
+     * @param activity 実行中Activityのthis
      * @param stationName 検索結果として選ばれた候補駅の駅名
      * @return Intent 画面遷移(LINE起動)に必要な情報を保持したIntent
      */
-    public static Object prepareForLINE(Context context, String stationName) {
+    public static Object prepareForLINE(Activity activity, String stationName) {
 
         // LINEのアプリID
         String LINE_APP_ID = "jp.naver.line.android";
         // LINEで送る用の改行コード
         String LINE_SEPARATOR = "%0D%0A";
-        // コンテキストをアクティビティにキャスト
-        Activity activity = (Activity)context;
         // アプリケーションクラスのインスタンスを取得
         final MyApplication ma = (MyApplication)activity.getApplication();
 
         try {
             // パッケージ情報の取得
-            PackageManager pm = context.getPackageManager();
+            PackageManager pm = activity.getPackageManager();
             // LINEがインストールされているかの確認
             ApplicationInfo appInfo = pm.getApplicationInfo(LINE_APP_ID, PackageManager.GET_META_DATA);
             // インストールされてたら、LINEへ
@@ -213,15 +210,14 @@ public class IntentUtil {
 
         } catch(PackageManager.NameNotFoundException e) {
             //インストールされてなかったら、インストールを要求する
-            AlertDialog.Builder dialog = new AlertDialog.Builder(context)
+            AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
                     .setTitle("LINEが見つかりません。")
                     .setMessage("LINEをインストールしてやり直して下さい。")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-                            ma.getSoundPool().play(ma.getSoundSelect(),
-                                    1.0f, 1.0f, 0, 0, 1);
+                            // 効果音の再生
+                            ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
                         }
                     })
                     .setCancelable(false);

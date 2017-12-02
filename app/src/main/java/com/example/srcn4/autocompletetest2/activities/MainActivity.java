@@ -74,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
     }
     // 検索ボタンが押された時
     public void search(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundApply(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundApply());
         // 駅情報格納用VOのリスト
         ArrayList<StationDetailVO> stationList = new ArrayList<>();
 
@@ -124,9 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
     // クリアボタンが押された時呼ばれる
     public void clearAll(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ, 再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // 入力されたテキストを全て削除
         for (AutoCompleteTextView textView : textViewList) {
 
@@ -136,9 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
     // 設定ボタンが押された時呼ばれる
     public void callSettings(final View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // 動かすボタンを取得
         Button sound = findViewById(R.id.sound);
         Button anime = findViewById(R.id.anime);
@@ -273,9 +270,8 @@ public class MainActivity extends AppCompatActivity {
 
     // ボックス追加ボタン(踏切)が押された時
     public void addInputBox(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
 
         for (AutoCompleteTextView view : textViewList) {
             // 1～10のテキストビューを確認して、GONEを見つけたらVISIBLEにする
@@ -288,31 +284,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setSound(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // プリファレンスからサウンドの設定値を取得
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         // プリファレンス書き込み用のEditor
         SharedPreferences.Editor editor = pref.edit();
         boolean soundFlag = pref.getBoolean("soundFlag", true);
-        // サウンドが有効なら、無効にしてボタンも半透明
+        // サウンドが有効なら無効にして、ボタンも半透明
         if (soundFlag) {
+            // プリファレンスに設定を保存
             editor.putBoolean("soundFlag", false);
             editor.apply();
+            // 即時適用させるので、mySoundManagerオブジェクトにも設定を反映
+            ma.getMySoundManager().setSoundFlag(false);
+            // ボタン透明度の変更
             v.setAlpha(0.2f);
-        // 無効なら有効にして透明度も戻す
+        // 無効なら有効にして、透明度も戻す
         } else {
             editor.putBoolean("soundFlag", true);
             editor.apply();
+            ma.getMySoundManager().setSoundFlag(true);
             v.setAlpha(1.0f);
         }
     }
 
     public void setAnimation(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // プリファレンスからアニメの設定値を取得
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         // プリファレンス書き込み用のEditor
@@ -332,9 +331,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setLanguage(View v) {
-        // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-        ma.getSoundPool().play(ma.getSoundSelect(),
-                1.0f, 1.0f, 0, 0, 1);
+        // 効果音の再生
+        ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // プリファレンスから言語の設定値を取得
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         // プリファレンス書き込み用のEditor
@@ -360,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
                             new AlertDialog.Builder(MainActivity.this)
                                     .setTitle("Language settings changed: English to Japanese")
                                     .setMessage("Would you like to enable the change now?")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // アクティビティ再読み込み
@@ -368,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
                                             startActivity(getIntent());
                                         }
                                     })
-                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // 何もしない
@@ -402,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
                             new AlertDialog.Builder(MainActivity.this)
                                     .setTitle("変更完了：日本語→英語")
                                     .setMessage("変更をすぐに反映しますか？")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("はい", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // アクティビティ再読み込み
@@ -410,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
                                             startActivity(getIntent());
                                         }
                                     })
-                                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // 何もしない

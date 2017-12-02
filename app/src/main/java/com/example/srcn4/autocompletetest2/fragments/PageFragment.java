@@ -120,7 +120,7 @@ public class PageFragment extends Fragment {
             String transferStr = ConvertUtil.addKai(resultInfoLists[i].get(0).getTransfer());
             // 乗り換え駅リストを表示用に整形
             String stations = ConvertUtil.concatTranStations(resultInfoLists[i].get(0).getTransferList());
-            // route_info1～5に表示用の経路情報を格納していく
+            // route_info1～10に表示用の経路情報を格納していく
             TextView routeTitle =
                     view.findViewById(getResources().getIdentifier(
                     "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))

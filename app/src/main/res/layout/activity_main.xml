@@ -211,7 +211,6 @@
                 android:visibility="invisible"
                 android:onClick="setLanguage"
                 android:text="@string/gengo"
-
                 app:layout_constraintBottom_toBottomOf="@+id/settings_button"
                 app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintLeft_toLeftOf="parent"
