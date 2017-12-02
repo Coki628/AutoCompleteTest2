@@ -42,21 +42,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // アプリケーションクラスのインスタンスを取得
         ma = (MyApplication)this.getApplication();
-
-        // XMLとの紐付け
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station2));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station3));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station4));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station5));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station6));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station7));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station8));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station9));
-        textViewList.add((AutoCompleteTextView)findViewById(R.id.autocomplete_station10));
-
+        // XMLとの紐付け：1～10の入力ボックス
+        for (int i = 0; i < 10; i++) {
+            textViewList.add((AutoCompleteTextView)findViewById(getResources().getIdentifier(
+                    "autocomplete_station" + String.valueOf(i+1), "id", getPackageName())));
+        }
         for (AutoCompleteTextView textView : textViewList) {
             // 自分で定義したアダプターをビューに設定する
             MyAdapterForAutoComplete myAdapter = new MyAdapterForAutoComplete(getApplicationContext());
