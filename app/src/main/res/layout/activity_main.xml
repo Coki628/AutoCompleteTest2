@@ -81,6 +81,96 @@
                 app:layout_constraintRight_toRightOf="@+id/autocomplete_station4"
                 app:layout_constraintTop_toTopOf="@+id/autocomplete_station4" />
 
+            <!-- 入力ボックス5と6をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke5"
+                style="@style/stroke"
+                android:layout_marginLeft="1dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station6"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station5"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station5" />
+            <!-- 入力ボックス5と6をつなぐ線の左側隠し -->
+            <TextView
+                android:id="@+id/stroke5_cover"
+                style="@style/strokeCover"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station6"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station5"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station5" />
+
+            <!-- 入力ボックス6と7をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke6"
+                style="@style/stroke"
+                android:layout_marginRight="1dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station7"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station6"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station6" />
+            <!-- 入力ボックス6と7をつなぐ線の右側隠し -->
+            <TextView
+                android:id="@+id/stroke6_cover"
+                style="@style/strokeCover"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station7"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station6"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station6" />
+
+            <!-- 入力ボックス7と8をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke7"
+                style="@style/stroke"
+                android:layout_marginLeft="1dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station8"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station7"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station7" />
+            <!-- 入力ボックス7と8をつなぐ線の左側隠し -->
+            <TextView
+                android:id="@+id/stroke7_cover"
+                style="@style/strokeCover"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station8"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station7"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station7" />
+
+            <!-- 入力ボックス8と9をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke8"
+                style="@style/stroke"
+                android:layout_marginRight="1dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station9"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station8"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station8" />
+            <!-- 入力ボックス8と9をつなぐ線の右側隠し -->
+            <TextView
+                android:id="@+id/stroke8_cover"
+                style="@style/strokeCover"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station9"
+                app:layout_constraintRight_toRightOf="@+id/autocomplete_station8"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station8" />
+
+            <!-- 入力ボックス9と10をつなぐ線 -->
+            <TextView
+                android:id="@+id/stroke9"
+                style="@style/stroke"
+                android:layout_marginLeft="1dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station10"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station9"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station9" />
+            <!-- 入力ボックス9と10をつなぐ線の左側隠し -->
+            <TextView
+                android:id="@+id/stroke9_cover"
+                style="@style/strokeCover"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/autocomplete_station10"
+                app:layout_constraintLeft_toLeftOf="@+id/autocomplete_station9"
+                app:layout_constraintTop_toTopOf="@+id/autocomplete_station9" />
+
             <AutoCompleteTextView
                 android:id="@+id/autocomplete_station1"
                 style="@style/inputTextBox"

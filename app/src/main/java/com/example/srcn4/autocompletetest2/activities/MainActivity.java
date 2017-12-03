@@ -31,8 +31,12 @@ import java.util.Locale;
  */
 public class MainActivity extends AppCompatActivity {
 
-    // 入力された内容を格納するリスト
+    // 1～10の入力ボックスを格納するリスト
     private ArrayList<AutoCompleteTextView> textViewList = new ArrayList<>();
+    // 入力ボックス左右の線を格納するリスト
+    private ArrayList<TextView> strokeList = new ArrayList<>();
+    // 上記左右の線の反対側を隠すカバーを格納するリスト
+    private ArrayList<TextView> strokeCoverList = new ArrayList<>();
     // 設定画面実行フラグ
     private boolean isSettings = false;
     // 全アクティビティで使えるアプリケーションクラス
@@ -46,9 +50,16 @@ public class MainActivity extends AppCompatActivity {
         // アプリケーションクラスのインスタンスを取得
         ma = (MyApplication)this.getApplication();
         // XMLとの紐付け：1～10の入力ボックス
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             textViewList.add((AutoCompleteTextView)findViewById(getResources().getIdentifier(
-                    "autocomplete_station" + String.valueOf(i+1), "id", getPackageName())));
+                    "autocomplete_station" + String.valueOf(i), "id", getPackageName())));
+        }
+        // 1～9の左右線とカバー
+        for (int i = 1; i <= 9; i++) {
+            strokeList.add((TextView)findViewById(getResources().getIdentifier(
+                    "stroke" + String.valueOf(i), "id", getPackageName())));
+            strokeCoverList.add((TextView)findViewById(getResources().getIdentifier(
+                    "stroke" + String.valueOf(i) + "_cover", "id", getPackageName())));
         }
         for (AutoCompleteTextView textView : textViewList) {
             // 自分で定義したアダプターをビューに設定する
@@ -247,10 +258,26 @@ public class MainActivity extends AppCompatActivity {
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
 
         for (AutoCompleteTextView view : textViewList) {
-            // 1～10のテキストビューを確認して、GONEを見つけたらVISIBLEにする
+            // 1～10の入力ボックスを確認して、GONEを見つけたらVISIBLEにする
             if (view.getVisibility() == View.GONE) {
                 view.setVisibility(View.VISIBLE);
-                // ひとつVISIBLEにしたら(表示されるビューがひとつ増える)、すぐに処理終了
+                // ひとつVISIBLEにしたら(表示されるビューがひとつ増える)、すぐにfor文のループ終了
+                break;
+            }
+        }
+        for (TextView view : strokeList) {
+            // 1～9の左右の線を確認して、GONEを見つけたらVISIBLEにする
+            if (view.getVisibility() == View.GONE) {
+                view.setVisibility(View.VISIBLE);
+                // ひとつVISIBLEにしたら(表示されるビューがひとつ増える)、すぐにfor文のループ終了
+                break;
+            }
+        }
+        for (TextView view : strokeCoverList) {
+            // 1～9の左右線のカバーを確認して、GONEを見つけたらVISIBLEにする
+            if (view.getVisibility() == View.GONE) {
+                view.setVisibility(View.VISIBLE);
+                // ひとつVISIBLEにしたら(表示されるビューがひとつ増える)、すぐにfor文のループ終了
                 break;
             }
         }
