@@ -1,15 +1,13 @@
 package com.example.srcn4.autocompletetest2.media;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 
 import com.example.srcn4.autocompletetest2.R;
-
-import static android.content.Context.MODE_PRIVATE;
+import com.example.srcn4.autocompletetest2.storage.MyPreferenceManager;
 
 /**
  * 効果音管理クラス
@@ -32,8 +30,8 @@ public class MySoundManager {
     public MySoundManager(Context context) {
 
         // プリファレンスからサウンドの設定値を取得
-        SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
-        this.soundFlag = pref.getBoolean("soundFlag", true);
+        MyPreferenceManager mpm = new MyPreferenceManager(context);
+        this.soundFlag = mpm.getSoundFlag();
 
         // SoundPoolの初期化
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

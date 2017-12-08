@@ -1,10 +1,10 @@
 package com.example.srcn4.autocompletetest2.application;
 
 import android.app.Application;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
 import com.example.srcn4.autocompletetest2.media.MySoundManager;
+import com.example.srcn4.autocompletetest2.storage.MyPreferenceManager;
 
 import java.util.Locale;
 
@@ -24,10 +24,9 @@ public class MyApplication extends Application {
 
         // 効果音の初期化処理を行う
         mySoundManager = new MySoundManager(getApplicationContext());
-
         // アプリ内言語設定の確認
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        String lang = pref.getString("selectLang", "");
+        MyPreferenceManager mpm = new MyPreferenceManager(getApplicationContext());
+        String lang = mpm.getSelectLang();
         setLocale(lang);
     }
 

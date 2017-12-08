@@ -5,7 +5,6 @@ import android.animation.PropertyValuesHolder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import com.example.srcn4.autocompletetest2.R;
 import com.example.srcn4.autocompletetest2.adapters.MyAdapterForAutoComplete;
 import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
+import com.example.srcn4.autocompletetest2.storage.MyPreferenceManager;
 import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSettings = false;
     // 全アクティビティで使えるアプリケーションクラス
     private MyApplication ma;
+    // プリファレンス管理クラス
+    private MyPreferenceManager mpm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         // アプリケーションクラスのインスタンスを取得
         ma = (MyApplication)this.getApplication();
+        // プリファレンス管理クラスのインスタンスを取得
+        mpm = new MyPreferenceManager(getApplicationContext());
         // XMLとの紐付け：1～10の入力ボックス
         for (int i = 1; i <= 10; i++) {
             textViewList.add((AutoCompleteTextView)findViewById(getResources().getIdentifier(
@@ -107,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
         // 駅名が入力されていれば画面遷移へ
         if (!stationList.isEmpty()) {
             // プリファレンスからアニメの設定値を取得
-            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-            boolean animeFlag = pref.getBoolean("animeFlag", true);
+            boolean animeFlag = mpm.getAnimeFlag();
             // アニメが有効なら検索中画面、無効なら直接検索結果画面へ遷移
             if (animeFlag) {
                 // 画面遷移処理で、駅情報のリストを次の画面に送る
@@ -145,9 +148,8 @@ public class MainActivity extends AppCompatActivity {
         final Button anime = findViewById(R.id.anime);
         final Button lang = findViewById(R.id.lang);
         // プリファレンスからサウンドとアニメの設定値を取得
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        boolean soundFlag = pref.getBoolean("soundFlag", true);
-        boolean animeFlag = pref.getBoolean("animeFlag", true);
+        boolean soundFlag = mpm.getSoundFlag();
+        boolean animeFlag = mpm.getAnimeFlag();
         // サウンドが無効なら、該当のボタンを半透明
         if (!soundFlag) {
             sound.setAlpha(0.2f);
@@ -287,23 +289,18 @@ public class MainActivity extends AppCompatActivity {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // プリファレンスからサウンドの設定値を取得
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        // プリファレンス書き込み用のEditor
-        SharedPreferences.Editor editor = pref.edit();
-        boolean soundFlag = pref.getBoolean("soundFlag", true);
+        boolean soundFlag = mpm.getSoundFlag();
         // サウンドが有効なら無効にして、ボタンも半透明
         if (soundFlag) {
             // プリファレンスに設定を保存
-            editor.putBoolean("soundFlag", false);
-            editor.apply();
+            mpm.setSoundFlag(false);
             // 即時適用させるので、mySoundManagerオブジェクトにも設定を反映
             ma.getMySoundManager().setSoundFlag(false);
             // ボタン透明度の変更
             v.setAlpha(0.2f);
         // 無効なら有効にして、透明度も戻す
         } else {
-            editor.putBoolean("soundFlag", true);
-            editor.apply();
+            mpm.setSoundFlag(true);
             ma.getMySoundManager().setSoundFlag(true);
             v.setAlpha(1.0f);
         }
@@ -313,19 +310,14 @@ public class MainActivity extends AppCompatActivity {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // プリファレンスからアニメの設定値を取得
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        // プリファレンス書き込み用のEditor
-        SharedPreferences.Editor editor = pref.edit();
-        boolean animeFlag = pref.getBoolean("animeFlag", true);
+        boolean animeFlag = mpm.getAnimeFlag();
         // アニメが有効なら、無効にしてボタンも半透明
         if (animeFlag) {
-            editor.putBoolean("animeFlag", false);
-            editor.apply();
+            mpm.setAnimeFlag(false);
             v.setAlpha(0.2f);
             // 無効なら有効にして透明度も戻す
         } else {
-            editor.putBoolean("animeFlag", true);
-            editor.apply();
+            mpm.setAnimeFlag(true);
             v.setAlpha(1.0f);
         }
     }
@@ -334,10 +326,7 @@ public class MainActivity extends AppCompatActivity {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // プリファレンスから言語の設定値を取得
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        // プリファレンス書き込み用のEditor
-        final SharedPreferences.Editor editor = pref.edit();
-        String lang = pref.getString("selectLang", "");
+        String lang = mpm.getSelectLang();
         if (lang.equals("")) {
             // 設定値がない(今回が最初)の場合は端末設定から読み取る
             lang = Locale.getDefault().getLanguage();
@@ -353,8 +342,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             ma.setLocale("ja");
                             // プリファレンスに言語設定を登録
-                            editor.putString("selectLang", "ja");
-                            editor.apply();
+                            mpm.setSelectLang("ja");
                             new AlertDialog.Builder(MainActivity.this)
                                     .setTitle("Language settings changed: English to Japanese")
                                     .setMessage("Would you like to enable the change now?")
@@ -395,8 +383,7 @@ public class MainActivity extends AppCompatActivity {
 
                             ma.setLocale("en");
                             // プリファレンスに言語設定を登録
-                            editor.putString("selectLang", "en");
-                            editor.apply();
+                            mpm.setSelectLang("en");
                             new AlertDialog.Builder(MainActivity.this)
                                     .setTitle("変更完了：日本語→英語")
                                     .setMessage("変更をすぐに反映しますか？")
