@@ -89,8 +89,6 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
         viewPager.addOnPageChangeListener(this);
         // ViewPagerをTabLayoutを設定
         tabLayout.setupWithViewPager(viewPager);
-        // タブをタップ可能にするためにviewPagerより前面に移動
-        tabLayout.bringToFront();
     }
 
     @Override
