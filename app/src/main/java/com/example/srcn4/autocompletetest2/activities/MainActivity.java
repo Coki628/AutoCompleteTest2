@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             StationDetailVO vo = dao.selectStationByName(station);
             // レコードが取得できなかった時は処理中断
             if (vo == null) {
-                Toast.makeText(getApplicationContext(), station + "：駅情報が取得できません", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), station + getString(R.string.main_toast1), Toast.LENGTH_SHORT).show();
                 return;
             }
             // 駅情報を格納したVOをリストに格納
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             // 駅が入力されていなければ遷移せずに処理終了
-            Toast.makeText(getApplicationContext(), "駅名を入力して下さい", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.main_toast2), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -18,4 +18,8 @@
     <string name="tsuika">追加</string>
     <string name="hint_input">駅名を入力してね</string>
 
+    <!-- Javaソースの方もIDで文字列呼び出せばローカライズできる -->
+    <string name="main_toast1">：駅情報が取得できません</string>
+    <string name="main_toast2">駅名を入力して下さい</string>
+
 </resources>
