@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class ResultActivity extends AppCompatActivity {
     private boolean isBlink = false;
     // 全アクティビティで使えるアプリケーションクラス
     private MyApplication ma;
+    // 文字スクロール制御フラグ
+    private boolean is_scroll = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +77,27 @@ public class ResultActivity extends AppCompatActivity {
         resultStation = dao.selectStationByName(stationDistanceList.get(0).getName());
         // 駅名を表示
         searchResult = findViewById(R.id.search_result);
+        // Touchモード時にViewがフォーカスを取得可能か設定(文字スクロールに必要みたい)
+        searchResult.setFocusableInTouchMode(true);
         searchResultKana = findViewById(R.id.search_result_kana);
         searchResult.setText(resultStation.getName());
         searchResultKana.setText(resultStation.getKana());
+        // 結果の駅名をタップすると、表示しきれない時は文字列スクロールの切り替え
+        searchResult.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (is_scroll) {
+                            // 文字列を表示し切れないときには後ろを省略(元々はこっち)
+                            searchResult.setEllipsize(TextUtils.TruncateAt.END);
+                            is_scroll = false;
+                        } else {
+                            // 文字列を表示し切れないときにはスクロールする
+                            searchResult.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                            is_scroll = true;
+                        }
+                    }
+                }
+        );
         // 駅名を点滅させるタイマーを設定する
         timer = new Timer();
         handler = new Handler();
