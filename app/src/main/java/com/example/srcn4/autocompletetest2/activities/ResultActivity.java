@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.TextView;
 
@@ -44,11 +47,19 @@ public class ResultActivity extends AppCompatActivity {
     private MyApplication ma;
     // 文字スクロール制御フラグ
     private boolean is_scroll = false;
+    // ピンチアウト(2本指での拡大)に対応させるための定義
+    ConstraintLayout layout;
+    private float scale = 1f;
+    private ScaleGestureDetector detector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
+        // ここでID取得したビュー(今回はレイアウト)が、ピンチアウトの対象になる
+        layout = findViewById(R.id.result_train);
+        detector = new ScaleGestureDetector(this,new ScaleListener());
 
         // アプリケーションクラスのインスタンスを取得
         ma = (MyApplication)this.getApplication();
@@ -193,5 +204,24 @@ public class ResultActivity extends AppCompatActivity {
         });
         // 非同期処理の実行
         jit.execute();
+    }
+
+    // ピンチアウト用に作成
+    public boolean onTouchEvent(MotionEvent event) {
+        //re-route the Touch Events to the ScaleListener class
+        detector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    // ピンチアウト用に作成
+    private class ScaleListener
+            extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scale *= detector.getScaleFactor();
+            layout.setScaleX(scale);
+            layout.setScaleY(scale);
+            return true;
+        }
     }
 }
