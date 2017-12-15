@@ -21,5 +21,14 @@
     <!-- Javaソースの方もIDで文字列呼び出せばローカライズできる -->
     <string name="main_toast1">：駅情報が取得できません</string>
     <string name="main_toast2">駅名を入力して下さい</string>
+    <!-- ダイアログ内のメッセージ -->
+    <string name="main_dialog1_title">言語設定変更：日本語→英語</string>
+    <string name="main_dialog1_message">言語設定を変更しますか？</string>
+    <string name="main_dialog1_positive">OK</string>
+    <string name="main_dialog1_negative">キャンセル</string>
+    <string name="main_dialog2_title">変更完了：日本語→英語</string>
+    <string name="main_dialog2_message">変更をすぐに反映しますか？</string>
+    <string name="main_dialog2_positive">はい</string>
+    <string name="main_dialog2_negative">いいえ</string>
 
 </resources>

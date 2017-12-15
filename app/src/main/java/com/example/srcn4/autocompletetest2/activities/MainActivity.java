@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private MyApplication ma;
     // プリファレンス管理クラス
     private MyPreferenceManager mpm;
+    // 言語設定を保持する変数
+    private String lang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 音楽on/offボタン
     public void setSound(View v) {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
@@ -306,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // アニメーションon/offボタン
     public void setAnimation(View v) {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
@@ -322,97 +326,63 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 言語設定切り替えボタン
     public void setLanguage(View v) {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
         // プリファレンスから言語の設定値を取得
-        String lang = mpm.getSelectLang();
+        lang = mpm.getSelectLang();
         if (lang.equals("")) {
             // 設定値がない(今回が最初)の場合は端末設定から読み取る
             lang = Locale.getDefault().getLanguage();
         }
-        // 現在の言語設定によって切り替え
-        if (lang.equals("en")) {
-            // 言語設定が英語だったら日本語に切り替え
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("Language settings: English to Japanese")
-                    .setMessage("Would you like to change the language settings?")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+        // 言語設定変更のダイアログを表示
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(getString(R.string.main_dialog1_title))
+                .setMessage(getString(R.string.main_dialog1_message))
+                .setPositiveButton(getString(R.string.main_dialog1_positive), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 即時反映させるかを聞くダイアログを表示
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle(getString(R.string.main_dialog2_title))
+                                .setMessage(getString(R.string.main_dialog2_message))
+                                .setPositiveButton(getString(R.string.main_dialog2_positive), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // アクティビティ再読み込み
+                                        finish();
+                                        startActivity(getIntent());
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.main_dialog2_negative), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // 何もしない
+                                    }
+                                })
+                                .setCancelable(false)       //画面外タッチによるキャンセル阻止
+                                .show();
+                        // ひとつめのダイアログをOKしたら端末の言語設定を切り替え
+                        if (lang.equals("en")) {
                             ma.setLocale("ja");
                             // プリファレンスに言語設定を登録
                             mpm.setSelectLang("ja");
-                            new AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("Language settings changed: English to Japanese")
-                                    .setMessage("Would you like to enable the change now?")
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // アクティビティ再読み込み
-                                            finish();
-                                            startActivity(getIntent());
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // 何もしない
-                                        }
-                                    })
-                                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
-                                    .show();
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 何もしない
-                        }
-                    })
-                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
-                    .show();
-        } else {
-            // 言語設定が日本語・その他だったら英語に切り替え
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("言語設定変更：日本語→英語")
-                    .setMessage("言語設定を変更しますか？")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
+                        } else {
                             ma.setLocale("en");
                             // プリファレンスに言語設定を登録
                             mpm.setSelectLang("en");
-                            new AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("変更完了：日本語→英語")
-                                    .setMessage("変更をすぐに反映しますか？")
-                                    .setPositiveButton("はい", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // アクティビティ再読み込み
-                                            finish();
-                                            startActivity(getIntent());
-                                        }
-                                    })
-                                    .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // 何もしない
-                                        }
-                                    })
-                                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
-                                    .show();
                         }
-                    })
-                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 何もしない
-                        }
-                    })
-                    .setCancelable(false)       //画面外タッチによるキャンセル阻止
-                    .show();
-        }
+                    }
+                })
+                .setNegativeButton(getString(R.string.main_dialog1_negative), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 何もしない
+                    }
+                })
+                //画面外タッチによるキャンセル阻止
+                .setCancelable(false)
+                .show();
     }
 }
