@@ -35,6 +35,8 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
     TabLayout tabLayout;
     // 全アクティビティで使えるアプリケーションクラス
     private MyApplication ma;
+    // BGMを停止させる時使いたいので宣言しておく
+    private int streamId1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,20 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
         viewPager.addOnPageChangeListener(this);
         // ViewPagerをTabLayoutを設定
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // BGMの再生
+        streamId1 = ma.getMySoundManager().playLoop(ma.getMySoundManager().getTrainMusic());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // BGMの停止
+        ma.getMySoundManager().stop(streamId1);
     }
 
     @Override

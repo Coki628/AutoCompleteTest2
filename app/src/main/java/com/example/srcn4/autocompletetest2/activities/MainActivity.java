@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private MyPreferenceManager mpm;
     // 言語設定を保持する変数
     private String lang;
+    // BGMを停止させる時使いたいので宣言しておく
+    private int streamId1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         ma = (MyApplication)this.getApplication();
         // プリファレンス管理クラスのインスタンスを取得
         mpm = new MyPreferenceManager(getApplicationContext());
+
         // XMLとの紐付け：1～10の入力ボックス
         for (int i = 1; i <= 10; i++) {
             textViewList.add((AutoCompleteTextView)findViewById(getResources().getIdentifier(
@@ -82,6 +85,21 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // BGMの再生
+        streamId1 = ma.getMySoundManager().playLoop(ma.getMySoundManager().getTrainMusic());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // BGMの停止
+        ma.getMySoundManager().stop(streamId1);
+    }
+
     // 検索ボタンが押された時
     public void search(View v) {
         // 効果音の再生
@@ -295,6 +313,8 @@ public class MainActivity extends AppCompatActivity {
         boolean soundFlag = mpm.getSoundFlag();
         // サウンドが有効なら無効にして、ボタンも半透明
         if (soundFlag) {
+            // BGMの停止
+            ma.getMySoundManager().stop(streamId1);
             // プリファレンスに設定を保存
             mpm.setSoundFlag(false);
             // 即時適用させるので、mySoundManagerオブジェクトにも設定を反映
@@ -306,6 +326,8 @@ public class MainActivity extends AppCompatActivity {
             mpm.setSoundFlag(true);
             ma.getMySoundManager().setSoundFlag(true);
             v.setAlpha(1.0f);
+            // BGMの再生
+            streamId1 = ma.getMySoundManager().playLoop(ma.getMySoundManager().getTrainMusic());
         }
     }
 

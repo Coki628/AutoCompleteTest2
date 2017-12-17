@@ -23,6 +23,7 @@ public class MySoundManager {
     private int soundApply;
     private int soundTrain1;
     private int soundTrain2;
+    private int trainMusic;
     // サウンドon/offフラグ
     private boolean soundFlag;
 
@@ -52,6 +53,7 @@ public class MySoundManager {
         soundApply = this.soundPool.load(context, R.raw.decision7, 1);
         soundTrain1 = this.soundPool.load(context, R.raw.train_pass2, 1);
         soundTrain2 = this.soundPool.load(context, R.raw.train_horn2, 1);
+        trainMusic = this.soundPool.load(context, R.raw.train_music_3_2, 1);
     }
 
     // 音の再生
@@ -60,6 +62,18 @@ public class MySoundManager {
         if (soundFlag) {
             // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
             return soundPool.play(soundID, 1.0f, 1.0f, 0, 0, 1);
+        } else {
+            // 返却値はストリームID、音がなければ0
+            return 0;
+        }
+    }
+
+    // 音の再生(ループあり)
+    public int playLoop(int soundID) {
+        // 再生はサウンドがonの時のみ行う
+        if (soundFlag) {
+            // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
+            return soundPool.play(soundID, 1.0f, 1.0f, 0, -1, 1);
         } else {
             // 返却値はストリームID、音がなければ0
             return 0;
@@ -104,6 +118,9 @@ public class MySoundManager {
     }
     public int getSoundTrain2() {
         return soundTrain2;
+    }
+    public int getTrainMusic() {
+        return trainMusic;
     }
 
     // on/offのフラグは逆に外部からは設定しかしないのでSetterのみ定義

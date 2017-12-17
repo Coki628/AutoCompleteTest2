@@ -40,6 +40,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<LatLng> latLngList = new ArrayList<>();
     // 全アクティビティで使えるアプリケーションクラス
     private MyApplication ma;
+    // BGMを停止させる時使いたいので宣言しておく
+    private int streamId1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // BGMの再生
+        streamId1 = ma.getMySoundManager().playLoop(ma.getMySoundManager().getTrainMusic());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // BGMの停止
+        ma.getMySoundManager().stop(streamId1);
     }
 
     // マップ使用準備が完了したら呼ばれる
@@ -143,22 +159,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onInfoWindowClick(Marker marker) {
         // 情報ウインドウがタップされた時の処理
-//        new AlertDialog.Builder(this)
-//                .setTitle("周辺駅検索")
-//                .setMessage("この地点の周辺駅情報を表示しますか？")
-//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // 周辺駅表示
-//                    }
-//                })
-//                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // 何もしない
-//                    }
-//                })
-//                .show();
     }
 
     // 共有ボタンが押された時

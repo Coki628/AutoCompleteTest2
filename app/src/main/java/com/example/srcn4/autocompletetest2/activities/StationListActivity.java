@@ -31,6 +31,8 @@ public class StationListActivity extends AppCompatActivity {
     public static int y = 0;
     // 全アクティビティで使えるアプリケーションクラス
     private MyApplication ma;
+    // BGMを停止させる時使いたいので宣言しておく
+    private int streamId1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,20 @@ public class StationListActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // BGMの再生
+        streamId1 = ma.getMySoundManager().playLoop(ma.getMySoundManager().getTrainMusic());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // BGMの停止
+        ma.getMySoundManager().stop(streamId1);
     }
 
     // 共有ボタンが押された時

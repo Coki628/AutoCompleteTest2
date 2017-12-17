@@ -51,6 +51,8 @@ public class ResultActivity extends AppCompatActivity {
     ConstraintLayout layout;
     private float scale = 1f;
     private ScaleGestureDetector detector;
+    // BGMを停止させる時使いたいので宣言しておく
+    private int streamId1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class ResultActivity extends AppCompatActivity {
 
         // ここでID取得したビュー(今回はレイアウト)が、ピンチアウトの対象になる
         layout = findViewById(R.id.result_train);
-        detector = new ScaleGestureDetector(this,new ScaleListener());
+        detector = new ScaleGestureDetector(this, new ScaleListener());
 
         // アプリケーションクラスのインスタンスを取得
         ma = (MyApplication)this.getApplication();
@@ -133,6 +135,20 @@ public class ResultActivity extends AppCompatActivity {
             }
         // 1000ミリ秒後に1000ミリ秒間隔でタスク実行
         }, 1000, 1000);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // BGMの再生
+        streamId1 = ma.getMySoundManager().playLoop(ma.getMySoundManager().getTrainMusic());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // BGMの停止
+        ma.getMySoundManager().stop(streamId1);
     }
 
     @Override
