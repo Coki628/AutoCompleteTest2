@@ -61,7 +61,7 @@ public class MySoundManager {
         // 再生はサウンドがonの時のみ行う
         if (soundFlag) {
             // 効果音の再生(ロードしたID, 左音量, 右音量, 優先度, ループ,再生速度)
-            return soundPool.play(soundID, 1.0f, 1.0f, 0, 0, 1);
+            return soundPool.play(soundID, 0.5f, 0.5f, 0, 0, 1);
         } else {
             // 返却値はストリームID、音がなければ0
             return 0;
