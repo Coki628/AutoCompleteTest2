@@ -46,10 +46,9 @@ public class StationDetailVO extends StationVO {
 
     @Override
     public String toString() {
-        return "StationVO{" +
-                "name='" + getName() + '\'' +
-                ", kana='" + getKana() + '\'' +
-                ", prefCd='" + prefCd + '\'' +
+        return super.toString() + "\n" +
+                "StationDetailVO{" +
+                "prefCd='" + prefCd + '\'' +
                 ", lat='" + lat + '\'' +
                 ", lng='" + lng + '\'' +
                 ", gnaviId='" + gnaviId + '\'' +

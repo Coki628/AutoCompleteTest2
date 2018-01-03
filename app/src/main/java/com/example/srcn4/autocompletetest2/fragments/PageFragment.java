@@ -125,7 +125,7 @@ public class PageFragment extends Fragment {
                     view.findViewById(getResources().getIdentifier(
                     "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
                     .findViewById(R.id.route_title);
-            routeTitle.setText((resultInfoLists[i].get(0).getName() + "　～　" + resultInfoLists[i].get(0).getDestName()));
+            routeTitle.setText((resultInfoLists[i].get(0).getStationFrom() + "　～　" + resultInfoLists[i].get(0).getStationTo()));
             TextView time = view.findViewById(getResources().getIdentifier(
                     "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
                     .findViewById(R.id.time);
