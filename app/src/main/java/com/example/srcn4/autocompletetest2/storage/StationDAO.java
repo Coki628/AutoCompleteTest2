@@ -54,7 +54,7 @@ public class StationDAO {
         // 結果返却用VO
         StationDetailVO vo = null;
         // DBから駅情報を取得
-        Cursor cursor = db.rawQuery("SELECT kana, pref_cd, lat, lng, gnavi_id, jorudan_name FROM station WHERE name = ?",
+        Cursor cursor = db.rawQuery("SELECT kana, pref_cd, lat, lng, gnavi_id, jorudan_name, romaji FROM station WHERE name = ?",
                 new String[]{name});
 
         if (cursor.moveToNext()) {
@@ -65,8 +65,9 @@ public class StationDAO {
             String lng = cursor.getString(cursor.getColumnIndex("lng"));
             String gnaviId = cursor.getString(cursor.getColumnIndex("gnavi_id"));
             String jorudanName = cursor.getString(cursor.getColumnIndex("jorudan_name"));
+            String romaji = cursor.getString(cursor.getColumnIndex("romaji"));
             // DBから取得した値を格納したVOを生成
-            vo = new StationDetailVO(name, kana, prefCd, lat, lng, gnaviId, jorudanName);
+            vo = new StationDetailVO(name, kana, prefCd, lat, lng, gnaviId, jorudanName, romaji);
         }
         // 使用済カーソルはクローズする
         cursor.close();
@@ -80,7 +81,8 @@ public class StationDAO {
         // 結果返却用リスト
         ArrayList<StationDetailVO> stationList = new ArrayList<>();
         // DBから全情報を取得
-        Cursor cursor = db.rawQuery("SELECT name, kana, pref_cd, lat, lng, gnavi_id, jorudan_name FROM station", null);
+        Cursor cursor = db.rawQuery("SELECT name, kana, pref_cd, lat, lng, gnavi_id, jorudan_name, romaji FROM station",
+                null);
 
         while (cursor.moveToNext()) {
             // カーソルから各項目を取得
@@ -91,8 +93,9 @@ public class StationDAO {
             String lng = cursor.getString(cursor.getColumnIndex("lng"));
             String gnaviId = cursor.getString(cursor.getColumnIndex("gnavi_id"));
             String jorudanName = cursor.getString(cursor.getColumnIndex("jorudan_name"));
+            String romaji = cursor.getString(cursor.getColumnIndex("romaji"));
             // DBから取得した値を格納したVOを生成
-            StationDetailVO vo = new StationDetailVO(name, kana, prefCd, lat, lng, gnaviId, jorudanName);
+            StationDetailVO vo = new StationDetailVO(name, kana, prefCd, lat, lng, gnaviId, jorudanName, romaji);
             // VOをリストに格納
             stationList.add(vo);
         }

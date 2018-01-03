@@ -12,9 +12,10 @@ public class StationDetailVO extends StationVO {
     private String lng;
     private String gnaviId;
     private String jorudanName;
+    private String romaji;
 
     // 全項目設定のコンストラクタ
-    public StationDetailVO(String name, String kana, String prefCd, String lat, String lng, String gnaviId, String jorudanName) {
+    public StationDetailVO(String name, String kana, String prefCd, String lat, String lng, String gnaviId, String jorudanName, String romaji) {
 
         super(name, kana);
         this.prefCd = prefCd;
@@ -22,6 +23,7 @@ public class StationDetailVO extends StationVO {
         this.lng = lng;
         this.gnaviId = gnaviId;
         this.jorudanName = jorudanName;
+        this.romaji = romaji;
     }
 
     public String getPrefCd() {
@@ -44,6 +46,10 @@ public class StationDetailVO extends StationVO {
         return jorudanName;
     }
 
+    public String getRomaji() {
+        return romaji;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "\n" +
@@ -53,6 +59,7 @@ public class StationDetailVO extends StationVO {
                 ", lng='" + lng + '\'' +
                 ", gnaviId='" + gnaviId + '\'' +
                 ", jorudanName='" + jorudanName + '\'' +
+                ", romaji='" + romaji + '\'' +
                 '}';
     }
 }
