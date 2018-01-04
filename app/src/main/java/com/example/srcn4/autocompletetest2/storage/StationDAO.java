@@ -48,6 +48,28 @@ public class StationDAO {
         return stationList;
     }
 
+    // 文字列と部分一致するローマ字名を取得するメソッド
+    public ArrayList<StationVO> selectRomajisByStr(String str) {
+
+        // 結果返却用リスト
+        ArrayList<StationVO> stationList = new ArrayList<>();
+        // DBから部分一致で駅名かカナに当てはまる駅情報を取得
+        Cursor cursor = db.rawQuery("SELECT name, kana, romaji FROM station " +
+                        "WHERE romaji LIKE '%' || ? || '%'",
+                new String[]{str});
+        // 取得した数だけ繰り返す
+        while (cursor.moveToNext()) {
+            // 取得した全駅名と仮名をVOに格納
+            stationList.add(new StationDetailVO(cursor.getString(cursor.getColumnIndex("name")),
+                    cursor.getString(cursor.getColumnIndex("kana")),
+                    cursor.getString(cursor.getColumnIndex("romaji"))));
+        }
+        // 使用済カーソルはクローズする
+        cursor.close();
+        // 結果値を格納したリストを返却
+        return stationList;
+    }
+
     // 駅名から駅情報を取得するメソッド
     public StationDetailVO selectStationByName(String name) {
 

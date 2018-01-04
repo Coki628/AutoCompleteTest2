@@ -10,10 +10,12 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.srcn4.autocompletetest2.R;
+import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.models.StationVO;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * 予測変換機能管理アダプター
@@ -58,9 +60,15 @@ public class MyAdapterForAutoComplete extends BaseAdapter implements Filterable 
         // 1行に表示するビューを設定
         TextView listViewKana = convertView.findViewById(R.id.list_item_kana);
         TextView listViewName = convertView.findViewById(R.id.list_item_name);
-        listViewKana.setText(resultVOList.get(position).getKana());
-        listViewName.setText(resultVOList.get(position).getName());
-
+        // 言語設定が英語の時
+        if (Locale.getDefault().getLanguage().equals("en")) {
+            // VOをキャストしてローマ字名を設定する
+            StationDetailVO vo = (StationDetailVO) resultVOList.get(position);
+            listViewName.setText(vo.getRomaji());
+        } else {
+            listViewKana.setText(resultVOList.get(position).getKana());
+            listViewName.setText(resultVOList.get(position).getName());
+        }
         return convertView;
     }
 
@@ -72,10 +80,16 @@ public class MyAdapterForAutoComplete extends BaseAdapter implements Filterable 
             //ここでフィルタリングした値を選択したときに返す値を実装
             @Override
             public String convertResultToString(Object resultValue) {
-                // 選択された駅オブジェクトをキャストして取得
-                StationVO vo = (StationVO) resultValue;
-                // 駅名を返す(表示する)
-                return vo.getName();
+                // 言語設定が英語の時
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    StationDetailVO vo = (StationDetailVO) resultValue;
+                    return vo.getRomaji();
+                } else {
+                    // 選択された駅オブジェクトをキャストして取得
+                    StationVO vo = (StationVO) resultValue;
+                    // 駅名を返す(表示する)
+                    return vo.getName();
+                }
             }
 
             // ここで独自のフィルタリングルールを実装
@@ -88,9 +102,15 @@ public class MyAdapterForAutoComplete extends BaseAdapter implements Filterable 
                 }
                 // DB接続のためDAOを生成
                 StationDAO dao = new StationDAO(context);
-                // 入力文字列と前方一致する駅名と仮名を取得する
-                ArrayList<StationVO> newValues = dao.selectNamesByStr(str.toString());
-
+                ArrayList<StationVO> newValues = null;
+                // 言語設定が英語の時
+                if (Locale.getDefault().getLanguage().equals("en")) {
+                    // ローマ字名を取得する
+                    newValues = dao.selectRomajisByStr(str.toString());
+                } else {
+                    // 入力文字列と前方一致する駅名と仮名を取得する
+                    newValues = dao.selectNamesByStr(str.toString());
+                }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = newValues;            // フィルタリング結果オブジェクト
                 filterResults.count = newValues.size();      // フィルタリング結果件数

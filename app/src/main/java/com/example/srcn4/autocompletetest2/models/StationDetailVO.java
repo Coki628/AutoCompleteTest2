@@ -26,6 +26,18 @@ public class StationDetailVO extends StationVO {
         this.romaji = romaji;
     }
 
+    // 駅名、カナ、ローマ字のみ設定のコンストラクタ
+    public StationDetailVO(String name, String kana, String romaji) {
+
+        super(name, kana);
+        this.prefCd = null;
+        this.lat = null;
+        this.lng = null;
+        this.gnaviId = null;
+        this.jorudanName = null;
+        this.romaji = romaji;
+    }
+
     public String getPrefCd() {
         return prefCd;
     }
