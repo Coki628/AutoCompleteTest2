@@ -57,11 +57,14 @@ public class MyAdapterForListView extends BaseAdapter {
         // 画面の各要素を取得
         TextView listViewName = convertView.findViewById(R.id.list_view_station);
         TextView listViewKana = convertView.findViewById(R.id.list_view_kana);
+        TextView listViewDistance = convertView.findViewById(R.id.list_view_distance);
         Button shareButton = convertView.findViewById(R.id.button12);
         Button mapInfoButton = convertView.findViewById(R.id.button13);
         // 近い順になっているリストから順番に駅名をセットしていく
         listViewName.setText(list.get(position).getName());
         listViewKana.setText(list.get(position).getKana());
+        listViewDistance.setText(("中間地点からの距離：" +
+                String.valueOf(Math.round(list.get(position).getDistance())) + "m" ));
         // 共有ボタン用のクリック準備
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
