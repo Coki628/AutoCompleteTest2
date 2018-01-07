@@ -13,6 +13,7 @@ import com.example.srcn4.autocompletetest2.adapters.MyAdapterForListView;
 import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationDistanceVO;
+import com.example.srcn4.autocompletetest2.network.MyNetworkManager;
 import com.example.srcn4.autocompletetest2.storage.StationDAO;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
@@ -118,14 +119,21 @@ public class StationListActivity extends AppCompatActivity {
     public void callMapInfo(String stationName) {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
-        // DB接続のためDAOを生成
-        StationDAO dao = new StationDAO(getApplicationContext());
-        // 駅情報を取得する
-        StationDetailVO vo = dao.selectStationByName(stationName);
-        // 周辺情報(MAP)の画面に遷移
-        Intent intent = IntentUtil.prepareForMapsActivity(
-                StationListActivity.this, stationList, vo);
-        startActivity(intent);
+        //　ネットワークの接続状態を確認
+        AlertDialog.Builder dialog = MyNetworkManager.checkConnection(this);
+        if (dialog == null) {
+            // DB接続のためDAOを生成
+            StationDAO dao = new StationDAO(getApplicationContext());
+            // 駅情報を取得する
+            StationDetailVO vo = dao.selectStationByName(stationName);
+            // 周辺情報(MAP)の画面に遷移
+            Intent intent = IntentUtil.prepareForMapsActivity(
+                    StationListActivity.this, stationList, vo);
+            startActivity(intent);
+        } else {
+            // 電波なかったらダイアログ出す
+            dialog.show();
+        }
     }
 }
 

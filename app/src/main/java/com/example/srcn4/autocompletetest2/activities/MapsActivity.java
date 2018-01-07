@@ -13,6 +13,7 @@ import com.example.srcn4.autocompletetest2.application.MyApplication;
 import com.example.srcn4.autocompletetest2.models.StationDetailVO;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
 import com.example.srcn4.autocompletetest2.network.JorudanInfoTask;
+import com.example.srcn4.autocompletetest2.network.MyNetworkManager;
 import com.example.srcn4.autocompletetest2.utils.CalculateUtil;
 import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -246,24 +247,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void callRoute(View v) {
         // 効果音の再生
         ma.getMySoundManager().play(ma.getMySoundManager().getSoundSelect());
-        // ジョルダンに経路検索のリクエストを送る
-        final JorudanInfoTask jit = new JorudanInfoTask(this, stationList,
-                resultStation.getJorudanName());
-        // ここから非同期処理終了後の処理を記述する
-        jit.setOnCallBack(new JorudanInfoTask.CallBackTask(){
-            @Override
-            public void CallBack() {
-                super.CallBack();
-                // 結果の取得
-                ArrayList<StationTransferVO>[] resultInfoLists = jit.getResultInfoLists();
-                // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
-                Intent intent = IntentUtil.prepareForRouteActivity(MapsActivity.this,
-                        stationList, resultStation,
-                        centerLatLng.latitude, centerLatLng.longitude, resultInfoLists);
-                startActivity(intent);
-            }
-        });
-        // 非同期処理の実行
-        jit.execute();
+        //　ネットワークの接続状態を確認
+        AlertDialog.Builder dialog = MyNetworkManager.checkConnection(this);
+        if (dialog == null) {
+            // ジョルダンに経路検索のリクエストを送る
+            final JorudanInfoTask jit = new JorudanInfoTask(this, stationList,
+                    resultStation.getJorudanName());
+            // ここから非同期処理終了後の処理を記述する
+            jit.setOnCallBack(new JorudanInfoTask.CallBackTask(){
+                @Override
+                public void CallBack() {
+                    super.CallBack();
+                    // 結果の取得
+                    ArrayList<StationTransferVO>[] resultInfoLists = jit.getResultInfoLists();
+                    // 画面遷移処理で、入力されていた駅情報のリストと候補駅を次の画面に送る
+                    Intent intent = IntentUtil.prepareForRouteActivity(MapsActivity.this,
+                            stationList, resultStation,
+                            centerLatLng.latitude, centerLatLng.longitude, resultInfoLists);
+                    startActivity(intent);
+                }
+            });
+            // 非同期処理の実行
+            jit.execute();
+        } else {
+            // 電波なかったらダイアログ出す
+            dialog.show();
+        }
     }
 }
