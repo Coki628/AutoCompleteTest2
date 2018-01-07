@@ -31,6 +31,8 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
     private StationDetailVO[] inputStationArray;
     // 到着駅
     private String destStation;
+    // 検索URL格納用配列
+    private String[] searchURLArray;
     // プログレスバー
     private Activity activity;
     private ProgressDialog dialog;
@@ -52,6 +54,7 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
                 inputStationList.toArray(new StationDetailVO[inputStationList.size()]);
         this.destStation = destStationName;
         this.activity = activity;
+        this.searchURLArray = new String[inputStationList.size()];
     }
 
     // 非同期処理前にUIスレッドで実行される
@@ -77,10 +80,12 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
 
         try {
             for (int i = 0; i < inputStationArray.length; i++) {
+                // 検索URLを格納
+                searchURLArray[i] = "https://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=決+定&eki1="
+                        + inputStationArray[i].getJorudanName() + "&eki2=" + destStation;
                 // 入力された駅の数だけ検索の通信をする
                 Request request = new Request.Builder()
-                        .url("http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=決+定&eki1="
-                                + inputStationArray[i].getJorudanName() + "&eki2=" + destStation)
+                        .url(searchURLArray[i])
                         .get()
                         .build();
 
@@ -121,13 +126,13 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
             if (doc.getElementById("search_msg").text().equals("検索できない駅の指定です。（近距離です。）")) {
                 // 結果格納用VO
                 StationTransferVO vo =
-                        new StationTransferVO(inputStationArray[i].getJorudanName(), destStation);
+                        new StationTransferVO(inputStationArray[i].getJorudanName(), destStation, searchURLArray[i]);
                 resultInfoLists[i].add(vo);
             // 同じ駅を検索した場合
             } else if (doc.getElementById("search_msg").text().equals("出発地 到着地 に同じ目的地は設定できません。")) {
                 // 結果格納用VO
                 StationTransferVO vo =
-                        new StationTransferVO(inputStationArray[i].getJorudanName(), destStation);
+                        new StationTransferVO(inputStationArray[i].getJorudanName(), destStation, searchURLArray[i]);
                 resultInfoLists[i].add(vo);
             // 通常の検索結果が得られた場合
             } else {
@@ -136,7 +141,7 @@ public class JorudanInfoTask extends AsyncTask< Void, Integer, String[]> {
                 for (int j = 0; j < tBody.getElementsByTag("tr").size(); j++) {
                     // 結果格納用VO
                     StationTransferVO vo =
-                            new StationTransferVO(inputStationArray[i].getJorudanName(), destStation);
+                            new StationTransferVO(inputStationArray[i].getJorudanName(), destStation, searchURLArray[i]);
                     // 必要なタグから情報を受け取る
                     String timeStr = tBody.child(j).child(2).text();
                     String costStr = tBody.child(j).child(4).text();

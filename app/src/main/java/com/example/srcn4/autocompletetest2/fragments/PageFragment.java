@@ -1,6 +1,7 @@
 package com.example.srcn4.autocompletetest2.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -9,11 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.srcn4.autocompletetest2.R;
 import com.example.srcn4.autocompletetest2.models.StationTransferVO;
 import com.example.srcn4.autocompletetest2.utils.ConvertUtil;
+import com.example.srcn4.autocompletetest2.utils.IntentUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,6 +115,8 @@ public class PageFragment extends Fragment {
                 Log.d("sorted " + String.valueOf(i), vo.toString());
             }
         }
+        // 11個目の空レイアウトのボタンを予め消しておく
+        view.findViewById(R.id.route_info11).findViewById(R.id.detail_button).setVisibility(View.GONE);
         // ソート結果に応じて、各出発駅から1位のものだけ表示する(.get(0)がリストの先頭)
         for (int i = 0; i < resultInfoLists.length; i++) {
             // 各数値を表示用の形式に戻す
@@ -120,41 +125,33 @@ public class PageFragment extends Fragment {
             String transferStr = ConvertUtil.addKai(resultInfoLists[i].get(0).getTransfer());
             // 乗り換え駅リストを表示用に整形
             String stations = ConvertUtil.concatTranStations(resultInfoLists[i].get(0).getTransferList());
-            // route_info1～10に表示用の経路情報を格納していく
-            TextView routeTitle =
-                    view.findViewById(getResources().getIdentifier(
-                    "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
-                    .findViewById(R.id.route_title);
-            routeTitle.setText((resultInfoLists[i].get(0).getStationFrom() + "　～　" + resultInfoLists[i].get(0).getStationTo()));
-            TextView time = view.findViewById(getResources().getIdentifier(
-                    "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
-                    .findViewById(R.id.time);
-            time.setText(("所要時間:" + timeStr));
-            TextView cost = view.findViewById(getResources().getIdentifier(
-                    "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
-                    .findViewById(R.id.cost);
-            cost.setText(("料金:" + costStr));
-            TextView transfer = view.findViewById(getResources().getIdentifier(
-                    "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
-                    .findViewById(R.id.transfer);
-            transfer.setText(("乗り換え:" + transferStr));
-            TextView transferStations = view.findViewById(getResources().getIdentifier(
-                    "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()))
-                    .findViewById(R.id.transfer_stations);
-            transferStations.setText(stations);
-        }
-        // 余分なレイアウトを削除する処理
-        for (int i = 0; i < 10; i++) {
             // 1～10までの各経路情報のレイアウトを取得
             ConstraintLayout layout = view.findViewById(getResources().getIdentifier(
-                            "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()));
-            // レイアウト内のビューを取得
+                    "route_info" + String.valueOf(i+1), "id", getActivity().getPackageName()));
+            // 該当のレイアウトを表示する
+            layout.setVisibility(View.VISIBLE);
+            // route_info1～10に表示用の経路情報を格納していく
             TextView routeTitle = layout.findViewById(R.id.route_title);
-            // ビューが空だったら、該当するレイアウトは削除
-            if (routeTitle.getText().toString().isEmpty()) {
-                ViewGroup p = (ViewGroup)layout.getParent();
-                p.removeView(layout);
-            }
+            routeTitle.setText((resultInfoLists[i].get(0).getStationFrom() + "　～　" + resultInfoLists[i].get(0).getStationTo()));
+            TextView time = layout.findViewById(R.id.time);
+            time.setText(("所要時間:" + timeStr));
+            TextView cost = layout.findViewById(R.id.cost);
+            cost.setText(("料金:" + costStr));
+            TextView transfer = layout.findViewById(R.id.transfer);
+            transfer.setText(("乗り換え:" + transferStr));
+            TextView transferStations = layout.findViewById(R.id.transfer_stations);
+            transferStations.setText(stations);
+            // 詳細情報をJoudan検索しに行けるボタンの設定
+            Button detailButton = layout.findViewById(R.id.detail_button);
+            final String searchURL = resultInfoLists[i].get(0).getSearchURL();
+            detailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // 検索URLからJorudanへ遷移
+                    Intent intent = IntentUtil.prepareForJorudanDetailInfo(searchURL);
+                    startActivity(intent);
+                }
+            });
         }
         return view;
     }

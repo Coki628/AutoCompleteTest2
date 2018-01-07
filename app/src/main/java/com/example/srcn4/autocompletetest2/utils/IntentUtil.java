@@ -223,4 +223,18 @@ public class IntentUtil {
                     .setCancelable(false);
         }
     }
+
+    /**
+     * ジョルダン詳細情報への遷移準備
+     *
+     * @param searchURL Jorudan検索に使用したURL
+     * @return Intent 画面遷移(ブラウザ起動)に必要な情報を保持したIntent
+     */
+    public static Intent prepareForJorudanDetailInfo(String searchURL) {
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(searchURL));
+        return intent;
+    }
 }

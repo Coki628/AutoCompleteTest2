@@ -22,9 +22,11 @@ public class StationTransferVO implements Serializable {
     private int transfer;
     // 乗り換え途中駅リスト
     private ArrayList<String> transferList;
+    // 検索URL
+    private String searchURL;
 
     // コンストラクタ
-    public StationTransferVO(String stationFrom, String stationTo) {
+    public StationTransferVO(String stationFrom, String stationTo, String searchURL) {
 
         this.stationFrom = stationFrom;
         this.stationTo = stationTo;
@@ -32,6 +34,7 @@ public class StationTransferVO implements Serializable {
         this.cost = 0;
         this.transfer = 0;
         this.transferList = new ArrayList<>();
+        this.searchURL = searchURL;
     }
 
     public String getStationFrom() {
@@ -82,6 +85,14 @@ public class StationTransferVO implements Serializable {
         this.transferList = transferList;
     }
 
+    public String getSearchURL() {
+        return searchURL;
+    }
+
+    public void setSearchURL(String searchURL) {
+        this.searchURL = searchURL;
+    }
+
     @Override
     public String toString() {
         return "StationTransferVO{" +
@@ -91,6 +102,7 @@ public class StationTransferVO implements Serializable {
                 ", cost=" + cost +
                 ", transfer=" + transfer +
                 ", transferList=" + transferList +
+                ", searchURL='" + searchURL + '\'' +
                 '}';
     }
 }

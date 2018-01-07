@@ -61,6 +61,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <Button
+        android:id="@+id/detail_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="詳細情報"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/transfer"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <!-- 区切り線 -->
     <View
         android:layout_width="fill_parent"
