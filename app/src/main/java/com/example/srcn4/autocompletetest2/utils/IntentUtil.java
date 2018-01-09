@@ -181,10 +181,12 @@ public class IntentUtil {
      * 共有(LINE)への遷移準備
      *
      * @param activity 実行中Activityのthis
-     * @param stationName 検索結果として選ばれた候補駅の駅名
+     * @param stationList 出発駅のリスト
+     * @param resultStation 検索結果として選ばれた候補駅
      * @return Intent 画面遷移(LINE起動)に必要な情報を保持したIntent
      */
-    public static Object prepareForLINE(Activity activity, String stationName) {
+    public static Object prepareForLINE(Activity activity,
+                ArrayList<StationDetailVO> stationList, StationDetailVO resultStation) {
 
         // LINEのアプリID
         String LINE_APP_ID = "jp.naver.line.android";
@@ -198,14 +200,26 @@ public class IntentUtil {
             PackageManager pm = activity.getPackageManager();
             // LINEがインストールされているかの確認
             ApplicationInfo appInfo = pm.getApplicationInfo(LINE_APP_ID, PackageManager.GET_META_DATA);
+
+            // LINEに送る文字列を生成
+            StringBuilder sb = new StringBuilder();
+            sb.append("line://msg/text/中間地点候補：" + LINE_SEPARATOR
+                    + resultStation.getName() + "駅" + LINE_SEPARATOR
+                    + "" + LINE_SEPARATOR);
+            // 各出発駅～候補駅の経路検索情報を入れる
+            for (StationDetailVO inputStation : stationList) {
+                sb.append(inputStation.getName() + " ～ " + resultStation.getName() + LINE_SEPARATOR);
+                sb.append("https://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=決%2B定&eki1="
+                        + inputStation.getJorudanName() +  "&eki2="
+                        + resultStation.getJorudanName() + LINE_SEPARATOR
+                        + "" + LINE_SEPARATOR);
+            }
+            sb.append("by 中間地点アプリ");
+
             // インストールされてたら、LINEへ
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("line://msg/text/" + "中間地点は…" + LINE_SEPARATOR
-                    + stationName + "駅" + LINE_SEPARATOR
-                    + "だよ！" + LINE_SEPARATOR
-                    + "by 中間地点アプリ"
-            ));
+            intent.setData(Uri.parse(sb.toString()));
             return intent;
 
         } catch(PackageManager.NameNotFoundException e) {

@@ -97,9 +97,12 @@ public class StationListActivity extends AppCompatActivity {
 
     // 共有ボタンが押された時
     public void callLINE(String stationName) {
-
+        // DB接続のためDAOを生成
+        StationDAO dao = new StationDAO(getApplicationContext());
+        // 駅情報を取得する
+        StationDetailVO resultStation = dao.selectStationByName(stationName);
         // LINE共有機能を呼び出す
-        Object obj = IntentUtil.prepareForLINE(this, stationName);
+        Object obj = IntentUtil.prepareForLINE(this, stationList, resultStation);
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
             // 効果音の再生
@@ -125,10 +128,10 @@ public class StationListActivity extends AppCompatActivity {
             // DB接続のためDAOを生成
             StationDAO dao = new StationDAO(getApplicationContext());
             // 駅情報を取得する
-            StationDetailVO vo = dao.selectStationByName(stationName);
+            StationDetailVO resultStation = dao.selectStationByName(stationName);
             // 周辺情報(MAP)の画面に遷移
             Intent intent = IntentUtil.prepareForMapsActivity(
-                    StationListActivity.this, stationList, vo);
+                    StationListActivity.this, stationList, resultStation);
             startActivity(intent);
         } else {
             // 電波なかったらダイアログ出す

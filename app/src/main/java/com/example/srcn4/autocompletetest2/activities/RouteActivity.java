@@ -128,7 +128,7 @@ public class RouteActivity extends AppCompatActivity implements ViewPager.OnPage
     public void callLINE(View v) {
 
         // LINE共有機能を呼び出す
-        Object obj = IntentUtil.prepareForLINE(this, resultStation.getName());
+        Object obj = IntentUtil.prepareForLINE(this, stationList, resultStation);
         // Intentが返却されていたら、LINE連携へ遷移する
         if (obj instanceof Intent) {
             // 効果音の再生
